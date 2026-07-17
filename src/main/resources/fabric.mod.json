@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "colorblockmc",
   "version": "${version}",
-  "name": "Colorful Block",
+  "name": "Colorful Blocks",
   "description": "Make you to use any color of blocks in Minecraft.",
   "authors": ["PageQwQ"],
   "contact": {
