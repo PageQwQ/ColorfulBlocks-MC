@@ -17,7 +17,7 @@ public class BlockRegistry {
     public static final List<Block> ALL_BLOCKS = new ArrayList<>();
 
     public static final Block RGB_CONCRETE = register(
-        "concrete", new RGBBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_CONCRETE).requiresCorrectToolForDrops())
+        "concrete", new RGBBlock(BlockBehaviour.Properties.of().strength(1.8f, 1.8f))
     );
 
     private static Block register(String name, Block block) {
