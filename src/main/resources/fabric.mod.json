@@ -2,19 +2,19 @@
   "schemaVersion": 1,
   "id": "colorblockmc",
   "version": "${version}",
-  "name": "RGB Blocks",
-  "description": "Blocks in almost all colors you can imagine.",
-  "authors": ["PlatinPython"],
+  "name": "Colorful Block",
+  "description": "Make you to use any color of blocks in Minecraft.",
+  "authors": ["PageQwQ"],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/rgb-blocks-forge",
-    "issues": "https://github.com/PlatinPython/RGBBlocks/issues"
+    "homepage": "https://github.com/PageQwQ/ColorfulBlocks-MC",
+    "issues": "https://github.com/PageQwQ/ColorfulBlocks-MC/issues"
   },
   "license": "MIT",
   "icon": "logo.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["platinpython.rgbblocks.RGBBlocks"],
-    "client": ["platinpython.rgbblocks.RGBBlocksClient"]
+    "main": ["pageqwq.colorbmc.RGBBlocks"],
+    "client": ["pageqwq.colorbmc.RGBBlocksClient"]
   },
   "accessWidener": "colorblockmc.accesswidener",
   "mixins": [
