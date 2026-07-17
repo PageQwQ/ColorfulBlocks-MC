@@ -7,7 +7,6 @@ import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.CreativeTabRegistry;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
-import platinpython.rgbblocks.util.registries.EntityRegistry;
 import platinpython.rgbblocks.util.registries.ItemRegistry;
 import platinpython.rgbblocks.util.registries.RecipeSerializerRegistry;
 import platinpython.rgbblocks.util.network.NetworkHandler;
@@ -24,7 +23,6 @@ public class RGBBlocks implements ModInitializer {
         BlockRegistry.register();
         ItemRegistry.register();
         BlockEntityRegistry.register();
-        EntityRegistry.register();
         RecipeSerializerRegistry.register();
         CreativeTabRegistry.register();
 

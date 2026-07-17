@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "rgbblocks",
-  "version": "1.21.1-1.1.9.1-fabric",
+  "version": "1.21.1-1.4.0-fabric",
   "name": "RGB Blocks",
   "description": "Blocks in almost all colors you can imagine.",
   "authors": ["PlatinPython"],

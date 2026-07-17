@@ -1,8 +1,8 @@
 package platinpython.rgbblocks.item;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,14 +16,27 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import platinpython.rgbblocks.block.entity.RGBBlockEntity;
 import platinpython.rgbblocks.util.ClientProxy;
+import platinpython.rgbblocks.util.registries.BlockRegistry;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 import java.util.List;
+import java.util.Set;
 
 public class PaintBucketItem extends Item {
+    private static final Set<Block> VANILLA_CONCRETE = Set.of(
+        Blocks.WHITE_CONCRETE, Blocks.ORANGE_CONCRETE, Blocks.MAGENTA_CONCRETE,
+        Blocks.LIGHT_BLUE_CONCRETE, Blocks.YELLOW_CONCRETE, Blocks.LIME_CONCRETE,
+        Blocks.PINK_CONCRETE, Blocks.GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE,
+        Blocks.CYAN_CONCRETE, Blocks.PURPLE_CONCRETE, Blocks.BLUE_CONCRETE,
+        Blocks.BROWN_CONCRETE, Blocks.GREEN_CONCRETE, Blocks.RED_CONCRETE,
+        Blocks.BLACK_CONCRETE
+    );
+
     public PaintBucketItem(Properties properties) {
         super(properties);
     }
@@ -68,29 +81,54 @@ public class PaintBucketItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        BlockEntity blockEntity = context.getLevel().getBlockEntity(context.getClickedPos());
+        Level level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        BlockState state = level.getBlockState(pos);
+        Block block = state.getBlock();
+        Player player = context.getPlayer();
+        ItemStack stack = context.getItemInHand();
+
+        // 1) Already an RGB block → change color or copy color
+        BlockEntity blockEntity = level.getBlockEntity(pos);
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
-            if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
-                context.getItemInHand().set(DataComponentRegistry.COLOR, rgbBlockEntity.getColor());
+            if (player != null && player.isShiftKeyDown()) {
+                stack.set(DataComponentRegistry.COLOR, rgbBlockEntity.getColor());
             } else {
-                int color = context.getItemInHand().getOrDefault(DataComponentRegistry.COLOR, -1);
-                if (context.getPlayer() != null && !context.getPlayer().isCreative() && color != rgbBlockEntity.getColor()) {
-                    if (context.getItemInHand().getDamageValue() == context.getItemInHand().getMaxDamage() - 1) {
-                        context.getPlayer().setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
+                int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
+                if (player != null && !player.isCreative() && color != rgbBlockEntity.getColor()) {
+                    if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
+                        player.setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                     } else {
-                        context.getItemInHand()
-                            .hurtAndBreak(1, context.getPlayer(), LivingEntity.getSlotForHand(context.getHand()));
+                        stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
                     }
                 }
                 rgbBlockEntity.setColor(color);
-                context.getLevel()
-                    .sendBlockUpdated(
-                        context.getClickedPos(), blockEntity.getBlockState(), blockEntity.getBlockState(),
-                        Block.UPDATE_ALL_IMMEDIATE
-                    );
+                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL_IMMEDIATE);
             }
             return InteractionResult.SUCCESS;
         }
+
+        // 2) Vanilla concrete → replace with RGB concrete
+        if (VANILLA_CONCRETE.contains(block)) {
+            if (level.isClientSide) return InteractionResult.SUCCESS;
+
+            int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
+
+            if (player != null && !player.isCreative()) {
+                if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
+                    player.setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
+                } else {
+                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+                }
+            }
+
+            level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+            if (level.getBlockEntity(pos) instanceof RGBBlockEntity newEntity) {
+                newEntity.setColor(color);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
         return InteractionResult.PASS;
     }
 }
