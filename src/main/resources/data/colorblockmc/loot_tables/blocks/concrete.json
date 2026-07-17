@@ -2,7 +2,7 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "rolls": 1.0,
       "entries": [
         {
           "type": "minecraft:item",
@@ -11,7 +11,9 @@
             {
               "function": "minecraft:copy_components",
               "source": "block_entity",
-              "include": ["colorblockmc:color"]
+              "include": [
+                "colorblockmc:color"
+              ]
             }
           ]
         }
@@ -22,5 +24,6 @@
         }
       ]
     }
-  ]
+  ],
+  "random_sequence": "colorblockmc:blocks/concrete"
 }

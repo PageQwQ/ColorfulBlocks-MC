@@ -116,11 +116,19 @@ public class PaintBucketItem extends Item {
             return InteractionResult.SUCCESS;
         }
 
-        // 2) Vanilla concrete → replace with RGB concrete (free, no durability cost)
+        // 2) Vanilla concrete → replace with RGB concrete
         if (VANILLA_CONCRETE.contains(block)) {
             if (level.isClientSide) return InteractionResult.SUCCESS;
 
             int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
+
+            if (player != null && !player.isCreative()) {
+                if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
+                    player.setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
+                } else {
+                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+                }
+            }
 
             // Replace block without sending to client yet
             BlockState oldState = level.getBlockState(pos);
