@@ -122,12 +122,16 @@ public class PaintBucketItem extends Item {
                 }
             }
 
-            level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
+            // Replace block without sending to client yet
+            BlockState oldState = level.getBlockState(pos);
+            level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(),
+                Block.UPDATE_NEIGHBORS | Block.UPDATE_INVISIBLE | Block.UPDATE_IMMEDIATE);
+            // Set color before client ever sees the block
             if (level.getBlockEntity(pos) instanceof RGBBlockEntity newEntity) {
                 newEntity.setColor(color);
-                level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos),
-                    Block.UPDATE_ALL_IMMEDIATE);
             }
+            // Now send block + block entity data to client in one sync
+            level.sendBlockUpdated(pos, oldState, level.getBlockState(pos), Block.UPDATE_ALL_IMMEDIATE);
             return InteractionResult.SUCCESS;
         }
 
