@@ -13,7 +13,7 @@ import platinpython.rgbblocks.util.registries.BlockEntityRegistry;
 import platinpython.rgbblocks.util.registries.DataComponentRegistry;
 
 public class RGBBlockEntity extends BlockEntity {
-    private int color;
+    private int color = -1;
     private MapColor mapColor = MapColor.NONE;
 
     public RGBBlockEntity(BlockPos pos, BlockState state) {

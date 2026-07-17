@@ -125,6 +125,8 @@ public class PaintBucketItem extends Item {
             level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(), Block.UPDATE_ALL_IMMEDIATE);
             if (level.getBlockEntity(pos) instanceof RGBBlockEntity newEntity) {
                 newEntity.setColor(color);
+                level.sendBlockUpdated(pos, level.getBlockState(pos), level.getBlockState(pos),
+                    Block.UPDATE_ALL_IMMEDIATE);
             }
             return InteractionResult.SUCCESS;
         }
