@@ -1,0 +1,15 @@
+{
+  "block.colorblockmc.concrete": "染色混凝土",
+  "item.colorblockmc.paint_bucket": "染色桶",
+  "item_group.colorblockmc.tab": "给你点颜色瞧瞧",
+  "gui.colorblockmc.red": "红色值",
+  "gui.colorblockmc.green": "绿色值",
+  "gui.colorblockmc.blue": "蓝色值",
+  "gui.colorblockmc.hue": "色调",
+  "gui.colorblockmc.saturation": "饱和度",
+  "gui.colorblockmc.brightness": "亮度",
+  "gui.colorblockmc.useRGB": "切换为RGB模式",
+  "gui.colorblockmc.useHSB": "切换为HSB模式",
+  "colorblockmc.pack_title": "染色方块实现材质包",
+  "colorblockmc.pack_description": "彩色方块的动态生成纹理包"
+}

@@ -60,8 +60,16 @@ public class PaintBucketItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        pageqwq.colorbmc.util.Color color = new pageqwq.colorbmc.util.Color(stack.getOrDefault(DataComponentRegistry.COLOR, -1));
-        tooltip.add(Component.literal("#" + Integer.toHexString(color.getRGB()).substring(2)));
+        int colorValue = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
+        pageqwq.colorbmc.util.Color color = new pageqwq.colorbmc.util.Color(colorValue);
+        String hex = "#" + Integer.toHexString(color.getRGB()).substring(2);
+        Component hexComponent;
+        if (colorValue == -1) {
+            hexComponent = Component.literal(hex);
+        } else {
+            hexComponent = Component.literal(hex).withStyle(style -> style.withColor(colorValue & 0xFFFFFF));
+        }
+        tooltip.add(hexComponent);
     }
 
     @Override
@@ -108,19 +116,11 @@ public class PaintBucketItem extends Item {
             return InteractionResult.SUCCESS;
         }
 
-        // 2) Vanilla concrete → replace with RGB concrete
+        // 2) Vanilla concrete → replace with RGB concrete (free, no durability cost)
         if (VANILLA_CONCRETE.contains(block)) {
             if (level.isClientSide) return InteractionResult.SUCCESS;
 
             int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
-
-            if (player != null && !player.isCreative()) {
-                if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
-                    player.setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
-                } else {
-                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
-                }
-            }
 
             // Replace block without sending to client yet
             BlockState oldState = level.getBlockState(pos);

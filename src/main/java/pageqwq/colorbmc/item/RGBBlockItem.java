@@ -33,7 +33,15 @@ public class RGBBlockItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        Color color = new Color(stack.getOrDefault(DataComponentRegistry.COLOR, -1));
-        tooltip.add(Component.literal("#" + Integer.toHexString(color.getRGB()).substring(2)));
+        int colorValue = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
+        Color color = new Color(colorValue);
+        String hex = "#" + Integer.toHexString(color.getRGB()).substring(2);
+        Component hexComponent;
+        if (colorValue == -1) {
+            hexComponent = Component.literal(hex);
+        } else {
+            hexComponent = Component.literal(hex).withStyle(style -> style.withColor(colorValue & 0xFFFFFF));
+        }
+        tooltip.add(hexComponent);
     }
 }
