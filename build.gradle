@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "net.fabricmc:fabric-loom:1.7-SNAPSHOT"
+    }
+}
+
+apply plugin: 'fabric-loom'
+apply plugin: 'java'
+
+version = "${minecraft_version}-${mod_version}-fabric"
+group = project.maven_group
+base.archivesName = project.archives_base_name
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withSourcesJar()
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        rgbblocks {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+
+    accessWidenerPath = file("src/main/resources/rgbblocks.accesswidener")
+}
+
+repositories {
+    maven { url = 'https://maven.aliyun.com/repository/public' }
+    maven { url = 'https://maven.aliyun.com/repository/central' }
+    mavenCentral()
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+}
+
+processResources {
+    def version = project.version
+    inputs.property "version", version
+    filesMatching("fabric.mod.json") {
+        expand "version": version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+    it.options.encoding = 'UTF-8'
+}

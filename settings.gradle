@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        maven { url = 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/repository/release/'
+        }
+        maven {
+            name = 'Fabric Snapshots'
+            url = 'https://maven.fabricmc.net/repository/snapshot/'
+        }
+        gradlePluginPortal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        maven { url = 'https://maven.aliyun.com/repository/public' }
+        maven { url = 'https://maven.aliyun.com/repository/central' }
+        mavenCentral()
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/repository/release/'
+        }
+    }
+}
+
+rootProject.name = 'RGB Blocks'

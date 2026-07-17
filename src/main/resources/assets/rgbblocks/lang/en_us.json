@@ -1,0 +1,18 @@
+{
+  "block.rgbblocks.concrete": "RGB Concrete",
+  "block.rgbblocks.concrete_slab": "RGB Concrete Slab",
+  "block.rgbblocks.concrete_stairs": "RGB Concrete Stairs",
+  "block.rgbblocks.concrete_powder": "RGB Concrete Powder",
+  "item.rgbblocks.paint_bucket": "Paint Bucket",
+  "item_group.rgbblocks.tab": "RGB Blocks",
+  "gui.rgbblocks.red": "Red",
+  "gui.rgbblocks.green": "Green",
+  "gui.rgbblocks.blue": "Blue",
+  "gui.rgbblocks.hue": "Hue",
+  "gui.rgbblocks.saturation": "Saturation",
+  "gui.rgbblocks.brightness": "Brightness",
+  "gui.rgbblocks.useRGB": "Use RGB",
+  "gui.rgbblocks.useHSB": "Use HSB",
+  "rgbblocks.pack_title": "RGB Blocks Textures",
+  "rgbblocks.pack_description": "Dynamically generated textures for RGB Blocks"
+}

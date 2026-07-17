@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "rgbblocks",
+  "version": "${version}",
+  "name": "RGB Blocks",
+  "description": "Blocks in almost all colors you can imagine.",
+  "authors": ["PlatinPython"],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/rgb-blocks-forge",
+    "issues": "https://github.com/PlatinPython/RGBBlocks/issues"
+  },
+  "license": "MIT",
+  "icon": "logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["platinpython.rgbblocks.RGBBlocks"],
+    "client": ["platinpython.rgbblocks.RGBBlocksClient"]
+  },
+  "accessWidener": "rgbblocks.accesswidener",
+  "mixins": [
+    "rgbblocks.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
