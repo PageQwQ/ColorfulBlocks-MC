@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "rgbblocks",
-  "version": "1.21.1-1.4.2-fabric",
+  "id": "colorblockmc",
+  "version": "1.21.1-2.0.0-fabric-1784289800",
   "name": "RGB Blocks",
   "description": "Blocks in almost all colors you can imagine.",
   "authors": ["PlatinPython"],
@@ -16,9 +16,9 @@
     "main": ["platinpython.rgbblocks.RGBBlocks"],
     "client": ["platinpython.rgbblocks.RGBBlocksClient"]
   },
-  "accessWidener": "rgbblocks.accesswidener",
+  "accessWidener": "colorblockmc.accesswidener",
   "mixins": [
-    "rgbblocks.mixins.json"
+    "colorblockmc.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.0",

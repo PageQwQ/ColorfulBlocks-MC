@@ -14,7 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class RGBBlocks implements ModInitializer {
-    public static final String MOD_ID = "rgbblocks";
+    public static final String MOD_ID = "colorblockmc";
     public static final Logger LOGGER = LogManager.getLogger();
 
     @Override

@@ -50,8 +50,8 @@ public class ColorSelectScreen extends Screen {
 
         this.isRGBSelected = isRGBSelected;
 
-        this.useRGBText = Component.translatable("gui.rgbblocks.useRGB");
-        this.useHSBText = Component.translatable("gui.rgbblocks.useHSB");
+        this.useRGBText = Component.translatable("gui.colorblockmc.useRGB");
+        this.useHSBText = Component.translatable("gui.colorblockmc.useHSB");
     }
 
     public int getColor() {
@@ -83,7 +83,7 @@ public class ColorSelectScreen extends Screen {
 
         if (redSlider == null) {
             this.redSlider = new ColorSlider(
-                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.red").append(": "), MIN_VALUE,
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.colorblockmc.red").append(": "), MIN_VALUE,
                 MAX_VALUE_RGB, this.red, SliderType.RED
             );
         } else {
@@ -93,7 +93,7 @@ public class ColorSelectScreen extends Screen {
 
         if (hueSlider == null) {
             this.hueSlider = new ColorSlider(
-                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.hue").append(": "), MIN_VALUE,
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.colorblockmc.hue").append(": "), MIN_VALUE,
                 MAX_VALUE_HUE, this.hue, SliderType.HUE
             );
         } else {
@@ -105,7 +105,7 @@ public class ColorSelectScreen extends Screen {
 
         if (greenSlider == null) {
             this.greenSlider = new ColorSlider(
-                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.green").append(": "),
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.colorblockmc.green").append(": "),
                 MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN
             );
         } else {
@@ -115,7 +115,7 @@ public class ColorSelectScreen extends Screen {
 
         if (saturationSlider == null) {
             this.saturationSlider = new ColorSlider(
-                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.saturation").append(": "),
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.colorblockmc.saturation").append(": "),
                 MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION
             );
         } else {
@@ -127,7 +127,7 @@ public class ColorSelectScreen extends Screen {
 
         if (blueSlider == null) {
             this.blueSlider = new ColorSlider(
-                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.blue").append(": "), MIN_VALUE,
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.colorblockmc.blue").append(": "), MIN_VALUE,
                 MAX_VALUE_RGB, this.blue, SliderType.BLUE
             );
         } else {
@@ -137,7 +137,7 @@ public class ColorSelectScreen extends Screen {
 
         if (brightnessSlider == null) {
             this.brightnessSlider = new ColorSlider(
-                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.rgbblocks.brightness").append(": "),
+                x, y, SLIDER_WIDTH, WIDGET_HEIGHT, Component.translatable("gui.colorblockmc.brightness").append(": "),
                 MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS
             );
         } else {

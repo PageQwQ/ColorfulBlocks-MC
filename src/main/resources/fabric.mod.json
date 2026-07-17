@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "rgbblocks",
+  "id": "colorblockmc",
   "version": "${version}",
   "name": "RGB Blocks",
   "description": "Blocks in almost all colors you can imagine.",
@@ -16,9 +16,9 @@
     "main": ["platinpython.rgbblocks.RGBBlocks"],
     "client": ["platinpython.rgbblocks.RGBBlocksClient"]
   },
-  "accessWidener": "rgbblocks.accesswidener",
+  "accessWidener": "colorblockmc.accesswidener",
   "mixins": [
-    "rgbblocks.mixins.json"
+    "colorblockmc.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.0",

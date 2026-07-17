@@ -1,0 +1,15 @@
+{
+  "block.colorblockmc.concrete": "RGB Concrete",
+  "item.colorblockmc.paint_bucket": "Paint Bucket",
+  "item_group.colorblockmc.tab": "RGB Blocks",
+  "gui.colorblockmc.red": "Red",
+  "gui.colorblockmc.green": "Green",
+  "gui.colorblockmc.blue": "Blue",
+  "gui.colorblockmc.hue": "Hue",
+  "gui.colorblockmc.saturation": "Saturation",
+  "gui.colorblockmc.brightness": "Brightness",
+  "gui.colorblockmc.useRGB": "Use RGB",
+  "gui.colorblockmc.useHSB": "Use HSB",
+  "colorblockmc.pack_title": "RGB Blocks Textures",
+  "colorblockmc.pack_description": "Dynamically generated textures for RGB Blocks"
+}

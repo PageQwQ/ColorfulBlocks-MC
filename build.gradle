@@ -16,7 +16,7 @@ buildscript {
 apply plugin: 'fabric-loom'
 apply plugin: 'java'
 
-version = "${minecraft_version}-${mod_version}-fabric"
+version = "${minecraft_version}-${mod_version}-fabric-${(System.currentTimeMillis() / 1000).intValue()}"
 group = project.maven_group
 base.archivesName = project.archives_base_name
 
@@ -30,13 +30,13 @@ loom {
     splitEnvironmentSourceSets()
 
     mods {
-        rgbblocks {
+        colorblockmc {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
     }
 
-    accessWidenerPath = file("src/main/resources/rgbblocks.accesswidener")
+    accessWidenerPath = file("src/main/resources/colorblockmc.accesswidener")
 }
 
 repositories {
