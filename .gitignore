@@ -21,3 +21,12 @@ run/
 
 # Logs
 *.log
+
+# Environment
+.env
+*.local
+
+# System files
+*.swp
+*.swo
+*~
