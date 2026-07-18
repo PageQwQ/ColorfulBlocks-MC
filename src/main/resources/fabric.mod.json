@@ -3,7 +3,7 @@
   "id": "colorblockmc",
   "version": "${version}",
   "name": "Colorful Blocks",
-  "description": "Paint any concrete block in 16 million RGB colors using the Paint Bucket.",
+  "description": "Make you to use any color of blocks in Minecraft.",
   "authors": ["PageQwQ"],
   "contact": {
     "homepage": "https://github.com/PageQwQ/ColorfulBlocks-MC",

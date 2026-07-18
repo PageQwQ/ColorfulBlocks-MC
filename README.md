@@ -1,48 +1,58 @@
-# ColorfulBlocks
+<img src="src/main/resources/logo.png" alt="logo" style="zoom:50%;" />
 
-![logo](src/main/resources/logo.png)
+# ColorfulBlocks
 
 **ColorfulBlocks** is a Minecraft mod that lets you color blocks in **16,777,216 (24-bit RGB) colors** using a Paint Bucket tool. Right-click any vanilla concrete block to turn it into a fully customizable colored block, and use the color picker to create any shade you want.
 
 The idea for this mod comes from [PlatinPython's RGBBlocks](https://github.com/PlatinPython/RGBBlocks). This version is built for the **Fabric Loader**.
 
----
-
 ## Features
 
-- **🎨 Full RGB Color**: Choose from over 16 million colors using the color picker GUI (RGB sliders, HSB sliders, or hex input).
-- **🪣 Paint Bucket**: Right-click on concrete to paint it. Shift + right-click on a painted block to copy its color. Shift + right-click in air to open the color picker.
-- **🔨 Tool Support**: Only pickaxes can mine these blocks. Tool tier and Efficiency enchantment are respected.
-- **🎭 Color Retention**: Color data is preserved when mined and when placed.
-- **✨ ModernUI Integration**: When ModernUI is loaded, tooltip borders match the item's color automatically.
-- **🧩 Lightweight**: Only adds one block — **Stained Concrete** — and one item — **Paint Bucket**.
-
----
+- **Full RGB Color**: Choose from over 16 million colors using the color picker GUI (RGB sliders, HSB sliders, or hex input).
+- **Paint Bucket**: Right-click on concrete to paint it. Shift + right-click on a painted block to copy its color. Shift + right-click in air to open the color picker.
+- **Color Retention**: Color data is preserved when mined.
 
 ## Items & Blocks
 
-| Item / Block | Description |
-|---|---|
-| **Paint Bucket** | Dye bucket with 500 durability. Open color picker (Shift + right-click air), paint concrete (right-click), or copy color (Shift + right-click block). |
-| **Stained Concrete** | Concrete block that displays any RGB color. Drops with color data intact. |
+<img src="DescriptionImages/paint_bucket.png" alt="logo" style="zoom:50%;" />
 
----
+**Paint Bucket**
 
-## Recipe
+<img src="DescriptionImages/craft.png" alt="logo" style="zoom:50%;" />
 
-### Paint Bucket
+The bucket with 500 durability. Open color picker, paint concrete (right-click), or copy color (Shift + right-click block).
 
-| Ingredients | Recipe |
-|---|---|
-| Water Bucket + Red Dye + Green Dye + Blue Dye | ![Recipe](https://via.placeholder.com/16/FF0000/000000?text=+) Red + ![Recipe](https://via.placeholder.com/16/00FF00/000000?text=+) Green + ![Recipe](https://via.placeholder.com/16/0000FF/000000?text=+) Blue Dyes |
+> [!note]
+>
+> The first time you right-click on the concrete, it won't apply color directly; you can apply color by right-clicking again.
 
-- Shapeless crafting.
 
----
 
-## Usage
+<img src="DescriptionImages/Concrete.png" alt="logo" style="zoom:50%;" />
 
-### Paint Bucket Controls
+**Stained Concrete**
+
+Concrete block that displays any RGB color. Drops with color data intact.
+
+This block is created by converting vanilla concrete using the Paint Bucket.
+
+## ColorPicker GUI
+
+Paint Bucket has a GUI.
+
+When you press Shift + Right Click and aim at something other than Stained Concrete,you will see it:
+
+<img src="DescriptionImages/GUI.png" alt="logo" style="zoom:50%;" />
+
+The color picker supports three input modes:
+
+- **RGB Mode** — Red, Green, Blue sliders (0–255 each)
+- **HSB Mode** — Hue (0–360°), Saturation & Brightness (0–100%)
+- **Hex Input** — Direct hex color code (e.g. #FF6B35)
+
+Toggle between RGB and HSB mode using the switch button.
+
+## Paint Bucket Controls
 
 | Action | Result |
 |---|---|
@@ -52,17 +62,11 @@ The idea for this mod comes from [PlatinPython's RGBBlocks](https://github.com/P
 | **Shift + Right-click** air | Opens the color picker GUI. |
 | **Right-click** with empty bucket (in dispenser) | Paints the block in front. |
 
-### Color Picker
+## Additional support
 
-The color picker supports three input modes:
+When you install this mod along with [ModernUI](https://modrinth.com/mod/modern-ui), the tooltip box will match the color of the stained concrete or bucket.
 
-- **RGB Mode** — Red, Green, Blue sliders (0–255 each)
-- **HSB Mode** — Hue (0–360°), Saturation & Brightness (0–100%)
-- **Hex Input** — Direct hex color code (e.g. `#FF6B35`)
-
-Toggle between RGB and HSB mode using the switch button.
-
----
+<img src="DescriptionImages/additional.png" alt="logo" style="zoom:75%;" />
 
 ## Requirements
 
@@ -73,22 +77,12 @@ Toggle between RGB and HSB mode using the switch button.
 | Minecraft | `1.21.1` |
 | Java | `>=21` |
 
-### Optional
-
-| Mod | Purpose |
-|---|---|
-| [ModernUI](https://github.com/BloCamLimb/ModernUI) | Enables color-matched tooltip borders. |
-
----
-
 ## Installation
 
 1. Install **Fabric Loader** (follow instructions on [fabricmc.net](https://fabricmc.net/)).
 2. Download **Fabric API** and place it in your `mods/` folder.
 3. Download the latest **ColorfulBlocks** jar from the [Releases](https://github.com/PageQwQ/ColorfulBlocks-MC/releases) page and put it in your `mods/` folder.
 4. Launch the game.
-
----
 
 ## Building from Source
 
@@ -100,14 +94,3 @@ cd ColorfulBlocks-MC
 
 The built jar will be in `build/libs/`.
 
----
-
-## License
-
-This project is licensed under the **MIT License**. See [LICENSE.md](LICENSE.md) for details.
-
-## Credits
-
-- **PlatinPython** — Original RGBBlocks mod for NeoForge.
-- **BloCamLimb** — ModernUI framework.
-- **PageQwQ** — Fabric port and ongoing development.
