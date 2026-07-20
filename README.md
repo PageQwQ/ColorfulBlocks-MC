@@ -1,4 +1,4 @@
-<img src="src/main/resources/logo.png" alt="logo" style="zoom:50%;" />
+<center><img src="src/main/resources/logo.png" alt="logo" style="zoom:25%;" /></center>
 
 # ColorfulBlocks
 
@@ -14,9 +14,9 @@ The idea for this mod comes from [PlatinPython's RGBBlocks](https://github.com/P
 
 ## Items & Blocks
 
-<img src="DescriptionImages/paint_bucket.png" alt="logo" style="zoom:50%;" />
+<center><img src="DescriptionImages/colorblockmc__paint_bucket.png" alt="logo" style="zoom:50%;" /></center>
 
-**Paint Bucket**
+<center><b>Paint Bucket</b></center>
 
 <img src="DescriptionImages/craft.png" alt="logo" style="zoom:50%;" />
 
@@ -26,15 +26,29 @@ The bucket with 500 durability. Open color picker, paint concrete (right-click),
 >
 > The first time you right-click on the concrete, it won't apply color directly; you can apply color by right-clicking again.
 
+<center><img src="DescriptionImages/colorblockmc__concrete.png" alt="logo" style="zoom:50%;" /></center>
 
-
-<img src="DescriptionImages/Concrete.png" alt="logo" style="zoom:50%;" />
-
-**Stained Concrete**
+<center><b>Stained Concrete</b></center>
 
 Concrete block that displays any RGB color. Drops with color data intact.
 
 This block is created by converting vanilla concrete using the Paint Bucket.
+
+<center><img src="DescriptionImages/colorblockmc__glowing_concrete.png" alt="logo" style="zoom:50%;" /></center>
+
+<center><b>Glowing Stained Concrete</b></center>
+
+<img src="DescriptionImages/craft2.png" alt="logo" style="zoom:50%;" />
+
+As the name suggests, it's a glowing stained concrete.
+
+This is a variant of common stained concrete. It can help you build glowing things.
+
+*I suggest you enable Screenspace Colored Blocklight in your shaderpack. This can achieve a better visual effect.*
+
+The following is the visual effect of the block at night.
+
+<img src="DescriptionImages/example.png" alt="logo" style="zoom:75%;" />
 
 ## ColorPicker GUI
 
