@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -47,7 +48,9 @@ public class PaintBucketItem extends Item {
         if (stack.has(DataComponents.CUSTOM_DATA)) {
             stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, customData -> customData.update(tag -> {
                 if (tag.contains("color")) {
-                    stack.set(DataComponentRegistry.COLOR, tag.getInt("color"));
+                    int color = tag.getInt("color");
+                    stack.set(DataComponentRegistry.COLOR, color);
+                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, false));
                     tag.remove("color");
                 }
                 if (tag.contains("isRGBSelected")) {
@@ -101,6 +104,7 @@ public class PaintBucketItem extends Item {
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (player != null && player.isShiftKeyDown()) {
                 stack.set(DataComponentRegistry.COLOR, rgbBlockEntity.getColor());
+                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgbBlockEntity.getColor(), false));
             } else {
                 int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
                 if (player != null && !player.isCreative() && color != rgbBlockEntity.getColor()) {

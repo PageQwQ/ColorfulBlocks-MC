@@ -8,11 +8,13 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -88,6 +90,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
         }
         ItemStack result = super.assemble(input, provider);
         result.set(DataComponentRegistry.COLOR, color);
+        result.set(DataComponents.DYED_COLOR, new DyedItemColor(color, false));
         return result;
     }
 

@@ -1,11 +1,13 @@
 package pageqwq.colorbmc.util.network.packets;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
 import pageqwq.colorbmc.RGBBlocks;
 import pageqwq.colorbmc.item.PaintBucketItem;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
@@ -30,6 +32,7 @@ public record PaintBucketSyncPayload(int color, boolean isRGBSelected) implement
             ItemStack stack = context.player().getMainHandItem();
             if (stack.getItem() instanceof PaintBucketItem) {
                 stack.set(DataComponentRegistry.COLOR, payload.color());
+                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(payload.color(), false));
                 stack.set(DataComponentRegistry.RGB_SELECTED, payload.isRGBSelected());
             }
         });

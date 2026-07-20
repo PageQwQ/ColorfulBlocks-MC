@@ -3,8 +3,10 @@ package pageqwq.colorbmc.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
@@ -44,6 +46,7 @@ public class RGBBlockEntity extends BlockEntity {
     protected void collectImplicitComponents(DataComponentMap.Builder builder) {
         super.collectImplicitComponents(builder);
         builder.set(DataComponentRegistry.COLOR, this.color);
+        builder.set(DataComponents.DYED_COLOR, new DyedItemColor(this.color, false));
     }
 
     @Override
