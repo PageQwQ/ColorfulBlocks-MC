@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:copy_components",
+      "source": "block_entity",
+      "include": [
+        "colorblockmc:color"
+      ]
+    }
+  ],
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "colorblockmc:glowing_concrete"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "colorblockmc:blocks/glowing_concrete"
+}

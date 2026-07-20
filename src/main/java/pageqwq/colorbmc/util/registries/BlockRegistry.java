@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import pageqwq.colorbmc.RGBBlocks;
 import pageqwq.colorbmc.block.RGBBlock;
+import pageqwq.colorbmc.block.RGBGlowingBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,12 @@ public class BlockRegistry {
 
     public static final Block RGB_CONCRETE = register(
         "concrete", new RGBBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_CONCRETE))
+    );
+
+    public static final Block RGB_GLOWING_CONCRETE = register(
+        "glowing_concrete", new RGBGlowingBlock(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_CONCRETE).lightLevel($ -> 15)
+        )
     );
 
     private static Block register(String name, Block block) {

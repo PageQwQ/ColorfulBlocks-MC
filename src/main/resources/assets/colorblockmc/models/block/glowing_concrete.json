@@ -1,0 +1,6 @@
+{
+  "parent": "colorblockmc:block/block",
+  "textures": {
+    "all": "colorblockmc:block/concrete"
+  }
+}

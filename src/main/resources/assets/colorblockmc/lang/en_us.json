@@ -1,5 +1,6 @@
 {
   "block.colorblockmc.concrete": "Stained Concrete",
+  "block.colorblockmc.glowing_concrete": "Glowing Stained Concrete",
   "item.colorblockmc.paint_bucket": "Paint Bucket",
   "item_group.colorblockmc.tab": "Colorful Blocks",
   "gui.colorblockmc.red": "Red",

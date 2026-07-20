@@ -47,7 +47,9 @@ When you press Shift + Right Click and aim at something other than Stained Concr
 The color picker supports three input modes:
 
 - **RGB Mode** — Red, Green, Blue sliders (0–255 each)
+
 - **HSB Mode** — Hue (0–360°), Saturation & Brightness (0–100%)
+
 - **Hex Input** — Direct hex color code (e.g. #FF6B35)
 
 Toggle between RGB and HSB mode using the switch button.
@@ -59,7 +61,7 @@ Toggle between RGB and HSB mode using the switch button.
 | **Right-click** vanilla concrete | Converts it to Stained Concrete in the bucket's current color. |
 | **Right-click** Stained Concrete | Recolors the block. |
 | **Shift + Right-click** Stained Concrete | Copies the block's color to the bucket. |
-| **Shift + Right-click** air | Opens the color picker GUI. |
+| **Shift + Right-click** something other than Stained Concrete | Opens the color picker GUI. |
 | **Right-click** with empty bucket (in dispenser) | Paints the block in front. |
 
 ## Additional support

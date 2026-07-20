@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "colorblockmc:concrete"
+    "colorblockmc:concrete",
+    "colorblockmc:glowing_concrete"
   ]
 }
