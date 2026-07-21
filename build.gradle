@@ -6,15 +6,21 @@ buildscript {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
+        maven {
+            name = 'Gradle Plugin Portal'
+            url = 'https://plugins.gradle.org/m2/'
+        }
         gradlePluginPortal()
     }
     dependencies {
         classpath "net.fabricmc:fabric-loom:1.7-SNAPSHOT"
+        classpath "com.modrinth.minotaur:Minotaur:2.+"
     }
 }
 
 apply plugin: 'fabric-loom'
 apply plugin: 'java'
+apply plugin: 'com.modrinth.minotaur'
 
 // Auto-increment patch version on each build
 def autoIncrementVersion() {
@@ -90,4 +96,23 @@ processResources {
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
     it.options.encoding = 'UTF-8'
+}
+
+// Modrinth publishing
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "VuBMNaL4"
+    versionNumber = "${project.version}"
+    versionType = "release"
+    uploadFile = remapJar
+    additionalFiles = [sourcesJar]
+    gameVersions = ["1.21.1"]
+    loaders = ["fabric"]
+    changelog = "" // Set per-release in the format:
+    // ## Added
+    // - Feature description
+    // ## Changed
+    // - Change description
+    // ## Fixed
+    // - Bug fix description
 }
