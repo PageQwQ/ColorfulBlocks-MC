@@ -1,49 +1,25 @@
 package pageqwq.colorbmc.client.gui;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import java.util.function.Supplier;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.ShaderInstance;
-import org.joml.Matrix4f;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public class ScreenUtils {
-    public static void fillGradient(PoseStack pPoseStack, int x1, int y1, int x2, int y2, int colorFrom, int colorTo) {
-        RenderSystem.enableBlend();
-        RenderSystem.setShader(() -> GameRenderer.getPositionColorShader());
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        fillGradient(pPoseStack.last().pose(), bufferbuilder, x1, y1, x2, y2, colorFrom, colorTo);
-        BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
-        RenderSystem.disableBlend();
+    public static void fillGradient(GuiGraphicsExtractor guiGraphics, int x1, int y1, int x2, int y2, int colorFrom, int colorTo) {
+        // GuiGraphicsExtractor.fillGradient() is vertical (top→bottom).
+        // For horizontal (left→right) gradient, draw thin vertical strips.
+        int steps = Math.max(x2 - x1, 1);
+        for (int i = 0; i < steps; i++) {
+            float ratio = (float) i / steps;
+            int color = lerpColor(colorFrom, colorTo, ratio);
+            guiGraphics.fill(x1 + i, y1, x1 + i + 1, y2, color);
+        }
     }
 
-    private static void fillGradient(
-        Matrix4f matrix4f,
-        BufferBuilder builder,
-        int x1,
-        int y1,
-        int x2,
-        int y2,
-        int colorA,
-        int colorB
-    ) {
-        int alphaA = colorA >> 24 & 0xFF;
-        int redA = colorA >> 16 & 0xFF;
-        int greenA = colorA >> 8 & 0xFF;
-        int blueA = colorA & 0xFF;
-        int alphaB = colorB >> 24 & 0xFF;
-        int redB = colorB >> 16 & 0xFF;
-        int greenB = colorB >> 8 & 0xFF;
-        int blueB = colorB & 0xFF;
-        builder.addVertex(matrix4f, (float) x2, (float) y1, (float) 0).setColor(redB, greenB, blueB, alphaB);
-        builder.addVertex(matrix4f, (float) x1, (float) y1, (float) 0).setColor(redA, greenA, blueA, alphaA);
-        builder.addVertex(matrix4f, (float) x1, (float) y2, (float) 0).setColor(redA, greenA, blueA, alphaA);
-        builder.addVertex(matrix4f, (float) x2, (float) y2, (float) 0).setColor(redB, greenB, blueB, alphaB);
+    private static int lerpColor(int colorA, int colorB, float ratio) {
+        int a = (int) (((colorA >> 24) & 0xFF) * (1 - ratio) + ((colorB >> 24) & 0xFF) * ratio);
+        int r = (int) (((colorA >> 16) & 0xFF) * (1 - ratio) + ((colorB >> 16) & 0xFF) * ratio);
+        int g = (int) (((colorA >> 8) & 0xFF) * (1 - ratio) + ((colorB >> 8) & 0xFF) * ratio);
+        int b = (int) ((colorA & 0xFF) * (1 - ratio) + (colorB & 0xFF) * ratio);
+        return (a << 24) | (r << 16) | (g << 8) | b;
     }
 }

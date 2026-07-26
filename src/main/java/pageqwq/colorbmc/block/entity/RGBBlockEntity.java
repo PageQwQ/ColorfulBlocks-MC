@@ -2,6 +2,7 @@ package pageqwq.colorbmc.block.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +11,8 @@ import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import pageqwq.colorbmc.util.Color;
 import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
@@ -37,7 +40,7 @@ public class RGBBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput componentInput) {
+    protected void applyImplicitComponents(DataComponentGetter componentInput) {
         super.applyImplicitComponents(componentInput);
         this.color = componentInput.getOrDefault(DataComponentRegistry.COLOR, -1);
     }
@@ -46,19 +49,18 @@ public class RGBBlockEntity extends BlockEntity {
     protected void collectImplicitComponents(DataComponentMap.Builder builder) {
         super.collectImplicitComponents(builder);
         builder.set(DataComponentRegistry.COLOR, this.color);
-        builder.set(DataComponents.DYED_COLOR, new DyedItemColor(this.color, false));
+        builder.set(DataComponents.DYED_COLOR, new DyedItemColor(this.color));
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
-        super.saveAdditional(compound, provider);
-        compound.putInt("color", getColor());
+    public void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        // Color is already saved via data components, no extra NBT needed
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
-        setColor(tag.getInt("color"));
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
     }
 
     @Override

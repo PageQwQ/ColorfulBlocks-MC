@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.Block;
@@ -12,21 +13,20 @@ import pageqwq.colorbmc.util.Color;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class RGBBlockItem extends BlockItem {
     public RGBBlockItem(Block block, Properties properties) {
-        super(block, properties);
+        super(block, properties.useBlockDescriptionPrefix());
     }
 
-    @Override
     public void verifyComponentsAfterLoad(ItemStack stack) {
-        super.verifyComponentsAfterLoad(stack);
         if (stack.has(DataComponents.CUSTOM_DATA)) {
             stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, customData -> customData.update(tag -> {
                 if (tag.contains("color")) {
-                    int color = tag.getInt("color");
+                    int color = tag.getIntOr("color", -1);
                     stack.set(DataComponentRegistry.COLOR, color);
-                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, false));
+                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color));
                     tag.remove("color");
                 }
             }));
@@ -34,7 +34,7 @@ public class RGBBlockItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flagIn) {
         int colorValue = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
         Color color = new Color(colorValue);
         String hex = "#" + Integer.toHexString(color.getRGB()).substring(2);
@@ -44,6 +44,6 @@ public class RGBBlockItem extends BlockItem {
         } else {
             hexComponent = Component.literal(hex).withStyle(style -> style.withColor(colorValue & 0xFFFFFF));
         }
-        tooltip.add(hexComponent);
+        builder.accept(hexComponent);
     }
 }

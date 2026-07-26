@@ -5,13 +5,13 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.UseOnContext;
@@ -27,6 +27,7 @@ import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class PaintBucketItem extends Item {
     private static final Set<Block> VANILLA_CONCRETE = Set.of(
@@ -42,19 +43,17 @@ public class PaintBucketItem extends Item {
         super(properties);
     }
 
-    @Override
     public void verifyComponentsAfterLoad(ItemStack stack) {
-        super.verifyComponentsAfterLoad(stack);
         if (stack.has(DataComponents.CUSTOM_DATA)) {
             stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, customData -> customData.update(tag -> {
                 if (tag.contains("color")) {
-                    int color = tag.getInt("color");
+                    int color = tag.getInt("color").orElse(-1);
                     stack.set(DataComponentRegistry.COLOR, color);
-                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, false));
+                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color));
                     tag.remove("color");
                 }
                 if (tag.contains("isRGBSelected")) {
-                    stack.set(DataComponentRegistry.RGB_SELECTED, tag.getBoolean("isRGBSelected"));
+                    stack.set(DataComponentRegistry.RGB_SELECTED, tag.getBooleanOr("isRGBSelected", true));
                     tag.remove("isRGBSelected");
                 }
             }));
@@ -62,7 +61,7 @@ public class PaintBucketItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flagIn) {
         int colorValue = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
         pageqwq.colorbmc.util.Color color = new pageqwq.colorbmc.util.Color(colorValue);
         String hex = "#" + Integer.toHexString(color.getRGB()).substring(2);
@@ -72,22 +71,22 @@ public class PaintBucketItem extends Item {
         } else {
             hexComponent = Component.literal(hex).withStyle(style -> style.withColor(colorValue & 0xFFFFFF));
         }
-        tooltip.add(hexComponent);
+        builder.accept(hexComponent);
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player playerIn, InteractionHand handIn) {
+    public InteractionResult use(Level level, Player playerIn, InteractionHand handIn) {
         if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()) {
-            if (level.isClientSide && ClientProxy.getClientPlayHelper() != null) {
+            if (level.isClientSide() && ClientProxy.getClientPlayHelper() != null) {
                 ClientProxy.getClientPlayHelper().openColorSelectScreen(
                     playerIn,
                     playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.COLOR, -1),
                     playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.RGB_SELECTED, true)
                 );
-                return new InteractionResultHolder<>(InteractionResult.SUCCESS, playerIn.getMainHandItem());
+                return InteractionResult.SUCCESS;
             }
         }
-        return new InteractionResultHolder<>(InteractionResult.PASS, playerIn.getItemInHand(handIn));
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -104,14 +103,14 @@ public class PaintBucketItem extends Item {
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (player != null && player.isShiftKeyDown()) {
                 stack.set(DataComponentRegistry.COLOR, rgbBlockEntity.getColor());
-                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgbBlockEntity.getColor(), false));
+                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgbBlockEntity.getColor()));
             } else {
                 int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
                 if (player != null && !player.isCreative() && color != rgbBlockEntity.getColor()) {
                     if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
                         player.setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                     } else {
-                        stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+                        stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                     }
                 }
                 rgbBlockEntity.setColor(color);
@@ -122,7 +121,7 @@ public class PaintBucketItem extends Item {
 
         // 2) Vanilla concrete → replace with RGB concrete
         if (VANILLA_CONCRETE.contains(block)) {
-            if (level.isClientSide) return InteractionResult.SUCCESS;
+            if (level.isClientSide()) return InteractionResult.SUCCESS;
 
             int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
 
@@ -130,7 +129,7 @@ public class PaintBucketItem extends Item {
                 if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
                     player.setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                 } else {
-                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
+                    stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                 }
             }
 

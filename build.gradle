@@ -13,12 +13,12 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "net.fabricmc:fabric-loom:1.7-SNAPSHOT"
+        classpath "net.fabricmc:fabric-loom:1.17-SNAPSHOT"
         classpath "com.modrinth.minotaur:Minotaur:2.+"
     }
 }
 
-apply plugin: 'fabric-loom'
+apply plugin: 'net.fabricmc.fabric-loom'
 apply plugin: 'java'
 apply plugin: 'com.modrinth.minotaur'
 
@@ -42,7 +42,7 @@ def autoIncrementVersion() {
 }
 
 def isBuild = gradle.startParameter.taskNames.any {
-    it in ['build', 'jar', 'remapJar', 'assemble']
+    it in ['build', 'jar', 'assemble']
 } || gradle.startParameter.taskNames.any { it.startsWith('build') }
 def currentModVersion = isBuild ? autoIncrementVersion() : project.mod_version
 version = "${minecraft_version}-${currentModVersion}-fabric-${(System.currentTimeMillis() / 1000).intValue()}"
@@ -50,8 +50,8 @@ group = project.maven_group
 base.archivesName = project.archives_base_name
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
     withSourcesJar()
 }
 
@@ -80,9 +80,8 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 }
 
 processResources {
@@ -94,7 +93,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 25
     it.options.encoding = 'UTF-8'
 }
 
@@ -104,15 +103,9 @@ modrinth {
     projectId = "VuBMNaL4"
     versionNumber = "${project.version}"
     versionType = "release"
-    uploadFile = remapJar
+    uploadFile = jar
     additionalFiles = [sourcesJar]
-    gameVersions = ["1.21.1"]
+    gameVersions = ["26.1.2"]
     loaders = ["fabric"]
-    changelog = "" // Set per-release in the format:
-    // ## Added
-    // - Feature description
-    // ## Changed
-    // - Change description
-    // ## Fixed
-    // - Bug fix description
+    changelog = ""
 }

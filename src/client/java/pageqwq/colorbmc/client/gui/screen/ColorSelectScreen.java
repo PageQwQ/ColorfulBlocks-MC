@@ -1,7 +1,7 @@
 package pageqwq.colorbmc.client.gui.screen;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -200,8 +200,8 @@ public class ColorSelectScreen extends Screen {
             }
         };
 
+        this.hexBox.setResponder((string) -> {});
         this.hexBox.setMaxLength(7);
-        this.hexBox.setFilter((string) -> string.matches("(#|)([0-9A-F]){0,6}"));
         this.hexBox.setValue(
             "#" + Integer
                 .toHexString(
@@ -284,15 +284,14 @@ public class ColorSelectScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(this.width / 2F, this.height / 2F - WIDGET_HEIGHT / 2F - 2 * SPACING - 15, 0);
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
+        super.extractRenderState(guiGraphics, mouseX, mouseY, a);
+        guiGraphics.pose().pushMatrix();
+        guiGraphics.pose().translate(this.width / 2F, this.height / 2F - WIDGET_HEIGHT / 2F - 2 * SPACING - 15);
         guiGraphics.fill(-SLIDER_WIDTH / 2, -WIDGET_HEIGHT, SLIDER_WIDTH / 2, WIDGET_HEIGHT, 0xFF000000);
         guiGraphics
             .fill(-SLIDER_WIDTH / 2 + 1, -WIDGET_HEIGHT + 1, SLIDER_WIDTH / 2 - 1, WIDGET_HEIGHT - 1, getColor());
-        guiGraphics.pose().popPose();
+        guiGraphics.pose().popMatrix();
     }
 
     @Override

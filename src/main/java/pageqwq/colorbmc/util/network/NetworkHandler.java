@@ -6,7 +6,7 @@ import pageqwq.colorbmc.util.network.packets.PaintBucketSyncPayload;
 
 public class NetworkHandler {
     public static void register() {
-        PayloadTypeRegistry.playC2S().register(
+        PayloadTypeRegistry.serverboundPlay().register(
             PaintBucketSyncPayload.TYPE,
             PaintBucketSyncPayload.STREAM_CODEC
         );

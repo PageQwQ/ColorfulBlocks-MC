@@ -5,7 +5,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import pageqwq.colorbmc.RGBBlocks;
@@ -14,7 +14,7 @@ import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
 public record PaintBucketSyncPayload(int color, boolean isRGBSelected) implements CustomPacketPayload {
     public static final Type<PaintBucketSyncPayload> TYPE =
-        new Type<>(ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket_sync"));
+        new Type<>(Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket_sync"));
 
     public static final StreamCodec<ByteBuf, PaintBucketSyncPayload> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.INT, PaintBucketSyncPayload::color,
@@ -28,11 +28,11 @@ public record PaintBucketSyncPayload(int color, boolean isRGBSelected) implement
     }
 
     public static void handle(PaintBucketSyncPayload payload, net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.Context context) {
-        context.player().getServer().execute(() -> {
+        context.player().level().getServer().execute(() -> {
             ItemStack stack = context.player().getMainHandItem();
             if (stack.getItem() instanceof PaintBucketItem) {
                 stack.set(DataComponentRegistry.COLOR, payload.color());
-                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(payload.color(), false));
+                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(payload.color()));
                 stack.set(DataComponentRegistry.RGB_SELECTED, payload.isRGBSelected());
             }
         });

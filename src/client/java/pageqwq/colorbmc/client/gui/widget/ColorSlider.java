@@ -1,13 +1,13 @@
 package pageqwq.colorbmc.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.resources.Identifier;
 import pageqwq.colorbmc.client.gui.ScreenUtils;
 import pageqwq.colorbmc.client.gui.screen.ColorSelectScreen;
 import pageqwq.colorbmc.util.Color;
@@ -22,6 +22,9 @@ public class ColorSlider extends AbstractSliderButton {
     private final double maxValue;
 
     private final Component displayText;
+
+    private static final Identifier SLIDER_HANDLE_SPRITE = Identifier.withDefaultNamespace("widget/slider_handle");
+    private static final Identifier SLIDER_HANDLE_HIGHLIGHTED_SPRITE = Identifier.withDefaultNamespace("widget/slider_handle_highlighted");
 
     public ColorSlider(
         int x,
@@ -85,157 +88,94 @@ public class ColorSlider extends AbstractSliderButton {
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+    public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
         if (this.visible) {
-            Minecraft minecraft = Minecraft.getInstance();
+            // Draw black background
             guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
+
+            // Draw gradient background
+            Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.screen instanceof ColorSelectScreen screen) {
                 switch (type) {
-                    case RED:
-                        renderRedBackground(guiGraphics.pose(), screen);
-                        break;
-                    case GREEN:
-                        renderGreenBackground(guiGraphics.pose(), screen);
-                        break;
-                    case BLUE:
-                        renderBlueBackground(guiGraphics.pose(), screen);
-                        break;
-                    case HUE:
-                        renderHueBackground(guiGraphics.pose(), screen);
-                        break;
-                    case SATURATION:
-                        renderSaturationBackground(guiGraphics.pose(), screen);
-                        break;
-                    case BRIGHTNESS:
-                        renderBrightnessBackground(guiGraphics.pose(), screen);
-                        break;
+                    case RED: renderRedBackground(guiGraphics, screen); break;
+                    case GREEN: renderGreenBackground(guiGraphics, screen); break;
+                    case BLUE: renderBlueBackground(guiGraphics, screen); break;
+                    case HUE: renderHueBackground(guiGraphics, screen); break;
+                    case SATURATION: renderSaturationBackground(guiGraphics, screen); break;
+                    case BRIGHTNESS: renderBrightnessBackground(guiGraphics, screen); break;
                 }
             }
 
-            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-            RenderSystem.enableBlend();
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.enableDepthTest();
-            ResourceLocation handleSprite = this.isHovered() && this.active
-                ? ResourceLocation.withDefaultNamespace("widget/slider_handle_highlighted")
-                : ResourceLocation.withDefaultNamespace("widget/slider_handle");
+            // Draw handle sprite (skip parent's background sprite)
+            Identifier handleSprite = this.isHovered() && this.active
+                ? SLIDER_HANDLE_HIGHLIGHTED_SPRITE : SLIDER_HANDLE_SPRITE;
             guiGraphics.blitSprite(
-                handleSprite, (int) (this.getX() + (this.value * (this.width - 8))), this.getY(), 8,
-                this.getHeight()
+                RenderPipelines.GUI, handleSprite,
+                this.getX() + (int)(this.value * (this.width - 8)),
+                this.getY(), 8, this.getHeight()
             );
 
-            guiGraphics.drawCenteredString(
-                minecraft.font, this.getMessage(), this.getX() + this.width / 2, this.getY() - this.height / 10 * 7,
-                0xFFFFFF
+            // Draw centered text label
+            int textX = this.getX() + this.width / 2 - minecraft.font.width(this.getMessage()) / 2;
+            guiGraphics.text(
+                minecraft.font, this.getMessage(), textX, this.getY() + 2,
+                0xFFFFFF, true
             );
         }
     }
 
-    private void renderRedBackground(PoseStack matrixStack, ColorSelectScreen screen) {
-        if (screen.greenSlider == null || screen.blueSlider == null) {
-            return;
-        }
+    private void renderRedBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
+        if (screen.greenSlider == null || screen.blueSlider == null) return;
         int leftColor = new Color(0x00, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(0xFF, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
-        ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
-            leftColor, rightColor
-        );
+        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
     }
 
-    private void renderGreenBackground(PoseStack matrixStack, ColorSelectScreen screen) {
-        if (screen.redSlider == null || screen.blueSlider == null) {
-            return;
-        }
+    private void renderGreenBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
+        if (screen.redSlider == null || screen.blueSlider == null) return;
         int leftColor = new Color(screen.redSlider.getValueInt(), 0x00, screen.blueSlider.getValueInt()).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), 0xFF, screen.blueSlider.getValueInt()).getRGB();
-        ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
-            leftColor, rightColor
-        );
+        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
     }
 
-    private void renderBlueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
-        if (screen.redSlider == null || screen.greenSlider == null) {
-            return;
-        }
+    private void renderBlueBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
+        if (screen.redSlider == null || screen.greenSlider == null) return;
         int leftColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0x00).getRGB();
         int rightColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0xFF).getRGB();
-        ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
-            leftColor, rightColor
-        );
+        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
     }
 
-    private void renderHueBackground(PoseStack matrixStack, ColorSelectScreen screen) {
-        if (screen.saturationSlider == null || screen.brightnessSlider == null) {
-            return;
-        }
-        Function<Integer, Integer> lerp =
-            (pct) -> (int) Math.floor(Mth.lerp(pct / 100f, this.getX() + 1, this.getX() + this.width - 1));
+    private void renderHueBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
+        if (screen.saturationSlider == null || screen.brightnessSlider == null) return;
+        Function<Integer, Integer> lerp = (pct) -> (int) Math.floor(Mth.lerp(pct / 100f, this.getX() + 1, this.getX() + this.width - 1));
         Function<Integer, Integer> color = (pct) -> Color.HSBtoRGB(
             (pct / 100f), (float) (screen.saturationSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB),
-            (float) (screen.brightnessSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB)
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(0), this.getY() + 1, lerp.apply(17), this.getY() + this.height - 1, color.apply(0),
-            color.apply(17)
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(17), this.getY() + 1, lerp.apply(34), this.getY() + this.height - 1,
-            color.apply(17), color.apply(34)
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(34), this.getY() + 1, lerp.apply(50), this.getY() + this.height - 1,
-            color.apply(34), color.apply(50)
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(50), this.getY() + 1, lerp.apply(66), this.getY() + this.height - 1,
-            color.apply(50), color.apply(66)
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(66), this.getY() + 1, lerp.apply(82), this.getY() + this.height - 1,
-            color.apply(66), color.apply(82)
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, lerp.apply(82), this.getY() + 1, lerp.apply(100), this.getY() + this.height - 1,
-            color.apply(82), color.apply(100)
-        );
+            (float) (screen.brightnessSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB));
+        int[] pts = {0, 17, 34, 50, 66, 82, 100};
+        for (int i = 0; i < pts.length - 1; i++) {
+            ScreenUtils.fillGradient(guiGraphics, lerp.apply(pts[i]), this.getY() + 1, lerp.apply(pts[i + 1]), this.getY() + this.height - 1, color.apply(pts[i]), color.apply(pts[i + 1]));
+        }
     }
 
-    private void renderSaturationBackground(PoseStack matrixStack, ColorSelectScreen screen) {
-        if (screen.hueSlider == null || screen.brightnessSlider == null) {
-            return;
-        }
+    private void renderSaturationBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
+        if (screen.hueSlider == null || screen.brightnessSlider == null) return;
         int leftColor = Color.HSBtoRGB(
             (float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), 0.0f,
-            (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB)
-        );
+            (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB));
         int rightColor = Color.HSBtoRGB(
             (float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE), 1.0f,
-            (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB)
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
-            leftColor, rightColor
-        );
+            (float) (screen.brightnessSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB));
+        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
     }
 
-    private void renderBrightnessBackground(PoseStack matrixStack, ColorSelectScreen screen) {
-        if (screen.hueSlider == null || screen.saturationSlider == null) {
-            return;
-        }
+    private void renderBrightnessBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
+        if (screen.hueSlider == null || screen.saturationSlider == null) return;
         int leftColor = Color.HSBtoRGB(
             (float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE),
-            (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 0.0f
-        );
+            (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 0.0f);
         int rightColor = Color.HSBtoRGB(
             (float) (screen.hueSlider.getValue() / ColorSelectScreen.MAX_VALUE_HUE),
-            (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 1.0f
-        );
-        ScreenUtils.fillGradient(
-            matrixStack, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1,
-            leftColor, rightColor
-        );
+            (float) (screen.saturationSlider.getValue() / ColorSelectScreen.MAX_VALUE_SB), 1.0f);
+        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
     }
 }

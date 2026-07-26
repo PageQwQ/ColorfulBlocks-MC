@@ -7,15 +7,10 @@
     "###"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "X": {
-      "item": "colorblockmc:concrete"
-    }
+    "#": "minecraft:glowstone_dust",
+    "X": "colorblockmc:concrete"
   },
   "result": {
-    "count": 1,
     "id": "colorblockmc:glowing_concrete"
   }
 }
