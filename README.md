@@ -110,10 +110,10 @@ When you install this mod along with [ModernUI](https://modrinth.com/mod/modern-
 
 | Dependency | Version |
 |---|---|
-| [Fabric Loader](https://fabricmc.net/) | `>=0.16.0` |
+| [Fabric Loader](https://fabricmc.net/) | `>=0.19.3` |
 | [Fabric API](https://modrinth.com/mod/fabric-api) | `*` |
-| Minecraft | `1.21.1` |
-| Java | `>=21` |
+| Minecraft | `26.1.2` |
+| Java | `>=25` |
 
 ## Installation
 
@@ -127,8 +127,10 @@ When you install this mod along with [ModernUI](https://modrinth.com/mod/modern-
 ```sh
 git clone https://github.com/PageQwQ/ColorfulBlocks-MC.git
 cd ColorfulBlocks-MC
-./gradlew build
+JAVA_HOME=/Library/Java/JavaVirtualMachines/liberica-jdk-25.jdk/Contents/Home ./gradlew build
 ```
 
 The built jar will be in `build/libs/`.
+
+> **Note**: Minecraft 26.1.2 requires **Java 25** to build. The mod uses the new `YY.M.P` versioning scheme (26 = 2026, 1 = first drop, 2 = hotfix).
 
