@@ -131,6 +131,3 @@ JAVA_HOME=/Library/Java/JavaVirtualMachines/liberica-jdk-25.jdk/Contents/Home ./
 ```
 
 The built jar will be in `build/libs/`.
-
-> **Note**: Minecraft 26.1.2 requires **Java 25** to build. The mod uses the new `YY.M.P` versioning scheme (26 = 2026, 1 = first drop, 2 = hotfix).
-
