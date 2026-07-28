@@ -40,9 +40,9 @@ public class RGBBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentGetter componentInput) {
-        super.applyImplicitComponents(componentInput);
-        this.color = componentInput.getOrDefault(DataComponentRegistry.COLOR, -1);
+    protected void applyImplicitComponents(DataComponentGetter components) {
+        super.applyImplicitComponents(components);
+        this.color = components.getOrDefault(DataComponentRegistry.COLOR, -1);
     }
 
     @Override
@@ -55,12 +55,13 @@ public class RGBBlockEntity extends BlockEntity {
     @Override
     public void saveAdditional(ValueOutput output) {
         super.saveAdditional(output);
-        // Color is already saved via data components, no extra NBT needed
+        output.putInt("color", color);
     }
 
     @Override
-    protected void loadAdditional(ValueInput input) {
+    public void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        this.color = input.getIntOr("color", -1);
     }
 
     @Override

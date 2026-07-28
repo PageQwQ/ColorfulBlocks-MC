@@ -14,13 +14,11 @@ buildscript {
     }
     dependencies {
         classpath "net.fabricmc:fabric-loom:1.17-SNAPSHOT"
-        classpath "com.modrinth.minotaur:Minotaur:2.+"
     }
 }
 
 apply plugin: 'net.fabricmc.fabric-loom'
 apply plugin: 'java'
-apply plugin: 'com.modrinth.minotaur'
 
 // Auto-increment patch version on each build
 def autoIncrementVersion() {
@@ -95,17 +93,4 @@ processResources {
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 25
     it.options.encoding = 'UTF-8'
-}
-
-// Modrinth publishing
-modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
-    projectId = "VuBMNaL4"
-    versionNumber = "${project.version}"
-    versionType = "release"
-    uploadFile = jar
-    additionalFiles = [sourcesJar]
-    gameVersions = ["26.1.2"]
-    loaders = ["fabric"]
-    changelog = ""
 }

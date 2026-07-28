@@ -1,24 +1,17 @@
 package pageqwq.colorbmc.client.colorhandlers;
 
-import net.minecraft.client.color.block.BlockTintSource;
-import net.minecraft.core.BlockPos;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import net.minecraft.client.color.block.BlockTintSource;
+
+import org.jetbrains.annotations.Nullable;
 
 public class RGBBlockColor implements BlockTintSource {
     @Override
-    public int color(BlockState blockState) {
-        return -1;
-    }
-
-    @Override
-    public int colorInWorld(
-        BlockState blockState,
-        BlockAndTintGetter blockDisplayReader,
-        BlockPos blockPos
-    ) {
+    public int colorInWorld(BlockState blockState, @Nullable BlockAndTintGetter blockDisplayReader, @Nullable BlockPos blockPos) {
         if (blockDisplayReader == null || blockPos == null) {
             return -1;
         }
@@ -34,5 +27,10 @@ public class RGBBlockColor implements BlockTintSource {
         } else {
             return -1;
         }
+    }
+
+    @Override
+    public int color(BlockState blockState) {
+        return -1;
     }
 }

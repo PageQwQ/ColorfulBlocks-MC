@@ -21,10 +21,10 @@ public class ItemRegistry {
 
     public static final Item PAINT_BUCKET = register(
         "paint_bucket", new PaintBucketItem(new Item.Properties().durability(500)
+            .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket")))
             .component(DataComponentRegistry.COLOR, -1)
             .component(DataComponentRegistry.RGB_SELECTED, true)
-            .component(DataComponents.DYED_COLOR, new DyedItemColor(-1))
-            .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket"))))
+            .component(DataComponents.DYED_COLOR, new DyedItemColor(-1)))
     );
 
     static void registerBlockItem(String name, Block block) {
@@ -32,9 +32,9 @@ public class ItemRegistry {
             BuiltInRegistries.ITEM,
             Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, name),
             new RGBBlockItem(block, new Item.Properties()
+                .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, name)))
                 .component(DataComponentRegistry.COLOR, -1)
-                .component(DataComponents.DYED_COLOR, new DyedItemColor(-1))
-                .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, name))))
+                .component(DataComponents.DYED_COLOR, new DyedItemColor(-1)))
         );
         ALL_ITEMS.add(item);
     }

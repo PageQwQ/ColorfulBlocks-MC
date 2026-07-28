@@ -4,10 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.ARGB;
-import net.minecraft.util.Mth;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
 import pageqwq.colorbmc.client.gui.ScreenUtils;
 import pageqwq.colorbmc.client.gui.screen.ColorSelectScreen;
 import pageqwq.colorbmc.util.Color;
@@ -17,60 +13,33 @@ import java.util.function.Function;
 
 public class ColorSlider extends AbstractSliderButton {
     private final SliderType type;
-
     private final double minValue;
     private final double maxValue;
 
-    private final Component displayText;
-
-    private static final Identifier SLIDER_HANDLE_SPRITE = Identifier.withDefaultNamespace("widget/slider_handle");
-    private static final Identifier SLIDER_HANDLE_HIGHLIGHTED_SPRITE = Identifier.withDefaultNamespace("widget/slider_handle_highlighted");
+    private static final int HANDLE_WIDTH = 8;
 
     public ColorSlider(
-        int x,
-        int y,
-        int width,
-        int height,
-        Component displayText,
-        double minValue,
-        double maxValue,
-        double currentValue,
-        SliderType type
+        int x, int y, int width, int height, Component label,
+        double minValue, double maxValue, double currentValue, SliderType type
     ) {
-        super(x, y, width, height, displayText, (currentValue - minValue) / (maxValue - minValue));
+        super(x, y, width, height, label, (currentValue - minValue) / (maxValue - minValue));
         this.type = type;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.value = (currentValue - this.minValue) / (this.maxValue - this.minValue);
-        this.displayText = displayText;
-        setMessage(
-            Component.empty()
-                .append(displayText)
-                .append(Integer.toString((int) Math.round(this.value * (maxValue - minValue) + minValue)))
-        );
     }
 
     @Override
-    protected void updateMessage() {
-        setMessage(Component.empty().append(this.displayText).append(Integer.toString(getValueInt())));
-    }
+    protected void updateMessage() {}
 
     @Override
     protected void applyValue() {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.screen instanceof ColorSelectScreen screen && screen.hexBox != null && screen.redSlider != null
-            && screen.greenSlider != null && screen.blueSlider != null) {
-            screen.hexBox.setValue(
-                "#" + Integer
-                    .toHexString(
-                        new Color(
-                            screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(),
-                            screen.blueSlider.getValueInt()
-                        ).getRGB()
-                    )
-                    .substring(2)
-                    .toUpperCase(Locale.ENGLISH)
-            );
+        if (minecraft.screen instanceof ColorSelectScreen screen && screen.hexBox != null
+            && screen.redSlider != null && screen.greenSlider != null && screen.blueSlider != null) {
+            screen.hexBox.setValue("#" + Integer.toHexString(
+                new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB()
+            ).substring(2).toUpperCase(Locale.ENGLISH));
         }
     }
 
@@ -84,44 +53,44 @@ public class ColorSlider extends AbstractSliderButton {
 
     public void setValueInt(int value) {
         this.value = (value - this.minValue) / (this.maxValue - this.minValue);
-        this.updateMessage();
     }
 
     @Override
     public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
-        if (this.visible) {
-            // Draw black background
-            guiGraphics.fill(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, 0xFF000000);
+        if (!this.visible) return;
 
-            // Draw gradient background
-            Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.screen instanceof ColorSelectScreen screen) {
-                switch (type) {
-                    case RED: renderRedBackground(guiGraphics, screen); break;
-                    case GREEN: renderGreenBackground(guiGraphics, screen); break;
-                    case BLUE: renderBlueBackground(guiGraphics, screen); break;
-                    case HUE: renderHueBackground(guiGraphics, screen); break;
-                    case SATURATION: renderSaturationBackground(guiGraphics, screen); break;
-                    case BRIGHTNESS: renderBrightnessBackground(guiGraphics, screen); break;
-                }
+        Minecraft minecraft = Minecraft.getInstance();
+        int x = this.getX(), y = this.getY(), w = this.width, h = this.height;
+
+        // Draw track border (1px)
+        guiGraphics.fill(x, y, x + w, y + 1, 0xFF444444);
+        guiGraphics.fill(x, y + h - 1, x + w, y + h, 0xFF444444);
+        guiGraphics.fill(x, y, x + 1, y + h, 0xFF444444);
+        guiGraphics.fill(x + w - 1, y, x + w, y + h, 0xFF444444);
+
+        // Draw gradient background
+        if (minecraft.screen instanceof ColorSelectScreen screen) {
+            switch (type) {
+                case RED: renderRedBackground(guiGraphics, screen); break;
+                case GREEN: renderGreenBackground(guiGraphics, screen); break;
+                case BLUE: renderBlueBackground(guiGraphics, screen); break;
+                case HUE: renderHueBackground(guiGraphics, screen); break;
+                case SATURATION: renderSaturationBackground(guiGraphics, screen); break;
+                case BRIGHTNESS: renderBrightnessBackground(guiGraphics, screen); break;
             }
-
-            // Draw handle sprite (skip parent's background sprite)
-            Identifier handleSprite = this.isHovered() && this.active
-                ? SLIDER_HANDLE_HIGHLIGHTED_SPRITE : SLIDER_HANDLE_SPRITE;
-            guiGraphics.blitSprite(
-                RenderPipelines.GUI, handleSprite,
-                this.getX() + (int)(this.value * (this.width - 8)),
-                this.getY(), 8, this.getHeight()
-            );
-
-            // Draw centered text label
-            int textX = this.getX() + this.width / 2 - minecraft.font.width(this.getMessage()) / 2;
-            guiGraphics.text(
-                minecraft.font, this.getMessage(), textX, this.getY() + 2,
-                0xFFFFFF, true
-            );
         }
+
+        // Draw handle (transparent fill, white border)
+        int handleX = x + (int)(this.value * (w - HANDLE_WIDTH));
+        guiGraphics.fill(handleX, y, handleX + HANDLE_WIDTH, y + 1, 0xFFFFFFFF);
+        guiGraphics.fill(handleX, y + h - 1, handleX + HANDLE_WIDTH, y + h, 0xFFFFFFFF);
+        guiGraphics.fill(handleX, y, handleX + 1, y + h, 0xFFFFFFFF);
+        guiGraphics.fill(handleX + HANDLE_WIDTH - 1, y, handleX + HANDLE_WIDTH, y + h, 0xFFFFFFFF);
+
+        // Draw value text on right
+        String valueStr = Integer.toString(getValueInt());
+        int valueWidth = minecraft.font.width(valueStr);
+        guiGraphics.text(minecraft.font, valueStr, x + w - valueWidth - 4, y + (h - 9) / 2, 0xFFFFFFFF, true);
     }
 
     private void renderRedBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
@@ -147,7 +116,7 @@ public class ColorSlider extends AbstractSliderButton {
 
     private void renderHueBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
         if (screen.saturationSlider == null || screen.brightnessSlider == null) return;
-        Function<Integer, Integer> lerp = (pct) -> (int) Math.floor(Mth.lerp(pct / 100f, this.getX() + 1, this.getX() + this.width - 1));
+        Function<Integer, Integer> lerp = (pct) -> (int) Math.floor(net.minecraft.util.Mth.lerp(pct / 100f, this.getX() + 1, this.getX() + this.width - 1));
         Function<Integer, Integer> color = (pct) -> Color.HSBtoRGB(
             (pct / 100f), (float) (screen.saturationSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB),
             (float) (screen.brightnessSlider.getValueInt() / ColorSelectScreen.MAX_VALUE_SB));

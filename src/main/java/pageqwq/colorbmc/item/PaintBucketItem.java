@@ -10,9 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
-import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -25,7 +24,6 @@ import pageqwq.colorbmc.util.ClientProxy;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
-import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -41,23 +39,6 @@ public class PaintBucketItem extends Item {
 
     public PaintBucketItem(Properties properties) {
         super(properties);
-    }
-
-    public void verifyComponentsAfterLoad(ItemStack stack) {
-        if (stack.has(DataComponents.CUSTOM_DATA)) {
-            stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, customData -> customData.update(tag -> {
-                if (tag.contains("color")) {
-                    int color = tag.getInt("color").orElse(-1);
-                    stack.set(DataComponentRegistry.COLOR, color);
-                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color));
-                    tag.remove("color");
-                }
-                if (tag.contains("isRGBSelected")) {
-                    stack.set(DataComponentRegistry.RGB_SELECTED, tag.getBooleanOr("isRGBSelected", true));
-                    tag.remove("isRGBSelected");
-                }
-            }));
-        }
     }
 
     @Override
@@ -133,15 +114,12 @@ public class PaintBucketItem extends Item {
                 }
             }
 
-            // Replace block without sending to client yet
             BlockState oldState = level.getBlockState(pos);
             level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(),
                 Block.UPDATE_NEIGHBORS | Block.UPDATE_INVISIBLE | Block.UPDATE_IMMEDIATE);
-            // Set color before client ever sees the block
             if (level.getBlockEntity(pos) instanceof RGBBlockEntity newEntity) {
                 newEntity.setColor(color);
             }
-            // Now send block + block entity data to client in one sync
             level.sendBlockUpdated(pos, oldState, level.getBlockState(pos), Block.UPDATE_ALL_IMMEDIATE);
             return InteractionResult.SUCCESS;
         }

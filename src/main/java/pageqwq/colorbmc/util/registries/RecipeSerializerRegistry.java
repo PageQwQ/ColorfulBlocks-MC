@@ -12,19 +12,13 @@ public class RecipeSerializerRegistry {
     public static final RecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> SHAPELESS_DURABILITY_AWARE = Registry.register(
         BuiltInRegistries.RECIPE_SERIALIZER,
         Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "crafting_shapeless_durability_aware"),
-        new RecipeSerializer<>(
-            ShapelessDurabilityAwarePaintBucketRecipe.CODEC,
-            ShapelessDurabilityAwarePaintBucketRecipe.STREAM_CODEC
-        )
+        new RecipeSerializer<>(ShapelessDurabilityAwarePaintBucketRecipe.CODEC, ShapelessDurabilityAwarePaintBucketRecipe.STREAM_CODEC)
     );
 
     public static final RecipeSerializer<ShapelessNoReturnRecipe> SHAPELESS_NO_RETURN = Registry.register(
         BuiltInRegistries.RECIPE_SERIALIZER,
         Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "crafting_shapeless_no_return"),
-        new RecipeSerializer<>(
-            ShapelessNoReturnRecipe.CODEC,
-            ShapelessNoReturnRecipe.STREAM_CODEC
-        )
+        new RecipeSerializer<>(ShapelessNoReturnRecipe.CODEC, ShapelessNoReturnRecipe.STREAM_CODEC)
     );
 
     public static void register() {}
