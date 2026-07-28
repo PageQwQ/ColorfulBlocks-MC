@@ -1,12 +1,9 @@
 package pageqwq.colorbmc.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ScreenUtils {
-    public static void fillGradient(GuiGraphicsExtractor guiGraphics, int x1, int y1, int x2, int y2, int colorFrom, int colorTo) {
-        // GuiGraphicsExtractor.fillGradient() is vertical (top→bottom).
-        // For horizontal (left→right) gradient, draw thin vertical strips.
+    public static void fillGradient(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int colorFrom, int colorTo) {
         int steps = Math.max(x2 - x1, 1);
         for (int i = 0; i < steps; i++) {
             float ratio = (float) i / steps;

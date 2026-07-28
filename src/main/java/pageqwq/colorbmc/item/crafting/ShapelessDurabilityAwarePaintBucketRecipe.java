@@ -2,20 +2,17 @@ package pageqwq.colorbmc.item.crafting;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
-import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.NormalCraftingRecipe;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import pageqwq.colorbmc.item.PaintBucketItem;
@@ -26,35 +23,27 @@ import pageqwq.colorbmc.util.registries.RecipeSerializerRegistry;
 import java.util.List;
 
 public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
-    private final ItemStackTemplate result;
+    private final ItemStack result;
     private final List<Ingredient> ingredients;
 
     public static final MapCodec<ShapelessDurabilityAwarePaintBucketRecipe> CODEC = RecordCodecBuilder.mapCodec(
         instance -> instance.group(
-            Recipe.CommonInfo.MAP_CODEC.forGetter(o -> o.commonInfo),
-            CraftingRecipe.CraftingBookInfo.MAP_CODEC.forGetter(o -> o.bookInfo),
-            ItemStackTemplate.CODEC.fieldOf("result").forGetter(o -> o.result),
+            CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(o -> o.category()),
+            ItemStack.CODEC.fieldOf("result").forGetter(o -> o.result),
             Ingredient.CODEC.listOf(1, 9).fieldOf("ingredients").forGetter(o -> o.ingredients)
         ).apply(instance, ShapelessDurabilityAwarePaintBucketRecipe::new)
     );
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ShapelessDurabilityAwarePaintBucketRecipe> STREAM_CODEC =
         StreamCodec.composite(
-            Recipe.CommonInfo.STREAM_CODEC, o -> o.commonInfo,
-            CraftingRecipe.CraftingBookInfo.STREAM_CODEC, o -> o.bookInfo,
-            ItemStackTemplate.STREAM_CODEC, o -> o.result,
-            Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()),
-            o -> o.ingredients,
+            CraftingBookCategory.STREAM_CODEC, o -> o.category(),
+            ItemStack.STREAM_CODEC, o -> o.result,
+            Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), o -> o.ingredients,
             ShapelessDurabilityAwarePaintBucketRecipe::new
         );
 
-    public ShapelessDurabilityAwarePaintBucketRecipe(
-        Recipe.CommonInfo commonInfo,
-        CraftingRecipe.CraftingBookInfo bookInfo,
-        ItemStackTemplate result,
-        List<Ingredient> ingredients
-    ) {
-        super(commonInfo, bookInfo, result, ingredients);
+    public ShapelessDurabilityAwarePaintBucketRecipe(CraftingBookCategory category, ItemStack result, List<Ingredient> ingredients) {
+        super("", category, result, NonNullList.of(Ingredient.EMPTY, ingredients.toArray(new Ingredient[0])));
         this.result = result;
         this.ingredients = ingredients;
     }
@@ -67,8 +56,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
 
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInput input) {
-        NonNullList<ItemStack> nonnulllist =
-            NonNullList.withSize(input.size(), ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(input.size(), ItemStack.EMPTY);
         ItemStack blockStack = ItemStack.EMPTY;
 
         for (int i = 0; i < nonnulllist.size(); i++) {
@@ -99,7 +87,7 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input) {
+    public ItemStack assemble(CraftingInput input, HolderLookup.Provider provider) {
         int color = 0;
         for (int i = 0; i < input.size(); i++) {
             if (input.getItem(i).getItem() instanceof PaintBucketItem) {
@@ -107,9 +95,9 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
                 break;
             }
         }
-        ItemStack result = super.assemble(input);
+        ItemStack result = super.assemble(input, provider);
         result.set(DataComponentRegistry.COLOR, color);
-        result.set(net.minecraft.core.component.DataComponents.DYED_COLOR, new DyedItemColor(color));
+        result.set(net.minecraft.core.component.DataComponents.DYED_COLOR, new DyedItemColor(color, true));
         return result;
     }
 }

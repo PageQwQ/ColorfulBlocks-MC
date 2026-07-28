@@ -5,13 +5,13 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.UseOnContext;
@@ -27,7 +27,6 @@ import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class PaintBucketItem extends Item {
     private static final Set<Block> VANILLA_CONCRETE = Set.of(
@@ -43,25 +42,8 @@ public class PaintBucketItem extends Item {
         super(properties);
     }
 
-    public void verifyComponentsAfterLoad(ItemStack stack) {
-        if (stack.has(DataComponents.CUSTOM_DATA)) {
-            stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, customData -> customData.update(tag -> {
-                if (tag.contains("color")) {
-                    int color = tag.getInt("color").orElse(-1);
-                    stack.set(DataComponentRegistry.COLOR, color);
-                    stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color));
-                    tag.remove("color");
-                }
-                if (tag.contains("isRGBSelected")) {
-                    stack.set(DataComponentRegistry.RGB_SELECTED, tag.getBooleanOr("isRGBSelected", true));
-                    tag.remove("isRGBSelected");
-                }
-            }));
-        }
-    }
-
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display, Consumer<Component> builder, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         int colorValue = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
         pageqwq.colorbmc.util.Color color = new pageqwq.colorbmc.util.Color(colorValue);
         String hex = "#" + Integer.toHexString(color.getRGB()).substring(2);
@@ -71,11 +53,11 @@ public class PaintBucketItem extends Item {
         } else {
             hexComponent = Component.literal(hex).withStyle(style -> style.withColor(colorValue & 0xFFFFFF));
         }
-        builder.accept(hexComponent);
+        tooltip.add(hexComponent);
     }
 
     @Override
-    public InteractionResult use(Level level, Player playerIn, InteractionHand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player playerIn, InteractionHand handIn) {
         if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()) {
             if (level.isClientSide() && ClientProxy.getClientPlayHelper() != null) {
                 ClientProxy.getClientPlayHelper().openColorSelectScreen(
@@ -83,10 +65,10 @@ public class PaintBucketItem extends Item {
                     playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.COLOR, -1),
                     playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.RGB_SELECTED, true)
                 );
-                return InteractionResult.SUCCESS;
+                return InteractionResultHolder.success(playerIn.getItemInHand(handIn));
             }
         }
-        return InteractionResult.PASS;
+        return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
     }
 
     @Override
@@ -103,7 +85,7 @@ public class PaintBucketItem extends Item {
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (player != null && player.isShiftKeyDown()) {
                 stack.set(DataComponentRegistry.COLOR, rgbBlockEntity.getColor());
-                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgbBlockEntity.getColor()));
+                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgbBlockEntity.getColor(), true));
             } else {
                 int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
                 if (player != null && !player.isCreative() && color != rgbBlockEntity.getColor()) {
@@ -133,15 +115,12 @@ public class PaintBucketItem extends Item {
                 }
             }
 
-            // Replace block without sending to client yet
             BlockState oldState = level.getBlockState(pos);
             level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(),
                 Block.UPDATE_NEIGHBORS | Block.UPDATE_INVISIBLE | Block.UPDATE_IMMEDIATE);
-            // Set color before client ever sees the block
             if (level.getBlockEntity(pos) instanceof RGBBlockEntity newEntity) {
                 newEntity.setColor(color);
             }
-            // Now send block + block entity data to client in one sync
             level.sendBlockUpdated(pos, oldState, level.getBlockState(pos), Block.UPDATE_ALL_IMMEDIATE);
             return InteractionResult.SUCCESS;
         }
