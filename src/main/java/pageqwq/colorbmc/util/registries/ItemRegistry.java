@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.Block;
 import pageqwq.colorbmc.RGBBlocks;
+import pageqwq.colorbmc.item.CleanAgentItem;
 import pageqwq.colorbmc.item.PaintBucketItem;
 import pageqwq.colorbmc.item.RGBBlockItem;
 
@@ -25,6 +26,11 @@ public class ItemRegistry {
             .component(DataComponentRegistry.COLOR, -1)
             .component(DataComponentRegistry.RGB_SELECTED, true)
             .component(DataComponents.DYED_COLOR, new DyedItemColor(-1)))
+    );
+
+    public static final Item CLEAN_AGENT = register(
+        "clean_agent", new CleanAgentItem(new Item.Properties().durability(120)
+            .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "clean_agent"))))
     );
 
     static void registerBlockItem(String name, Block block) {
