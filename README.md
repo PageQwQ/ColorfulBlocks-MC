@@ -1,6 +1,6 @@
 <div align="center"><center>
 
-<img alt="Icon" width=200 src="src/main/resources/logo.png">
+<img alt="Icon" width=200 src="DescriptionImages/logo.png">
 
 ## Colorful Blocks
 
@@ -41,6 +41,19 @@ The bucket with 500 durability. Open color picker, paint concrete (right-click),
 
 <div align="center"><center>
 
+<img alt="clean_agent" width=64 src="DescriptionImages/clean_agent.png">   
+<img alt="craft" height=64 src="DescriptionImages/craft3.png">
+
+### Clean Agent
+
+</center></div>
+
+Right-click on the Stained concrete to use. Shift the color 25% closer to white each time. *The darker the color, the more clicks are required.*
+
+It has 120 Durability; consumes 1 point per use. No further consumption occurs after turning completely white. 
+
+<div align="center"><center>
+
 <img alt="stained_concrete" width=64 src="DescriptionImages/colorblockmc__concrete.png">   
 
 ### Stained Concrete
@@ -67,8 +80,6 @@ This is a variant of common stained concrete. It can help you build glowing thin
 > [!tip]
 >
 > you can enable Screenspace Colored Blocklight in your shaderpack. This can achieve a better visual effect.
-
-The following is the visual effect of the block at night.
 
 <img alt="example" width=500 src="DescriptionImages/example.png">
 
@@ -131,3 +142,6 @@ JAVA_HOME=/Library/Java/JavaVirtualMachines/liberica-jdk-25.jdk/Contents/Home ./
 ```
 
 The built jar will be in `build/libs/`.
+
+> **Note**: Minecraft 26.1.2 requires **Java 25** to build. The mod uses the new `YY.M.P` versioning scheme (26 = 2026, 1 = first drop, 2 = hotfix).
+
