@@ -2,6 +2,7 @@
   "block.colorblockmc.concrete": "染色混凝土",
   "block.colorblockmc.glowing_concrete": "发光染色混凝土",
   "item.colorblockmc.paint_bucket": "染色桶",
+  "item.colorblockmc.clean_agent": "清洁剂",
   "item_group.colorblockmc.tab": "给你点颜色瞧瞧",
   "gui.colorblockmc.red": "红色值",
   "gui.colorblockmc.green": "绿色值",
