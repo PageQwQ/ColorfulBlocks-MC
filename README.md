@@ -117,15 +117,6 @@ When you install this mod along with [ModernUI](https://modrinth.com/mod/modern-
 
 <img src="DescriptionImages/additional.png" />
 
-## Requirements
-
-| Dependency | Version |
-|---|---|
-| [Fabric Loader](https://fabricmc.net/) | `>=0.19.3` |
-| [Fabric API](https://modrinth.com/mod/fabric-api) | `*` |
-| Minecraft | `26.1.2` |
-| Java | `>=25` |
-
 ## Installation
 
 1. Install **Fabric Loader** (follow instructions on [fabricmc.net](https://fabricmc.net/)).
@@ -142,6 +133,3 @@ JAVA_HOME=/Library/Java/JavaVirtualMachines/liberica-jdk-25.jdk/Contents/Home ./
 ```
 
 The built jar will be in `build/libs/`.
-
-> **Note**: Minecraft 26.1.2 requires **Java 25** to build. The mod uses the new `YY.M.P` versioning scheme (26 = 2026, 1 = first drop, 2 = hotfix).
-
