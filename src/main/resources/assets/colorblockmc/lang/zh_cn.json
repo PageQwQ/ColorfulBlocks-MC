@@ -4,6 +4,8 @@
   "item.colorblockmc.paint_bucket": "染色桶",
   "item.colorblockmc.clean_agent": "清洁剂",
   "item_group.colorblockmc.tab": "给你点颜色瞧瞧",
+  "commands.colorblockmc.givec.success": "已给予 %1$s 个 %2$s（%3$s）",
+  "commands.colorblockmc.givec.invalid_color": "无效的颜色代码：%s（应为 #RRGGBB）",
   "gui.colorblockmc.red": "红色值",
   "gui.colorblockmc.green": "绿色值",
   "gui.colorblockmc.blue": "蓝色值",

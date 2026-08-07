@@ -21,6 +21,7 @@ The idea for this mod comes from [PlatinPython's RGBBlocks](https://github.com/P
 - **Full RGB Color**: Choose from over 16 million colors using the color picker GUI (RGB sliders, HSB sliders, or hex input).
 - **Paint Bucket**: Right-click on concrete to paint it. Shift + right-click on a painted block to copy its color. Shift + right-click in air to open the color picker.
 - **Color Retention**: Color data is preserved when mined.
+- **`/givec` Command**: Give yourself a stained concrete block of any hex color directly (e.g. `/givec #FF6B35`). Requires cheats/operator permission.
 
 ## Items & Blocks
 
@@ -99,6 +100,20 @@ Toggle between RGB and HSB mode using the switch button.
 | **Shift + Right-click** Stained Concrete | Copies the block's color to the bucket. |
 | **Shift + Right-click** something other than Stained Concrete | Opens the color picker GUI. |
 | **Right-click** with empty bucket (in dispenser) | Paints the block in front. |
+
+## `/givec` Command
+
+Give yourself a stained concrete block of any color directly, no Paint Bucket needed. Requires **cheats / operator permission (level 2)**.
+
+| Command | Result |
+|---|---|
+| `/givec <color>` | Gives 1 Stained Concrete of that color. |
+| `/givec <color> <count>` | Gives the specified amount. |
+| `/givec <color> <count> <glowing>` | Set `<glowing>` to `true` for Glowing Stained Concrete. |
+
+`<color>` is a hex color code, with or without the leading `#` (e.g. `#FF6B35` or `FF6B35`).
+
+Example: `/givec #FF6B35 16 true` gives you 16 Glowing Stained Concrete blocks colored `#FF6B35`.
 
 ## Additional support
 

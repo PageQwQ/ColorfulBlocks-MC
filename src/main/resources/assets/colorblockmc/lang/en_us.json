@@ -4,6 +4,8 @@
   "item.colorblockmc.paint_bucket": "Paint Bucket",
   "item.colorblockmc.clean_agent": "Clean Agent",
   "item_group.colorblockmc.tab": "Colorful Blocks",
+  "commands.colorblockmc.givec.success": "Gave %1$s × %2$s (%3$s)",
+  "commands.colorblockmc.givec.invalid_color": "Invalid hex color: %s (expected #RRGGBB)",
   "gui.colorblockmc.red": "Red",
   "gui.colorblockmc.green": "Green",
   "gui.colorblockmc.blue": "Blue",

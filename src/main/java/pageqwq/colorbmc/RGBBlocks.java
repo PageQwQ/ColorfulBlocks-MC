@@ -2,6 +2,7 @@ package pageqwq.colorbmc;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.world.level.block.DispenserBlock;
+import pageqwq.colorbmc.command.GiveColorCommand;
 import pageqwq.colorbmc.dispenser.DispensePaintBucketBehaviour;
 import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
@@ -27,6 +28,7 @@ public class RGBBlocks implements ModInitializer {
         CreativeTabRegistry.register();
 
         NetworkHandler.register();
+        GiveColorCommand.register();
 
         DispenserBlock.registerBehavior(ItemRegistry.PAINT_BUCKET, new DispensePaintBucketBehaviour());
     }
