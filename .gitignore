@@ -11,6 +11,7 @@ build/
 .project
 .settings/
 .vscode/
+bin/
 
 # OS
 .DS_Store
