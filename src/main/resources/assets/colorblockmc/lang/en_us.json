@@ -15,5 +15,6 @@
   "gui.colorblockmc.useRGB": "Switch to RGB Mode",
   "gui.colorblockmc.useHSB": "Switch to HSB Mode",
   "colorblockmc.pack_title": "Stained Blocks Implementation Pack",
-  "colorblockmc.pack_description": "Dynamically generated textures for Colorful Blocks"
+  "colorblockmc.pack_description": "Dynamically generated textures for Colorful Blocks",
+  "config.jade.plugin_colorblockmc.rgb_block": "RGB Block Info"
 }

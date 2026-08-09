@@ -14,7 +14,8 @@
   "environment": "*",
   "entrypoints": {
     "main": ["pageqwq.colorbmc.RGBBlocks"],
-    "client": ["pageqwq.colorbmc.RGBBlocksClient"]
+    "client": ["pageqwq.colorbmc.RGBBlocksClient"],
+    "jade": ["pageqwq.colorbmc.util.jade.ColorBlockJadePlugin"]
   },
   "accessWidener": "colorblockmc.accesswidener",
   "mixins": [
