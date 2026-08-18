@@ -3,11 +3,11 @@ package pageqwq.colorbmc.client.gui.screen;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import pageqwq.colorbmc.client.gui.widget.ColorSlider;
 import pageqwq.colorbmc.client.gui.widget.ConcretePreviewWidget;
+import pageqwq.colorbmc.client.gui.widget.HexInputWidget;
 import pageqwq.colorbmc.client.gui.widget.HueStripWidget;
 import pageqwq.colorbmc.client.gui.widget.SliderType;
 import pageqwq.colorbmc.client.gui.widget.SquareColorPicker;
@@ -35,7 +35,7 @@ public class ColorSelectScreen extends Screen {
     public ColorSlider hueSlider, saturationSlider, brightnessSlider;
     public SquareColorPicker squarePicker;
     public HueStripWidget hueStrip;
-    public EditBox hexBox;
+    public HexInputWidget hexInput;
     public ConcretePreviewWidget concretePreview;
 
     private double hue, saturation, brightness;
@@ -136,24 +136,22 @@ public class ColorSelectScreen extends Screen {
             concretePreview = new ConcretePreviewWidget(barX + 4, barY + 4, PREVIEW_SIZE, PREVIEW_SIZE);
         } else { concretePreview.setX(barX + 4); concretePreview.setY(barY + 4); }
 
-        if (hexBox == null) {
-            hexBox = new EditBox(this.font, hexX, hexY, hexBoxW, WIDGET_HEIGHT, Component.literal("Hex")) {
-                @Override
-                public void insertText(String textToWrite) {
-                    textToWrite = textToWrite.contains("#") ? textToWrite.substring(1) : textToWrite;
-                    textToWrite = textToWrite.toUpperCase(Locale.ENGLISH);
-                    super.insertText(textToWrite);
-                    if (valuesInitialized) updateFromHex();
+        if (hexInput == null) {
+            hexInput = new HexInputWidget(hexX, hexY, hexBoxW, WIDGET_HEIGHT, text -> {
+                if (!valuesInitialized) return;
+                try {
+                    String raw = text.contains("#") ? text.substring(1) : text;
+                    if (raw.length() < 6) return;
+                    Color color = new Color(Integer.parseInt(raw, 16));
+                    float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
+                    this.hue = hsb[0] * MAX_VALUE_HUE;
+                    this.saturation = hsb[1] * MAX_VALUE_SB;
+                    this.brightness = hsb[2] * MAX_VALUE_SB;
+                    refresh();
+                } catch (NumberFormatException ignored) {
                 }
-
-                @Override
-                public void deleteChars(int pNum) {
-                    super.deleteChars(pNum);
-                    if (valuesInitialized) updateFromHex();
-                }
-            };
-            hexBox.setMaxLength(7);
-        } else { hexBox.setX(hexX); hexBox.setY(hexY); }
+            });
+        } else { hexInput.setX(hexX); hexInput.setY(hexY); }
 
         addRenderableWidget(hueSlider);
         addRenderableWidget(saturationSlider);
@@ -161,25 +159,10 @@ public class ColorSelectScreen extends Screen {
         addRenderableWidget(hueStrip);
         addRenderableWidget(squarePicker);
         addRenderableWidget(concretePreview);
-        addRenderableWidget(hexBox);
+        addRenderableWidget(hexInput);
 
         valuesInitialized = true;
         refresh();
-    }
-
-    private void updateFromHex() {
-        try {
-            String raw = hexBox.getValue();
-            if (raw.contains("#")) raw = raw.substring(1);
-            if (raw.length() < 6) return;
-            Color color = new Color(Integer.parseInt(raw, 16));
-            float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
-            this.hue = hsb[0] * MAX_VALUE_HUE;
-            this.saturation = hsb[1] * MAX_VALUE_SB;
-            this.brightness = hsb[2] * MAX_VALUE_SB;
-            refresh();
-        } catch (NumberFormatException ignored) {
-        }
     }
 
     private void refresh() {
@@ -189,8 +172,8 @@ public class ColorSelectScreen extends Screen {
         int g = c.getGreen();
         int b = c.getBlue();
 
-        if (hexBox != null && !hexBox.isFocused()) {
-            hexBox.setValue("#" + Integer.toHexString(rgb).substring(2).toUpperCase(Locale.ENGLISH));
+        if (hexInput != null && !hexInput.isFocused()) {
+            hexInput.setText("#" + Integer.toHexString(rgb).substring(2).toUpperCase(Locale.ENGLISH));
         }
         this.colorName = chineseNames ? ColorNames.nearestChinese(r, g, b) : ColorNames.nearestEnglish(r, g, b);
 
