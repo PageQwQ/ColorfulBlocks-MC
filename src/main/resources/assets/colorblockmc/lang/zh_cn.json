@@ -12,8 +12,6 @@
   "gui.colorblockmc.hue": "色调",
   "gui.colorblockmc.saturation": "饱和度",
   "gui.colorblockmc.brightness": "亮度",
-  "gui.colorblockmc.useRGB": "切换为RGB模式",
-  "gui.colorblockmc.useHSB": "切换为HSB模式",
   "colorblockmc.pack_title": "染色方块实现材质包",
   "colorblockmc.pack_description": "彩色方块的动态生成纹理包",
   "config.jade.plugin_colorblockmc.rgb_block": "RGB 方块信息"

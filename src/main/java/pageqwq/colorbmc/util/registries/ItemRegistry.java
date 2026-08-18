@@ -21,7 +21,7 @@ public class ItemRegistry {
     public static final Item PAINT_BUCKET = register(
         "paint_bucket", new PaintBucketItem(new Item.Properties().durability(500)
             .component(DataComponentRegistry.COLOR, -1)
-            .component(DataComponentRegistry.RGB_SELECTED, true)
+            .component(DataComponentRegistry.RGB_SELECTED, false)
             .component(DataComponents.DYED_COLOR, new DyedItemColor(-1, true)))
     );
 
