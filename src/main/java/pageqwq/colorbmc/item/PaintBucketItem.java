@@ -62,7 +62,7 @@ public class PaintBucketItem extends Item {
                 ClientProxy.getClientPlayHelper().openColorSelectScreen(
                     playerIn,
                     playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.COLOR, -1),
-                    playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.RGB_SELECTED, true)
+                    playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.RGB_SELECTED, false)
                 );
                 return InteractionResult.SUCCESS;
             }

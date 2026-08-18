@@ -1,81 +1,77 @@
 package pageqwq.colorbmc.client.gui.screen;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import pageqwq.colorbmc.client.gui.ScreenUtils;
 import pageqwq.colorbmc.client.gui.widget.ColorSlider;
+import pageqwq.colorbmc.client.gui.widget.ConcretePreviewWidget;
+import pageqwq.colorbmc.client.gui.widget.HueStripWidget;
 import pageqwq.colorbmc.client.gui.widget.SliderType;
+import pageqwq.colorbmc.client.gui.widget.SquareColorPicker;
+import pageqwq.colorbmc.client.util.ColorNames;
 import pageqwq.colorbmc.util.Color;
 import pageqwq.colorbmc.util.network.packets.PaintBucketSyncPayload;
 
 import java.util.Locale;
 
 public class ColorSelectScreen extends Screen {
-    private final double red, green, blue;
-    public ColorSlider redSlider, greenSlider, blueSlider;
-    private final double hue, saturation, brightness;
-    public ColorSlider hueSlider, saturationSlider, brightnessSlider;
-    public EditBox hexBox;
-
+    private static final int PANEL_WIDTH = 316;
+    private static final int PANEL_HEIGHT = 192;
+    private static final int BAR_HEIGHT = 34;
+    private static final int PREVIEW_SIZE = 46;
+    private static final int COLUMN_W = 150;
+    private static final int SQUARE_SIZE = 112;
+    private static final int STRIP_W = 14;
     private static final int WIDGET_HEIGHT = 18;
-    private static final int PANEL_WIDTH = 280;
-    private static final int LABEL_WIDTH = 44;
-    private static final int VALUE_WIDTH = 32;
-    private static final int SLIDER_WIDTH = PANEL_WIDTH - LABEL_WIDTH - VALUE_WIDTH;
-    private static final int PANEL_HEIGHT = 36;
     private static final int SPACING = 22;
 
     public static final double MIN_VALUE = 0.0D;
-    public static final double MAX_VALUE_RGB = 255.0D;
     public static final double MAX_VALUE_HUE = 360.0D;
     public static final double MAX_VALUE_SB = 100.0D;
 
-    private boolean isRGBSelected;
-    private final Component useRGBText, useHSBText;
+    public ColorSlider hueSlider, saturationSlider, brightnessSlider;
+    public SquareColorPicker squarePicker;
+    public HueStripWidget hueStrip;
+    public EditBox hexBox;
+    public ConcretePreviewWidget concretePreview;
+
+    private double hue, saturation, brightness;
+    private String colorName = "";
+    private final boolean chineseNames;
     private boolean valuesInitialized = false;
 
-    private final Component redText, greenText, blueText;
-    private final Component hueText, saturationText, brightnessText;
+    private int barX, barY, sliderX, sliderY, sliderW, squareX, squareY, stripX, stripY;
+    private int hexX, hexY, nameX, nameY;
 
     public ColorSelectScreen(int colorIn, boolean isRGBSelected) {
         super(Component.empty());
         Color color = new Color(colorIn);
-        this.red = color.getRed();
-        this.green = color.getGreen();
-        this.blue = color.getBlue();
-
-        float[] hsb = Color.RGBtoHSB((int) red, (int) green, (int) blue);
+        float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
         this.hue = hsb[0] * MAX_VALUE_HUE;
         this.saturation = hsb[1] * MAX_VALUE_SB;
         this.brightness = hsb[2] * MAX_VALUE_SB;
 
-        this.isRGBSelected = isRGBSelected;
-        this.useRGBText = Component.translatable("gui.colorblockmc.useRGB");
-        this.useHSBText = Component.translatable("gui.colorblockmc.useHSB");
+        this.chineseNames = isChineseLanguage();
+    }
 
-        this.redText = Component.translatable("gui.colorblockmc.red");
-        this.greenText = Component.translatable("gui.colorblockmc.green");
-        this.blueText = Component.translatable("gui.colorblockmc.blue");
-        this.hueText = Component.translatable("gui.colorblockmc.hue");
-        this.saturationText = Component.translatable("gui.colorblockmc.saturation");
-        this.brightnessText = Component.translatable("gui.colorblockmc.brightness");
+    private static boolean isChineseLanguage() {
+        try {
+            String lang = Minecraft.getInstance().getLanguageManager().getSelected();
+            return lang != null && lang.toLowerCase(Locale.ENGLISH).startsWith("zh");
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 
     public int getColor() {
-        if (isRGBSelected && redSlider != null && greenSlider != null && blueSlider != null) {
-            return new Color(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt()).getRGB();
-        } else if (hueSlider != null && saturationSlider != null && brightnessSlider != null) {
-            return Color.getHSBColor(
-                (float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-                (float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-                (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB)
-            ).getRGB();
-        }
-        return 0;
+        return Color.HSBtoRGB(
+            (float) (hue / MAX_VALUE_HUE),
+            (float) (saturation / MAX_VALUE_SB),
+            (float) (brightness / MAX_VALUE_SB)
+        );
     }
 
     @Override
@@ -85,59 +81,63 @@ public class ColorSelectScreen extends Screen {
 
     @Override
     protected void init() {
-        int baseX = this.width / 2 - PANEL_WIDTH / 2;
-        int sliderX = baseX + LABEL_WIDTH;
-        int y = this.height / 2 - 80;
+        int cx = this.width / 2;
+        int cy = this.height / 2;
+        this.barX = cx - PANEL_WIDTH / 2;
+        this.barY = cy - PANEL_HEIGHT / 2;
+        this.sliderX = this.barX;
+        this.sliderW = COLUMN_W;
+        this.sliderY = this.barY + BAR_HEIGHT + 34;
+        this.stripX = this.barX + PANEL_WIDTH - STRIP_W;
+        this.stripY = this.sliderY;
+        this.squareX = this.stripX - 8 - SQUARE_SIZE;
+        this.squareY = this.sliderY;
+        this.hexY = this.barY + BAR_HEIGHT + 10;
+        this.hexX = this.barX + 58;
+        this.nameX = this.barX + 144;
+        this.nameY = this.hexY + 1;
 
-        y += PANEL_HEIGHT + 10;
+        int hexBoxW = 76;
 
-        // RGB Sliders
-        if (redSlider == null) {
-            redSlider = new ColorSlider(sliderX, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                Component.empty(), MIN_VALUE, MAX_VALUE_RGB, this.red, SliderType.RED);
-        } else { redSlider.setX(sliderX); redSlider.setY(y); }
-        y += SPACING;
-
-        if (greenSlider == null) {
-            greenSlider = new ColorSlider(sliderX, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                Component.empty(), MIN_VALUE, MAX_VALUE_RGB, this.green, SliderType.GREEN);
-        } else { greenSlider.setX(sliderX); greenSlider.setY(y); }
-        y += SPACING;
-
-        if (blueSlider == null) {
-            blueSlider = new ColorSlider(sliderX, y, SLIDER_WIDTH, WIDGET_HEIGHT,
-                Component.empty(), MIN_VALUE, MAX_VALUE_RGB, this.blue, SliderType.BLUE);
-        } else { blueSlider.setX(sliderX); blueSlider.setY(y); }
-
-        // HSB Sliders
-        int hsbY = this.height / 2 - 80 + PANEL_HEIGHT + 10;
         if (hueSlider == null) {
-            hueSlider = new ColorSlider(sliderX, hsbY, SLIDER_WIDTH, WIDGET_HEIGHT,
-                Component.empty(), MIN_VALUE, MAX_VALUE_HUE, this.hue, SliderType.HUE);
-        } else { hueSlider.setX(sliderX); hueSlider.setY(hsbY); }
-        hsbY += SPACING;
+            hueSlider = new ColorSlider(sliderX, sliderY, sliderW, WIDGET_HEIGHT,
+                Component.empty(), MIN_VALUE, MAX_VALUE_HUE, hue, SliderType.HUE);
+            hueSlider.setOnChange(() -> { hue = hueSlider.getValueInt(); refresh(); });
+        } else { hueSlider.setX(sliderX); hueSlider.setY(sliderY); }
 
         if (saturationSlider == null) {
-            saturationSlider = new ColorSlider(sliderX, hsbY, SLIDER_WIDTH, WIDGET_HEIGHT,
-                Component.empty(), MIN_VALUE, MAX_VALUE_SB, this.saturation, SliderType.SATURATION);
-        } else { saturationSlider.setX(sliderX); saturationSlider.setY(hsbY); }
-        hsbY += SPACING;
+            saturationSlider = new ColorSlider(sliderX, sliderY + SPACING, sliderW, WIDGET_HEIGHT,
+                Component.empty(), MIN_VALUE, MAX_VALUE_SB, saturation, SliderType.SATURATION);
+            saturationSlider.setOnChange(() -> { saturation = saturationSlider.getValueInt(); refresh(); });
+        } else { saturationSlider.setX(sliderX); saturationSlider.setY(sliderY + SPACING); }
 
         if (brightnessSlider == null) {
-            brightnessSlider = new ColorSlider(sliderX, hsbY, SLIDER_WIDTH, WIDGET_HEIGHT,
-                Component.empty(), MIN_VALUE, MAX_VALUE_SB, this.brightness, SliderType.BRIGHTNESS);
-        } else { brightnessSlider.setX(sliderX); brightnessSlider.setY(hsbY); }
+            brightnessSlider = new ColorSlider(sliderX, sliderY + 2 * SPACING, sliderW, WIDGET_HEIGHT,
+                Component.empty(), MIN_VALUE, MAX_VALUE_SB, brightness, SliderType.BRIGHTNESS);
+            brightnessSlider.setOnChange(() -> { brightness = brightnessSlider.getValueInt(); refresh(); });
+        } else { brightnessSlider.setX(sliderX); brightnessSlider.setY(sliderY + 2 * SPACING); }
 
-        // Hex input + toggle button row
-        int rowY = this.height / 2 - 80 + PANEL_HEIGHT + 10 + 3 * SPACING + 8;
+        if (hueStrip == null) {
+            hueStrip = new HueStripWidget(stripX, stripY, STRIP_W, SQUARE_SIZE, h -> {
+                hue = h;
+                refresh();
+            });
+        } else { hueStrip.setX(stripX); hueStrip.setY(stripY); }
 
-        int hexBoxW = 80;
-        int toggleW = 120;
-        int totalRowW = hexBoxW + 8 + toggleW;
-        int rowX = this.width / 2 - totalRowW / 2;
+        if (squarePicker == null) {
+            squarePicker = new SquareColorPicker(squareX, squareY, SQUARE_SIZE, SQUARE_SIZE, (s, b) -> {
+                saturation = s;
+                brightness = b;
+                refresh();
+            });
+        } else { squarePicker.setX(squareX); squarePicker.setY(squareY); }
+
+        if (concretePreview == null) {
+            concretePreview = new ConcretePreviewWidget(barX + 4, barY + 4, PREVIEW_SIZE, PREVIEW_SIZE);
+        } else { concretePreview.setX(barX + 4); concretePreview.setY(barY + 4); }
 
         if (hexBox == null) {
-            hexBox = new EditBox(this.font, rowX, rowY, hexBoxW, WIDGET_HEIGHT, Component.literal("Hex")) {
+            hexBox = new EditBox(this.font, hexX, hexY, hexBoxW, WIDGET_HEIGHT, Component.literal("Hex")) {
                 @Override
                 public void insertText(String textToWrite) {
                     textToWrite = textToWrite.contains("#") ? textToWrite.substring(1) : textToWrite;
@@ -151,100 +151,74 @@ public class ColorSelectScreen extends Screen {
                     super.deleteChars(pNum);
                     if (valuesInitialized) updateFromHex();
                 }
-
-                private void updateFromHex() {
-                    try {
-                        String raw = getValue();
-                        if (raw.contains("#")) raw = raw.substring(1);
-                        if (raw.length() < 6) return;
-                        Color color = new Color(Integer.parseInt(raw, 16));
-                        redSlider.setValueInt(color.getRed());
-                        greenSlider.setValueInt(color.getGreen());
-                        blueSlider.setValueInt(color.getBlue());
-                    } catch (NumberFormatException ignored) {}
-                }
             };
             hexBox.setMaxLength(7);
-            hexBox.setValue("#" + Integer.toHexString(
-                new Color((int) red, (int) green, (int) blue).getRGB()
-            ).substring(2).toUpperCase(Locale.ENGLISH));
-        } else { hexBox.setX(rowX); hexBox.setY(rowY); }
+        } else { hexBox.setX(hexX); hexBox.setY(hexY); }
 
-        Button toggleButton = new Button.Builder(isRGBSelected ? useHSBText : useRGBText, button -> {
-            isRGBSelected = !isRGBSelected;
-            redSlider.visible = isRGBSelected;
-            greenSlider.visible = isRGBSelected;
-            blueSlider.visible = isRGBSelected;
-            hueSlider.visible = !isRGBSelected;
-            saturationSlider.visible = !isRGBSelected;
-            brightnessSlider.visible = !isRGBSelected;
-
-            if (isRGBSelected) {
-                Color c = Color.getHSBColor(
-                    (float) (hueSlider.getValueInt() / MAX_VALUE_HUE),
-                    (float) (saturationSlider.getValueInt() / MAX_VALUE_SB),
-                    (float) (brightnessSlider.getValueInt() / MAX_VALUE_SB));
-                redSlider.setValueInt(c.getRed());
-                greenSlider.setValueInt(c.getGreen());
-                blueSlider.setValueInt(c.getBlue());
-                hexBox.setValue("#" + Integer.toHexString(c.getRGB()).substring(2).toUpperCase(Locale.ENGLISH));
-                button.setMessage(useHSBText);
-            } else {
-                float[] hsb = Color.RGBtoHSB(redSlider.getValueInt(), greenSlider.getValueInt(), blueSlider.getValueInt());
-                hueSlider.setValueInt((int) (hsb[0] * MAX_VALUE_HUE));
-                saturationSlider.setValueInt((int) (hsb[1] * MAX_VALUE_SB));
-                brightnessSlider.setValueInt((int) (hsb[2] * MAX_VALUE_SB));
-                button.setMessage(useRGBText);
-            }
-        }).bounds(rowX + hexBoxW + 8, rowY, toggleW, WIDGET_HEIGHT).build();
-
-        if (!isRGBSelected) {
-            redSlider.visible = false; greenSlider.visible = false; blueSlider.visible = false;
-        } else {
-            hueSlider.visible = false; saturationSlider.visible = false; brightnessSlider.visible = false;
-        }
-
-        addRenderableWidget(redSlider); addRenderableWidget(greenSlider); addRenderableWidget(blueSlider);
-        addRenderableWidget(hueSlider); addRenderableWidget(saturationSlider); addRenderableWidget(brightnessSlider);
+        addRenderableWidget(hueSlider);
+        addRenderableWidget(saturationSlider);
+        addRenderableWidget(brightnessSlider);
+        addRenderableWidget(hueStrip);
+        addRenderableWidget(squarePicker);
+        addRenderableWidget(concretePreview);
         addRenderableWidget(hexBox);
-        addRenderableWidget(toggleButton);
 
         valuesInitialized = true;
+        refresh();
+    }
+
+    private void updateFromHex() {
+        try {
+            String raw = hexBox.getValue();
+            if (raw.contains("#")) raw = raw.substring(1);
+            if (raw.length() < 6) return;
+            Color color = new Color(Integer.parseInt(raw, 16));
+            float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue());
+            this.hue = hsb[0] * MAX_VALUE_HUE;
+            this.saturation = hsb[1] * MAX_VALUE_SB;
+            this.brightness = hsb[2] * MAX_VALUE_SB;
+            refresh();
+        } catch (NumberFormatException ignored) {
+        }
+    }
+
+    private void refresh() {
+        int rgb = getColor();
+        Color c = new Color(rgb);
+        int r = c.getRed();
+        int g = c.getGreen();
+        int b = c.getBlue();
+
+        if (hexBox != null && !hexBox.isFocused()) {
+            hexBox.setValue("#" + Integer.toHexString(rgb).substring(2).toUpperCase(Locale.ENGLISH));
+        }
+        this.colorName = chineseNames ? ColorNames.nearestChinese(r, g, b) : ColorNames.nearestEnglish(r, g, b);
+
+        if (concretePreview != null) concretePreview.setColor(rgb);
+        if (squarePicker != null) {
+            squarePicker.setHue((float) hue);
+            squarePicker.setValues((float) saturation, (float) brightness);
+        }
+        if (hueStrip != null) hueStrip.setHue((float) hue);
+        if (hueSlider != null) hueSlider.setValueInt((int) hue);
+        if (saturationSlider != null) saturationSlider.setValueInt((int) saturation);
+        if (brightnessSlider != null) brightnessSlider.setValueInt((int) brightness);
     }
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
+        renderHeader(guiGraphics);
         super.extractRenderState(guiGraphics, mouseX, mouseY, a);
-
-        int baseX = this.width / 2 - PANEL_WIDTH / 2;
-        int panelY = this.height / 2 - 80;
-
-        // Color preview panel
-        guiGraphics.fill(baseX - 1, panelY - 1, baseX + PANEL_WIDTH + 1, panelY + PANEL_HEIGHT + 1, 0xFF444444);
-        guiGraphics.fill(baseX, panelY, baseX + PANEL_WIDTH, panelY + PANEL_HEIGHT, 0xFF000000);
-        guiGraphics.fill(baseX + 1, panelY + 1, baseX + PANEL_WIDTH - 1, panelY + PANEL_HEIGHT - 1, getColor());
-
-        // Draw labels and values for visible sliders
-        int y = panelY + PANEL_HEIGHT + 10;
-        if (isRGBSelected) {
-            drawLabel(guiGraphics, baseX, y, redText); y += SPACING;
-            drawLabel(guiGraphics, baseX, y, greenText); y += SPACING;
-            drawLabel(guiGraphics, baseX, y, blueText);
-        } else {
-            drawLabel(guiGraphics, baseX, y, hueText); y += SPACING;
-            drawLabel(guiGraphics, baseX, y, saturationText); y += SPACING;
-            drawLabel(guiGraphics, baseX, y, brightnessText);
-        }
     }
 
-    private void drawLabel(GuiGraphicsExtractor guiGraphics, int baseX, int y, Component label) {
-        int labelY = y + (WIDGET_HEIGHT - 9) / 2;
-        guiGraphics.text(font, label, baseX + 2, labelY, 0xFFFFFFFF, true);
+    private void renderHeader(GuiGraphicsExtractor guiGraphics) {
+        guiGraphics.fill(barX, barY, barX + PANEL_WIDTH, barY + BAR_HEIGHT, getColor());
+        guiGraphics.text(font, colorName, nameX, nameY, 0xFFFFFFFF, true);
     }
 
     @Override
     public void onClose() {
-        ClientPlayNetworking.send(new PaintBucketSyncPayload(getColor(), isRGBSelected));
+        ClientPlayNetworking.send(new PaintBucketSyncPayload(getColor(), false));
         super.onClose();
     }
 }

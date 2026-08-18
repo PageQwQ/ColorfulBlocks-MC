@@ -8,15 +8,19 @@ import pageqwq.colorbmc.client.gui.ScreenUtils;
 import pageqwq.colorbmc.client.gui.screen.ColorSelectScreen;
 import pageqwq.colorbmc.util.Color;
 
-import java.util.Locale;
 import java.util.function.Function;
 
 public class ColorSlider extends AbstractSliderButton {
     private final SliderType type;
     private final double minValue;
     private final double maxValue;
+    private Runnable onChange = () -> {};
 
     private static final int HANDLE_WIDTH = 8;
+
+    public void setOnChange(Runnable onChange) {
+        this.onChange = onChange;
+    }
 
     public ColorSlider(
         int x, int y, int width, int height, Component label,
@@ -34,13 +38,7 @@ public class ColorSlider extends AbstractSliderButton {
 
     @Override
     protected void applyValue() {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.screen instanceof ColorSelectScreen screen && screen.hexBox != null
-            && screen.redSlider != null && screen.greenSlider != null && screen.blueSlider != null) {
-            screen.hexBox.setValue("#" + Integer.toHexString(
-                new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB()
-            ).substring(2).toUpperCase(Locale.ENGLISH));
-        }
+        this.onChange.run();
     }
 
     public int getValueInt() {
@@ -62,18 +60,9 @@ public class ColorSlider extends AbstractSliderButton {
         Minecraft minecraft = Minecraft.getInstance();
         int x = this.getX(), y = this.getY(), w = this.width, h = this.height;
 
-        // Draw track border (1px)
-        guiGraphics.fill(x, y, x + w, y + 1, 0xFF444444);
-        guiGraphics.fill(x, y + h - 1, x + w, y + h, 0xFF444444);
-        guiGraphics.fill(x, y, x + 1, y + h, 0xFF444444);
-        guiGraphics.fill(x + w - 1, y, x + w, y + h, 0xFF444444);
-
         // Draw gradient background
         if (minecraft.screen instanceof ColorSelectScreen screen) {
             switch (type) {
-                case RED: renderRedBackground(guiGraphics, screen); break;
-                case GREEN: renderGreenBackground(guiGraphics, screen); break;
-                case BLUE: renderBlueBackground(guiGraphics, screen); break;
                 case HUE: renderHueBackground(guiGraphics, screen); break;
                 case SATURATION: renderSaturationBackground(guiGraphics, screen); break;
                 case BRIGHTNESS: renderBrightnessBackground(guiGraphics, screen); break;
@@ -91,27 +80,6 @@ public class ColorSlider extends AbstractSliderButton {
         String valueStr = Integer.toString(getValueInt());
         int valueWidth = minecraft.font.width(valueStr);
         guiGraphics.text(minecraft.font, valueStr, x + w - valueWidth - 4, y + (h - 9) / 2, 0xFFFFFFFF, true);
-    }
-
-    private void renderRedBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
-        if (screen.greenSlider == null || screen.blueSlider == null) return;
-        int leftColor = new Color(0x00, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
-        int rightColor = new Color(0xFF, screen.greenSlider.getValueInt(), screen.blueSlider.getValueInt()).getRGB();
-        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
-    }
-
-    private void renderGreenBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
-        if (screen.redSlider == null || screen.blueSlider == null) return;
-        int leftColor = new Color(screen.redSlider.getValueInt(), 0x00, screen.blueSlider.getValueInt()).getRGB();
-        int rightColor = new Color(screen.redSlider.getValueInt(), 0xFF, screen.blueSlider.getValueInt()).getRGB();
-        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
-    }
-
-    private void renderBlueBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
-        if (screen.redSlider == null || screen.greenSlider == null) return;
-        int leftColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0x00).getRGB();
-        int rightColor = new Color(screen.redSlider.getValueInt(), screen.greenSlider.getValueInt(), 0xFF).getRGB();
-        ScreenUtils.fillGradient(guiGraphics, this.getX() + 1, this.getY() + 1, this.getX() + this.width - 1, this.getY() + this.height - 1, leftColor, rightColor);
     }
 
     private void renderHueBackground(GuiGraphicsExtractor guiGraphics, ColorSelectScreen screen) {
