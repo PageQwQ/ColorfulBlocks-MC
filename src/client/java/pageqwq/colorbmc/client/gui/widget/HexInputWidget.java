@@ -127,7 +127,7 @@ public class HexInputWidget extends AbstractWidget {
         int y = this.getY();
         int w = this.width;
         int h = this.height;
-        graphics.fill(x, y, x + w, y + h, this.isFocused() ? 0x80333333 : 0x66333333);
+        graphics.fill(x, y, x + w, y + h, this.isFocused() ? 0xE8333333 : 0xC8333333);
         int textX = x + 2;
         int textY = y + (h - 9) / 2;
         graphics.text(Minecraft.getInstance().font, this.text, textX, textY, 0xFFFFFFFF, false);
