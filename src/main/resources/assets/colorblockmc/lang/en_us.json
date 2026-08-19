@@ -14,5 +14,6 @@
   "gui.colorblockmc.brightness": "Brightness",
   "colorblockmc.pack_title": "Stained Blocks Implementation Pack",
   "colorblockmc.pack_description": "Dynamically generated textures for Colorful Blocks",
-  "config.jade.plugin_colorblockmc.rgb_block": "RGB Block Info"
+  "config.jade.plugin_colorblockmc.rgb_block_info": "RGB Block Info",
+  "config.jade.plugin_colorblockmc.rgb_block_icon": "RGB Block Icon"
 }

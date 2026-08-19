@@ -15,7 +15,7 @@ public class RGBBlockInfoProvider implements IBlockComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return ColorBlockJadePlugin.UID;
+        return ColorBlockJadePlugin.UID_INFO;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class RGBBlockInfoProvider implements IBlockComponentProvider {
         }
         tooltip.remove(JadeIds.CORE_OBJECT_NAME);
         tooltip.add(0, IThemeHelper.get().title(Component.translatable(accessor.getBlock().getDescriptionId())));
-        String hex = String.format("#%06x", color & 0xFFFFFF);
+        String hex = String.format("#%06X", color & 0xFFFFFF);
         tooltip.add(Component.literal("█").withStyle(style -> style.withColor(color & 0xFFFFFF))
                 .append(" ")
                 .append(hex));

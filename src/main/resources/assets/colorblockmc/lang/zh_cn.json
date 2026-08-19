@@ -14,5 +14,6 @@
   "gui.colorblockmc.brightness": "亮度",
   "colorblockmc.pack_title": "染色方块实现材质包",
   "colorblockmc.pack_description": "彩色方块的动态生成纹理包",
-  "config.jade.plugin_colorblockmc.rgb_block": "RGB 方块信息"
+  "config.jade.plugin_colorblockmc.rgb_block_info": "RGB 方块信息",
+  "config.jade.plugin_colorblockmc.rgb_block_icon": "RGB 方块图标"
 }

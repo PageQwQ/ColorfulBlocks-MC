@@ -10,7 +10,8 @@ import snownee.jade.api.WailaPlugin;
 
 @WailaPlugin
 public class ColorBlockJadePlugin implements IWailaPlugin {
-    public static final ResourceLocation UID = ResourceLocation.fromNamespaceAndPath("colorblockmc", "rgb_block");
+    public static final ResourceLocation UID_INFO = ResourceLocation.fromNamespaceAndPath("colorblockmc", "rgb_block_info");
+    public static final ResourceLocation UID_ICON = ResourceLocation.fromNamespaceAndPath("colorblockmc", "rgb_block_icon");
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {

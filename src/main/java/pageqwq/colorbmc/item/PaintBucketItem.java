@@ -45,8 +45,7 @@ public class PaintBucketItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         int colorValue = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
-        pageqwq.colorbmc.util.Color color = new pageqwq.colorbmc.util.Color(colorValue);
-        String hex = "#" + Integer.toHexString(color.getRGB()).substring(2);
+        String hex = String.format("#%06X", colorValue & 0xFFFFFF);
         Component hexComponent;
         if (colorValue == -1) {
             hexComponent = Component.literal(hex);
