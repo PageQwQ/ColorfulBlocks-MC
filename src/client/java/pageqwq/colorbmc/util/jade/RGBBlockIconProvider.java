@@ -18,7 +18,7 @@ public class RGBBlockIconProvider implements IBlockComponentProvider {
 
     @Override
     public Identifier getUid() {
-        return ColorBlockJadePlugin.UID;
+        return ColorBlockJadePlugin.UID_ICON;
     }
 
     @Override

@@ -42,6 +42,7 @@ public class ColorSelectScreen extends Screen {
     private String colorName = "";
     private final boolean chineseNames;
     private boolean valuesInitialized = false;
+    private boolean updatingHex = false;
 
     private int barX, barY, sliderX, sliderY, sliderW, squareX, squareY, stripX, stripY;
     private int hexX, hexY, nameX, nameY;
@@ -139,6 +140,7 @@ public class ColorSelectScreen extends Screen {
         if (hexInput == null) {
             hexInput = new HexInputWidget(hexX, hexY, hexBoxW, WIDGET_HEIGHT, text -> {
                 if (!valuesInitialized) return;
+                updatingHex = true;
                 try {
                     String raw = text.contains("#") ? text.substring(1) : text;
                     if (raw.length() < 6) return;
@@ -149,6 +151,8 @@ public class ColorSelectScreen extends Screen {
                     this.brightness = hsb[2] * MAX_VALUE_SB;
                     refresh();
                 } catch (NumberFormatException ignored) {
+                } finally {
+                    updatingHex = false;
                 }
             });
         } else { hexInput.setX(hexX); hexInput.setY(hexY); }
@@ -172,8 +176,8 @@ public class ColorSelectScreen extends Screen {
         int g = c.getGreen();
         int b = c.getBlue();
 
-        if (hexInput != null && !hexInput.isFocused()) {
-            hexInput.setText("#" + Integer.toHexString(rgb).substring(2).toUpperCase(Locale.ENGLISH));
+        if (hexInput != null && !updatingHex) {
+            hexInput.setText(String.format("#%06X", rgb & 0xFFFFFF));
         }
         this.colorName = chineseNames ? ColorNames.nearestChinese(r, g, b) : ColorNames.nearestEnglish(r, g, b);
 

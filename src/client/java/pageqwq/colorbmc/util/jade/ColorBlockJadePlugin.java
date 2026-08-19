@@ -10,7 +10,8 @@ import snownee.jade.api.WailaPlugin;
 
 @WailaPlugin
 public class ColorBlockJadePlugin implements IWailaPlugin {
-    public static final Identifier UID = Identifier.fromNamespaceAndPath("colorblockmc", "rgb_block");
+    public static final Identifier UID_INFO = Identifier.fromNamespaceAndPath("colorblockmc", "rgb_block_info");
+    public static final Identifier UID_ICON = Identifier.fromNamespaceAndPath("colorblockmc", "rgb_block_icon");
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
