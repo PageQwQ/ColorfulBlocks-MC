@@ -91,7 +91,7 @@ When you press Shift + Right Click and aim at something other than Stained Concr
 
 <img alt="GUI" width=500 src="DescriptionImages/GUI.png">
 
-This interface features a color preview area, a hexadecimal color input (and preview) box, a color name display, HSB sliders, and a square colorpicker. It allows you to select colors intuitively while maintaining precise control.
+This interface displays a color alongside its appearance on dyed concrete; it shows the color name based on the entered HEX value and allows for color adjustment using HSB sliders and a square color picker.
 
 ## Paint Bucket Controls
 
