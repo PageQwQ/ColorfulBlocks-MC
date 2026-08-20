@@ -91,7 +91,7 @@ When you press Shift + Right Click and aim at something other than Stained Concr
 
 <img alt="GUI" width=500 src="DescriptionImages/GUI.png">
 
-This interface features a color preview area, a hexadecimal color input (and preview) box, a color name display, HSB sliders, and a square colorpicker. It allows you to select colors intuitively while maintaining precise control.
+This interface displays a color alongside its appearance on dyed concrete; it shows the color name based on the entered HEX value and allows for color adjustment using HSB sliders and a square color picker.
 
 ## Paint Bucket Controls
 
@@ -122,32 +122,3 @@ Example: `/givec #FF6B35 16 true` gives you 16 Glowing Stained Concrete blocks c
 When you install this mod along with [ModernUI](https://modrinth.com/mod/modern-ui), the tooltip box will match the color of the stained concrete or bucket.
 
 <img src="DescriptionImages/additional.png" />
-
-## Requirements
-
-| Dependency | Version |
-|---|---|
-| [Fabric Loader](https://fabricmc.net/) | `>=0.19.3` |
-| [Fabric API](https://modrinth.com/mod/fabric-api) | `*` |
-| Minecraft | `26.1.2` |
-| Java | `>=25` |
-
-## Installation
-
-1. Install **Fabric Loader** (follow instructions on [fabricmc.net](https://fabricmc.net/)).
-2. Download **Fabric API** and place it in your `mods/` folder.
-3. Download the latest **ColorfulBlocks** jar from the [Releases](https://github.com/PageQwQ/ColorfulBlocks-MC/releases) page and put it in your `mods/` folder.
-4. Launch the game.
-
-## Building from Source
-
-```sh
-git clone https://github.com/PageQwQ/ColorfulBlocks-MC.git
-cd ColorfulBlocks-MC
-JAVA_HOME=/Library/Java/JavaVirtualMachines/liberica-jdk-25.jdk/Contents/Home ./gradlew build
-```
-
-The built jar will be in `build/libs/`.
-
-> **Note**: Minecraft 26.1.2 requires **Java 25** to build. The mod uses the new `YY.M.P` versioning scheme (26 = 2026, 1 = first drop, 2 = hotfix).
-
