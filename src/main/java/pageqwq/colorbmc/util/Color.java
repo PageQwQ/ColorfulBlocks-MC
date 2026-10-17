@@ -1,50 +1,10 @@
 package pageqwq.colorbmc.util;
 
-import net.minecraft.world.level.material.MapColor;
-
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.stream.Stream;
-
 public class Color {
     private final int value;
 
-    public Color(int r, int g, int b) {
-        this(r, g, b, 255);
-    }
-
-    public Color(int r, int g, int b, int a) {
-        value = ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
-        testColorValueRange(r, g, b, a);
-    }
-
     public Color(int rgb) {
         value = 0xff000000 | rgb;
-    }
-
-    private void testColorValueRange(int r, int g, int b, int a) {
-        boolean rangeError = false;
-        String badComponentString = "";
-
-        if (a < 0 || a > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Alpha";
-        }
-        if (r < 0 || r > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Red";
-        }
-        if (g < 0 || g > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Green";
-        }
-        if (b < 0 || b > 255) {
-            rangeError = true;
-            badComponentString = badComponentString + " Blue";
-        }
-        if (rangeError) {
-            throw new IllegalArgumentException("Color parameter outside of expected range:" + badComponentString);
-        }
     }
 
     public int getRed() {
@@ -144,32 +104,5 @@ public class Color {
             }
         }
         return 0xff000000 | (r << 16) | (g << 8) | b;
-    }
-
-    public static Color getHSBColor(float h, float s, float b) {
-        return new Color(HSBtoRGB(h, s, b));
-    }
-
-    public float[] getRGBColorComponents() {
-        float[] components = new float[3];
-        components[0] = ((float) getRed()) / 255f;
-        components[1] = ((float) getGreen()) / 255f;
-        components[2] = ((float) getBlue()) / 255f;
-        return components;
-    }
-
-    public static int squaredColorDistance(int rgb1, int rgb2) {
-        int dr = (rgb2 >> 16 & 0xFF) - (rgb1 >> 16 & 0xFF);
-        int dg = (rgb2 >> 8 & 0xFF) - (rgb1 >> 8 & 0xFF);
-        int db = (rgb2 & 0xFF) - (rgb1 & 0xFF);
-        return dr * dr + dg * dg + db * db;
-    }
-
-    public static MapColor getNearestMapColor(int rgb) {
-        return Stream.of(MapColor.MATERIAL_COLORS)
-            .filter(Objects::nonNull)
-            .filter(mapColor -> mapColor != MapColor.NONE)
-            .min(Comparator.comparing(mapColor -> Color.squaredColorDistance(mapColor.col, rgb)))
-            .orElse(MapColor.NONE);
     }
 }

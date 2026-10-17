@@ -1,0 +1,45 @@
+{
+  "parent": "colorblockmc:concrete_revolution",
+  "display": {
+    "description": [
+      {
+        "translate": "advancements.colorblockmc.streamer_first_lesson.description"
+      },
+      {
+        "text": "\n"
+      },
+      {
+        "translate": "advancements.colorblockmc.streamer_first_lesson.flavor",
+        "color": "gray",
+        "italic": true
+      }
+    ],
+    "icon": {
+      "id": "colorblockmc:concrete",
+      "components": {
+        "colorblockmc:color": 65280
+      }
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.streamer_first_lesson.title"
+    }
+  },
+  "criteria": {
+    "green": {
+      "conditions": {
+        "type": "dye",
+        "color": 65280
+      },
+      "trigger": "colorblockmc:color_action"
+    }
+  },
+  "requirements": [
+    [
+      "green"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

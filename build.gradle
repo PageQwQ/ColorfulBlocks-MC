@@ -13,37 +13,24 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "net.fabricmc:fabric-loom:1.7-SNAPSHOT"
+        // Pinned release, not a SNAPSHOT: a moving buildscript dependency makes the same source
+        // produce different build output on different days.
+        classpath "net.fabricmc:fabric-loom:1.7.4"
     }
 }
 
 apply plugin: 'fabric-loom'
 apply plugin: 'java'
 
-// Auto-increment patch version on each build
-def autoIncrementVersion() {
-    def propsFile = file('gradle.properties')
-    def props = new Properties()
-    props.load(propsFile.newReader())
-    def oldVersion = props.getProperty('mod_version')
-    def parts = oldVersion.split('\\.').collect { it.toInteger() }
-    // Increment patch, carry into minor at 10
-    parts[2] = parts[2] + 1
-    if (parts[2] >= 10) {
-        parts[2] = 0
-        parts[1] = parts[1] + 1
-    }
-    def newVersion = parts.join('.')
-    props.setProperty('mod_version', newVersion)
-    props.store(propsFile.newWriter(), null)
-    return newVersion
-}
-
-def isBuild = gradle.startParameter.taskNames.any {
-    it in ['build', 'jar', 'assemble']
-} || gradle.startParameter.taskNames.any { it.startsWith('build') }
-def currentModVersion = isBuild ? autoIncrementVersion() : project.mod_version
-version = "${minecraft_version}-${currentModVersion}-fabric-${(System.currentTimeMillis() / 1000).intValue()}"
+// Version comes from gradle.properties ONLY. It is never written back by a build.
+//
+// This used to auto-increment `mod_version` on every build, at configuration time, so it also fired on
+// `--dry-run` and on builds that later FAILED. The result was a version number consumed by "I thought
+// about building" rather than by "I shipped", drifting away from the released tags.
+//
+// mod_version must stay IDENTICAL to the RGBBlocks-Fabric (26.1.2) branch, because one GitHub release
+// carries both jars. Bump both in the same release commit.
+version = "${minecraft_version}-${project.mod_version}-fabric-${(System.currentTimeMillis() / 1000).intValue()}"
 group = project.maven_group
 base.archivesName = project.archives_base_name
 
@@ -63,7 +50,14 @@ loom {
         }
     }
 
-    accessWidenerPath = file("src/main/resources/colorblockmc.accesswidener")
+    runs {
+        gameTest {
+            server()
+            programArgs "--nogui"
+            property "fabric-api.gametest", "true"
+            property "fabric-api.gametest.report-file", "${project.buildDir}/gametest-results.xml"
+        }
+    }
 }
 
 repositories {
@@ -85,6 +79,7 @@ dependencies {
     mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-gametest-api-v1:2.0.5+6fc22b9919"
     modCompileOnly "maven.modrinth:jade:15.10.6+fabric"
     modRuntimeOnly "maven.modrinth:jade:15.10.6+fabric"
 }
@@ -100,4 +95,11 @@ processResources {
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
     it.options.encoding = 'UTF-8'
+}
+
+jar {
+    // The GameTest classes stay in the jar on purpose. fabric.mod.json declares the "fabric-gametest"
+    // entrypoint pointing at them, so excluding them here would ship a jar whose own metadata names a
+    // class that is not in it. The entrypoint is only resolved when fabric-gametest-api-v1 is present,
+    // so ordinary players are unaffected. Cost: ~4 KB.
 }

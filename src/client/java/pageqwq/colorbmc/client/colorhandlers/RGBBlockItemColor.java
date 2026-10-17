@@ -9,7 +9,7 @@ public class RGBBlockItemColor implements ItemColor {
     @Override
     public int getColor(ItemStack stack, int tintIndex) {
         if (stack.getItem() instanceof RGBBlockItem) {
-            return stack.getOrDefault(DataComponentRegistry.COLOR, -1);
+            return stack.getOrDefault(DataComponentRegistry.COLOR, -1) | 0xFF000000;
         }
         return -1;
     }

@@ -5,7 +5,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.Block;
 import pageqwq.colorbmc.RGBBlocks;
 import pageqwq.colorbmc.item.CleanAgentItem;
@@ -21,12 +20,18 @@ public class ItemRegistry {
     public static final Item PAINT_BUCKET = register(
         "paint_bucket", new PaintBucketItem(new Item.Properties().durability(500)
             .component(DataComponentRegistry.COLOR, -1)
-            .component(DataComponentRegistry.RGB_SELECTED, false)
-            .component(DataComponents.DYED_COLOR, new DyedItemColor(-1, true)))
+            .component(DataComponentRegistry.RGB_SELECTED, false))
     );
 
     public static final Item CLEAN_AGENT = register(
         "clean_agent", new CleanAgentItem(new Item.Properties().durability(120))
+    );
+
+    public static final Item PAINT_BUCKET_THROW = Registry.register(
+        BuiltInRegistries.ITEM,
+        ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "paint_bucket_throw"),
+        new Item(new Item.Properties()
+            .component(DataComponentRegistry.COLOR, 0x4466FF))
     );
 
     static void registerBlockItem(String name, Block block) {
@@ -34,8 +39,7 @@ public class ItemRegistry {
             BuiltInRegistries.ITEM,
             ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, name),
             new RGBBlockItem(block, new Item.Properties()
-                .component(DataComponentRegistry.COLOR, -1)
-                .component(DataComponents.DYED_COLOR, new DyedItemColor(-1, true)))
+                .component(DataComponentRegistry.COLOR, -1))
         );
         ALL_ITEMS.add(item);
     }

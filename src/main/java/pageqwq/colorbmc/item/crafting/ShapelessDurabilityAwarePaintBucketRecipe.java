@@ -9,7 +9,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -97,7 +96,6 @@ public class ShapelessDurabilityAwarePaintBucketRecipe extends ShapelessRecipe {
         }
         ItemStack result = super.assemble(input, provider);
         result.set(DataComponentRegistry.COLOR, color);
-        result.set(net.minecraft.core.component.DataComponents.DYED_COLOR, new DyedItemColor(color, true));
         return result;
     }
 }

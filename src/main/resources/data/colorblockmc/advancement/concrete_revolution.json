@@ -1,0 +1,31 @@
+{
+  "parent": "colorblockmc:give_you_some_color",
+  "display": {
+    "description": {
+      "translate": "advancements.colorblockmc.concrete_revolution.description"
+    },
+    "icon": {
+      "id": "colorblockmc:concrete"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.concrete_revolution.title"
+    }
+  },
+  "criteria": {
+    "dyed": {
+      "conditions": {
+        "type": "dye"
+      },
+      "trigger": "colorblockmc:color_action"
+    }
+  },
+  "requirements": [
+    [
+      "dyed"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "colorblockmc:concrete_revolution",
+  "display": {
+    "description": {
+      "translate": "advancements.colorblockmc.throw_it.description"
+    },
+    "icon": {
+      "id": "colorblockmc:paint_bucket_throw"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.throw_it.title"
+    }
+  },
+  "criteria": {
+    "thrown_dye": {
+      "conditions": {
+        "type": "dye",
+        "thrown": true
+      },
+      "trigger": "colorblockmc:color_action"
+    }
+  },
+  "requirements": [
+    [
+      "thrown_dye"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

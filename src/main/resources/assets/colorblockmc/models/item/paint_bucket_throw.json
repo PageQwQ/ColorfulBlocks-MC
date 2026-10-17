@@ -1,0 +1,1 @@
+{ "parent": "minecraft:item/generated", "textures": { "layer0": "colorblockmc:item/paint_bucket_throw", "layer1": "colorblockmc:item/paint_bucket_throw_overlay" } }

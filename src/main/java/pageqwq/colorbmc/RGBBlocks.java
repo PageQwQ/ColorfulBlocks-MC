@@ -7,7 +7,9 @@ import pageqwq.colorbmc.dispenser.DispensePaintBucketBehaviour;
 import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
 import pageqwq.colorbmc.util.registries.CreativeTabRegistry;
+import pageqwq.colorbmc.util.registries.CriterionRegistry;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.util.registries.EntityRegistry;
 import pageqwq.colorbmc.util.registries.ItemRegistry;
 import pageqwq.colorbmc.util.registries.RecipeSerializerRegistry;
 import pageqwq.colorbmc.util.network.NetworkHandler;
@@ -24,6 +26,8 @@ public class RGBBlocks implements ModInitializer {
         BlockRegistry.register();
         ItemRegistry.register();
         BlockEntityRegistry.register();
+        EntityRegistry.register();
+        CriterionRegistry.register();
         RecipeSerializerRegistry.register();
         CreativeTabRegistry.register();
 

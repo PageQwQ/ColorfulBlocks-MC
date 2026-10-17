@@ -1,0 +1,35 @@
+{
+  "parent": "colorblockmc:concrete_revolution",
+  "display": {
+    "description": {
+      "translate": "advancements.colorblockmc.light_it_up.description"
+    },
+    "icon": {
+      "id": "colorblockmc:glowing_concrete"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.light_it_up.title"
+    }
+  },
+  "criteria": {
+    "obtain_glowing": {
+      "conditions": {
+        "items": [
+          {
+            "items": "colorblockmc:glowing_concrete"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_glowing"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

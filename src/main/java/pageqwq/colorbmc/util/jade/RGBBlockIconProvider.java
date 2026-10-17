@@ -3,7 +3,6 @@ package pageqwq.colorbmc.util.jade;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import org.jetbrains.annotations.Nullable;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 import snownee.jade.api.BlockAccessor;
@@ -33,7 +32,6 @@ public class RGBBlockIconProvider implements IBlockComponentProvider {
         }
         ItemStack stack = new ItemStack(accessor.getBlock());
         stack.set(DataComponentRegistry.COLOR, color);
-        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, true));
         return IElementHelper.get().item(stack);
     }
 }

@@ -23,7 +23,7 @@ public class RGBBlockColor implements BlockColor {
             }
         }
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
-            return rgbBlockEntity.getColor();
+            return rgbBlockEntity.getColor() | 0xFF000000;
         } else {
             return -1;
         }

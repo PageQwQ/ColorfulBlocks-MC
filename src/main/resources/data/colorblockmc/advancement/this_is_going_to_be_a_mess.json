@@ -1,0 +1,43 @@
+{
+  "parent": "colorblockmc:throw_it",
+  "display": {
+    "description": [
+      {
+        "translate": "advancements.colorblockmc.this_is_going_to_be_a_mess.description"
+      },
+      {
+        "text": "\n"
+      },
+      {
+        "translate": "advancements.colorblockmc.this_is_going_to_be_a_mess.flavor",
+        "color": "gray",
+        "italic": true
+      }
+    ],
+    "icon": {
+      "id": "colorblockmc:paint_bucket_throw"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.this_is_going_to_be_a_mess.title"
+    }
+  },
+  "criteria": {
+    "thrown_many": {
+      "conditions": {
+        "type": "dye",
+        "thrown": true,
+        "min_count": 50
+      },
+      "trigger": "colorblockmc:color_action"
+    }
+  },
+  "requirements": [
+    [
+      "thrown_many"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "colorblockmc:give_you_some_color",
+  "display": {
+    "description": {
+      "translate": "advancements.colorblockmc.back_to_true_colors.description"
+    },
+    "icon": {
+      "id": "colorblockmc:clean_agent"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.back_to_true_colors.title"
+    }
+  },
+  "criteria": {
+    "obtain_cleaner": {
+      "conditions": {
+        "items": [
+          {
+            "items": "colorblockmc:clean_agent"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_cleaner"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

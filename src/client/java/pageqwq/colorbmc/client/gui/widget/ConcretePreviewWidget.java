@@ -11,7 +11,9 @@ import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
 public class ConcretePreviewWidget extends AbstractWidget {
     private static final int ITEM_SIZE = 16;
-    private int color;
+    /** "No color picked" — keeps the preview untinted before the screen feeds it a real color. */
+    private static final int NO_COLOR = -1;
+    private int color = NO_COLOR;
     private ItemStack stack;
 
     public ConcretePreviewWidget(int x, int y, int width, int height) {
