@@ -1,0 +1,52 @@
+{
+  "parent": "colorblockmc:streamer_first_lesson",
+  "display": {
+    "description": {
+      "translate": "advancements.colorblockmc.back_to_basics.description"
+    },
+    "icon": {
+      "id": "colorblockmc:concrete"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.back_to_basics.title"
+    }
+  },
+  "criteria": {
+    "red": {
+      "conditions": {
+        "type": "dye",
+        "color": 16711680
+      },
+      "trigger": "colorblockmc:color_action"
+    },
+    "green": {
+      "conditions": {
+        "type": "dye",
+        "color": 65280
+      },
+      "trigger": "colorblockmc:color_action"
+    },
+    "blue": {
+      "conditions": {
+        "type": "dye",
+        "color": 255
+      },
+      "trigger": "colorblockmc:color_action"
+    }
+  },
+  "requirements": [
+    [
+      "red"
+    ],
+    [
+      "green"
+    ],
+    [
+      "blue"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

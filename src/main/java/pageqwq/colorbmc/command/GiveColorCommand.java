@@ -8,14 +8,13 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.block.Block;
+import pageqwq.colorbmc.util.ColoredItems;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
@@ -38,7 +37,7 @@ public class GiveColorCommand {
     }
 
     private static int give(CommandSourceStack source, String hex, int count, boolean glowing) throws CommandSyntaxException {
-        int color = 0xFF000000 | parseHex(hex);
+        int color = parseHex(hex);
         ServerPlayer player = source.getPlayerOrException();
         Block block = glowing ? BlockRegistry.RGB_GLOWING_CONCRETE : BlockRegistry.RGB_CONCRETE;
         Item item = block.asItem();
@@ -48,8 +47,7 @@ public class GiveColorCommand {
             int stackSize = Math.min(item.getDefaultMaxStackSize(), remaining);
             remaining -= stackSize;
             ItemStack stack = new ItemStack(item, stackSize);
-            stack.set(DataComponentRegistry.COLOR, color);
-            stack.set(DataComponents.DYED_COLOR, new DyedItemColor(color));
+            applyColor(stack, color);
             if (!player.getInventory().add(stack) || !stack.isEmpty()) {
                 ItemEntity itemEntity = player.drop(stack, false);
                 if (itemEntity != null) {
@@ -64,13 +62,26 @@ public class GiveColorCommand {
         return count;
     }
 
-    private static int parseHex(String hex) throws CommandSyntaxException {
+    /**
+     * Marks a stack as carrying {@code color}, using the same two components a mined drop gets.
+     *
+     * <p>{@code color} must be opaque ARGB. A bare 24-bit value here would compare unequal to the
+     * {@code 0xFFRRGGBB} a block entity stores, which is exactly the comparison
+     * {@link pageqwq.colorbmc.item.PaintBucketItem#useOn} and the durability-aware recipe rely on.
+     */
+    public static void applyColor(ItemStack stack, int color) {
+        ColoredItems.applyColor(stack, color);
+    }
+
+    /** Parses {@code RRGGBB} (with or without the leading {@code #}) into opaque ARGB. */
+    public static int parseHex(String hex) throws CommandSyntaxException {
         String s = hex.startsWith("#") ? hex.substring(1) : hex;
         if (s.length() != 6) {
             throw INVALID_COLOR.create(hex);
         }
         try {
-            return Integer.parseInt(s, 16);
+            // Opaque ARGB, matching Color(int) / Color.getRGB() and everything the GUI produces.
+            return Integer.parseInt(s, 16) | 0xFF000000;
         } catch (NumberFormatException e) {
             throw INVALID_COLOR.create(hex);
         }

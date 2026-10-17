@@ -5,7 +5,8 @@
       "function": "minecraft:copy_components",
       "source": "block_entity",
       "include": [
-        "colorblockmc:color"
+        "colorblockmc:color",
+        "minecraft:dyed_color"
       ]
     }
   ],

@@ -1,0 +1,37 @@
+{
+  "parent": "colorblockmc:back_to_true_colors",
+  "display": {
+    "description": {
+      "translate": "advancements.colorblockmc.purify_activate.description"
+    },
+    "icon": {
+      "id": "colorblockmc:concrete",
+      "components": {
+        "colorblockmc:color": 0
+      }
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.purify_activate.title"
+    }
+  },
+  "criteria": {
+    "clean_black": {
+      "conditions": {
+        "type": "clean",
+        "color": 16777215,
+        "was_color": 0,
+        "changed": true
+      },
+      "trigger": "colorblockmc:color_action"
+    }
+  },
+  "requirements": [
+    [
+      "clean_black"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

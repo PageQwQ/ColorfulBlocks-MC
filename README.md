@@ -9,116 +9,321 @@
 
 [![get on modrinth](https://img.shields.io/badge/Get%20on-Modrinth-02AF5C?logo=modrinth)](https://modrinth.com/project/VuBMNaL4)
 
-**ColorfulBlocks** is a Minecraft mod that lets you color blocks in **16,777,216 (24-bit RGB) colors** using a Paint Bucket tool. Right-click any vanilla concrete block to turn it into a fully customizable colored block, and use the color picker to create any shade you want.
-
-The idea for this mod comes from [PlatinPython's RGBBlocks](https://github.com/PlatinPython/RGBBlocks). This version is built for the **Fabric Loader**.
-
 </center></div>
 
-## Features
+## The design in one idea
 
-- **Full RGB Color**: Choose from over 16 million colors using the color picker GUI (RGB sliders, HSB sliders, or hex input).
-- **Paint Bucket**: Right-click on concrete to paint it. Shift + right-click on a painted block to copy its color. Shift + right-click in air to open the color picker.
-- **Color Retention**: Color data is preserved when mined.
-- **`/givec` Command**: Give yourself a stained concrete block of any hex color directly (e.g. `/givec #FF6B35`). Requires cheats/operator permission.
+Vanilla concrete has 16 colors because each color is a separate block. This mod has **one** block and
+stores the color as **data**:
 
-## Items & Blocks
+- `RGBBlockEntity` holds a single `int color`.
+- A data component `colorblockmc:color` carries that value on the block *item* and on the block entity's
+  implicit components, so color survives mining, dropping, and `copy_components` in the loot table.
 
-<div align="center"><center>
+Everything else — the paint bucket, the thrown bucket, the clean agent, the color picker, the Jade
+overlay, the tooltip tint — is a consumer or producer of that one integer. Adding a color is never a
+registration; it is a value.
 
-<img alt="paint_bucket" width=64 src="DescriptionImages/colorblockmc__paint_bucket.png">   
-<img alt="craft" height=64 src="DescriptionImages/craft.png">
+**The color convention is opaque ARGB** (`0xFFRRGGBB`). `util/Color` ORs `0xFF` in on construction and
+`Color.HSBtoRGB` returns it that way, so everything read back through `Color.getRGB()` — the block entity,
+every tint — is opaque. `-1` means "no color picked yet" and is the default on the item component. Two
+writers still store a bare 24-bit value (`/givec`, and the hidden throw item's default component), which is
+why comparisons against a raw component mask with `& 0xFFFFFF`. See *Conventions and gotchas*.
 
-### Paint Bucket
+## Bootstrap
 
-</center></div>
+`RGBBlocks.onInitialize()` runs the registries in dependency order and then wires the two callbacks that
+are not registry-driven:
 
-The bucket with 500 durability. Open color picker, paint concrete (right-click), or copy color (Shift + right-click block).
+| Order | Call | Why here |
+|---|---|---|
+| 1 | `DataComponentRegistry.register()` | components are referenced by every item/block built after this |
+| 2 | `BlockRegistry.register()` | registering a block also registers its `RGBBlockItem` |
+| 3 | `ItemRegistry.register()` | requires the block instances for `RGBBlockItem` |
+| 4 | `BlockEntityRegistry.register()` | block entities reference the block set |
+| 5 | `EntityRegistry.register()` | the thrown-bucket entity type |
+| 6 | `CriterionRegistry.register()` | the `color_action` advancement trigger |
+| 7 | `RecipeSerializerRegistry.register()` | both custom serializers |
+| 8 | `CreativeTabRegistry.register()` | reads the accumulated `ALL_BLOCKS` / `ALL_ITEMS` lists |
+| 9 | `NetworkHandler.register()` | payload type + serverbound receiver |
+| 10 | `GiveColorCommand.register()` | `CommandRegistrationCallback` |
+| 11 | `DispenserBlock.registerBehavior(...)` | dispenser behavior for the paint bucket |
 
-> [!note]
->
-> The first time you right-click on the concrete, it won't apply color directly; you can apply color by right-clicking again.
+## Registration style
 
-<div align="center"><center>
+There is **no `DeferredRegister`** and no registry events. Each `util/registries/*Registry` class holds
+`public static final` fields initialized by a plain
 
-<img alt="clean_agent" width=64 src="DescriptionImages/clean_agent.png">   
-<img alt="craft" height=64 src="DescriptionImages/craft3.png">
+```java
+Registry.register(BuiltInRegistries.ITEM,
+    Identifier.fromNamespaceAndPath(MOD_ID, name), instance)
+```
 
-### Clean Agent
+and exposes a no-op `register()` method whose only purpose is to force class initialization — the static
+initializers do the work. Two consequences worth knowing:
 
-</center></div>
+- Registration happens when the class is first touched, so **the order in the table above is load-bearing**.
+- `BlockRegistry.register()` calls `ItemRegistry.registerBlockItem()` itself; you never register a block
+  item by hand, and every RGB block automatically gets an `RGBBlockItem`.
+- 26.x requires `Properties.setId(ResourceKey)` on items and blocks; that is why every registration passes
+  a `ResourceKey` in addition to the registry id.
 
-Right-click on the Stained concrete to use. Shift the color 25% closer to white each time. *The darker the color, the more clicks are required.*
+## Block color
 
-It has 120 Durability; consumes 1 point per use. No further consumption occurs after turning completely white. 
+`RGBBlockEntity` (`color`, `originalColor`) is the single source of truth for a placed block.
 
-<div align="center"><center>
-
-<img alt="stained_concrete" width=64 src="DescriptionImages/colorblockmc__concrete.png">   
-
-### Stained Concrete
-
-</center></div>
-
-Concrete block that displays any RGB color. Drops with color data intact.
-
-This block is created by converting vanilla concrete using the Paint Bucket.
-
-<div align="center"><center>
-
-<img alt="glowing_stained_concrete" width=64 src="DescriptionImages/colorblockmc__glowing_concrete.png">   
-<img alt="craft" height=64 src="DescriptionImages/craft2.png">
-
-### Glowing Stained Concrete
-
-</center></div>
-
-As the name suggests, it's a glowing stained concrete.
-
-This is a variant of common stained concrete. It can help you build glowing things.
-
-> [!tip]
->
-> you can enable Screenspace Colored Blocklight in your shaderpack. This can achieve a better visual effect.
-
-<img alt="example" width=500 src="DescriptionImages/example.png">
-
-## GUI
-
-Paint Bucket has a GUI.
-
-When you press Shift + Right Click and aim at something other than Stained Concrete,you will see it:
-
-<img alt="GUI" width=500 src="DescriptionImages/GUI.png">
-
-This interface displays a color alongside its appearance on dyed concrete; it shows the color name based on the entered HEX value and allows for color adjustment using HSB sliders and a square color picker.
-
-## Paint Bucket Controls
-
-| Action | Result |
+| Concern | Mechanism |
 |---|---|
-| **Right-click** vanilla concrete | Converts it to Stained Concrete in the bucket's current color. |
-| **Right-click** Stained Concrete | Recolors the block. |
-| **Shift + Right-click** Stained Concrete | Copies the block's color to the bucket. |
-| **Shift + Right-click** something other than Stained Concrete | Opens the color picker GUI. |
-| **Right-click** with empty bucket (in dispenser) | Paints the block in front. |
+| Persistence | `saveAdditional` / `loadAdditional` (26.1.2 uses `ValueOutput` / `ValueInput`) → NBT key `color` |
+| Client sync | `getUpdateTag` writes `color`, `getUpdatePacket` returns `ClientboundBlockEntityDataPacket.create(this)` |
+| Re-render on arrival | `applyImplicitComponents` and `loadAdditional` call `level.sendBlockUpdated(...)` when `isClientSide()` |
+| Implicit component | `collectImplicitComponents` exposes `colorblockmc:color`; `applyImplicitComponents` reads it back |
+| Survives mining | `data/colorblockmc/loot_table/blocks/*.json` uses `minecraft:copy_components` with `source: block_entity` and `include: ["colorblockmc:color"]` |
 
-## `/givec` Command
+`originalColor` is scratch state for the clean agent: it remembers the color a block had before washing
+started, so the advancement can report `was_color`.
 
-Give yourself a stained concrete block of any color directly, no Paint Bucket needed. Requires **cheats / operator permission (level 2)**.
+## Item color and tinting
 
-| Command | Result |
+Two components, both registered with `persistent(...)` + `networkSynchronized(...)`:
+
+- `colorblockmc:color` (int) — the color itself, default `-1`.
+- `colorblockmc:rgb_selected` (bool) — whether the player explicitly picked a color.
+
+**Block and bucket items are tinted declaratively**, not from Java. `assets/colorblockmc/items/*.json`
+defines the item model *and its tint sources*:
+
+```json
+{ "model": { "type": "minecraft:model", "model": "colorblockmc:block/concrete",
+             "tints": [ { "type": "minecraft:dye", "default": -1 } ] } }
+```
+
+The `minecraft:dye` tint source reads the **vanilla `minecraft:dyed_color` component**. The paint bucket
+uses two tints — a constant white for the base layer and `minecraft:dye` for the overlay:
+
+```json
+"tints": [ { "type": "minecraft:constant", "value": 16777215 },
+           { "type": "minecraft:dye", "default": -1 } ]
+```
+
+This is why `PaintBucketSyncPayload.handle` writes `DataComponents.DYED_COLOR` (and why removing that line
+leaves the bucket untinted). There is no `ColorProviderRegistry.ITEM` on this branch — the item model
+declaration replaces it.
+
+Because the tint samples the **vanilla** component, every way of obtaining a colored item has to put
+`minecraft:dyed_color` on it. There are three such paths, and all three are wired:
+
+| Path | Where |
 |---|---|
-| `/givec <color>` | Gives 1 Stained Concrete of that color. |
-| `/givec <color> <count>` | Gives the specified amount. |
-| `/givec <color> <count> <glowing>` | Set `<glowing>` to `true` for Glowing Stained Concrete. |
+| The color picker (paint bucket) | `PaintBucketSyncPayload.handle` |
+| Mining a colored block | `RGBBlockEntity.collectImplicitComponents` exposes `dyed_color` alongside `colorblockmc:color`, and the loot tables' `minecraft:copy_components` `include` list copies both out of the block entity |
+| `/givec` | `GiveColorCommand.applyColor` sets both components |
 
-`<color>` is a hex color code, with or without the leading `#` (e.g. `#FF6B35` or `FF6B35`).
+`collectImplicitComponents` only sets `dyed_color` once a color has actually been picked (`color != -1`),
+so a plain block's drop does not carry a meaningless component. Item-form tint is verified by the
+`itemFormCarriesColorAndTintComponents` GameTest — a stack missing either component fails it.
 
-Example: `/givec #FF6B35 16 true` gives you 16 Glowing Stained Concrete blocks colored `#FF6B35`.
+## Rendering
 
-## Additional support
+| Where | Path |
+|---|---|
+| Block in world | `blockstates/*.json` → `models/block/concrete.json` (parent `models/block/block.json`, all faces `"tintindex": 0`) → tint resolved by `RGBBlockColor` |
+| Tint registration | `RGBBlocksClient` → `BlockColorRegistry.register(List.of(new RGBBlockColor()), ALL_BLOCKS.toArray(...))` |
+| Tint source | `RGBBlockColor implements BlockTintSource`; `colorInWorld` looks up the block entity at the position (falling back to the block **below**). `color(BlockState)` returns `-1`, so a block model rendered without world context comes out untinted. |
+| Texture | one static texture, `textures/block/concrete.png`, tinted per block |
+| Thrown bucket entity renderer | `EntityRendererRegistry.register(EntityRegistry.THROWN_PAINT_BUCKET, ThrownItemRenderer::new)` |
 
-When you install this mod along with [ModernUI](https://modrinth.com/mod/modern-ui), the tooltip box will match the color of the stained concrete or bucket.
+## Interaction paths
 
-<img src="DescriptionImages/additional.png" />
+### Paint bucket — `PaintBucketItem.useOn`
+
+| Target | Result |
+|---|---|
+| Stained concrete, shift held | copies the block's color onto the bucket, no durability cost |
+| Stained concrete | `applyColorToBlock` recolors; costs 1 durability **only if the color actually changes** |
+| Vanilla concrete (the 16 vanilla variants, listed in `VANILLA_CONCRETE`) | replaced with `RGB_CONCRETE`, then the new block entity is colored; costs 1 durability |
+
+At 1 durability remaining the bucket is replaced with an empty `Items.BUCKET`.
+
+`applyColorToBlock` is the shared entry point and returns **false when nothing changed** — that boolean is
+what the throw path counts.
+
+### Thrown paint bucket — hold right-click to charge
+
+`use()` starts the use animation, `releaseUsing` resolves it. All numbers live in
+`entity/PaintBucketThrowLogic`:
+
+| Constant | Value | Meaning |
+|---|---|---|
+| `MIN_THROW_TICKS` | 5 | shorter presses do nothing |
+| `THROW_CHARGE_TICKS` | 20 | velocity is at full after 1 s |
+| `MAX_CHARGE_TICKS` | 200 | radius is at maximum after 10 s |
+| `MIN_RADIUS` / `MAX_RADIUS` | 2 → 13 | `radiusForCharge` lerps between them |
+| `MIN_THROW_VELOCITY` / `MAX_THROW_VELOCITY` | 0.7 → 1.6 | |
+| `MAX_COLORED_BLOCKS` | 500 | painting stops after this many blocks |
+| `MAX_DURABILITY_COST` | 500 | |
+
+`applyRadiusPaint` walks a cube of side `2·ceil(radius)+1`, skips positions outside world bounds / not
+loaded / beyond `radiusSqr`, and counts the blocks `applyColorToBlock` actually changed. Cost is
+`min(count × 1.5, 500, remaining durability)`; at zero remaining the drop becomes an empty bucket. The
+thrown entity is `ThrownPaintBucket extends ThrowableItemProjectile`, which trails dust particles on the
+client and resolves paint + drop + effects on impact. Throwing consumes the stack (`stack.shrink(1)`);
+the drop is created at the impact point.
+
+### Clean agent — `CleanAgentItem.useOn`
+
+Moves each channel 25 % of the way toward 255 (`r + round((255 - r) * 0.25)`), snapping to pure white once
+all three channels reach ≥ 250, and stores the pre-wash color in `originalColor` on the first use.
+Durability 120, one point per use, no cost once already white.
+
+### Dispenser — `DispensePaintBucketBehaviour`
+
+Paints the block entity directly in front of the dispenser and consumes one durability, returning an empty
+bucket when exhausted. It only handles `RGBBlockEntity` in front; anything else falls through to the
+default behavior.
+
+### `/givec` — `GiveColorCommand`
+
+`/givec <hex> [count] [glowing]`, gamemaster permission. Accepts 6 hex digits with or without `#`, and
+hands out `RGB_CONCRETE` or `RGB_GLOWING_CONCRETE` through `GiveColorCommand.applyColor`, which sets both
+`colorblockmc:color` and `minecraft:dyed_color` to the same **opaque ARGB** value. If the inventory is
+full, the stack is dropped at the player.
+
+## Networking
+
+One C2S payload, `paint_bucket_sync` (`PaintBucketSyncPayload`), sent when the color picker closes:
+
+- Registered in `NetworkHandler` via `PayloadTypeRegistry.serverboundPlay()` plus
+  `ServerPlayNetworking.registerGlobalReceiver(...)`.
+- The handler runs on the server thread and **normalizes the incoming color to opaque ARGB**
+  (`0xFF000000 | (c & 0xFFFFFF)`) before writing it into the item. The client chooses a color; it does not
+  get to write an arbitrary integer. Legitimate senders only ever produce `0xFFRRGGBB` or `-1`, so this is
+  a no-op for them.
+
+## Client-only GUI
+
+The main source set never touches client classes. `RGBBlocks` calls through a tiny indirection instead:
+
+- `util/ClientPlayHelper` — interface with `openColorSelectScreen(...)`.
+- `util/ClientProxy` — static field holding the implementation.
+- `client/ClientPlayHelperImpl` — assigns itself in `RGBBlocksClient.onInitializeClient()` and calls
+  `Minecraft.getInstance().setScreen(new ColorSelectScreen(...))`.
+
+`ColorSelectScreen` is the picker: `ColorSlider` (RGB), `HueStripWidget` + `SquareColorPicker` +
+`HexInputWidget` (HSB/hex), `ConcretePreviewWidget` (live preview), `client/util/ColorNames` (localised
+color name, read from `assets/colorblockmc/colornames/{en,zh}.json`), and `ScreenUtils` for gradient
+fills. Closing it sends the sync payload.
+
+## Advancements
+
+`ColorActionTrigger` is a `SimpleCriterionTrigger` registered as `colorblockmc:color_action`. Its
+`TriggerInstance` codec takes optional fields `player`, `type` (`dye` / `clean`), `color`, `was_color`,
+`min_count`, `thrown` and `changed`, so the ten JSON advancements in `data/colorblockmc/advancement/` are
+pure data — no Java per advancement. `colorMatches` additionally accepts the three primary colors as
+*dominant-channel* matches, which is how "dye something green" is expressed.
+
+## Optional integrations
+
+Both are opt-in and fail safe.
+
+- **Jade** — `util/jade/` provides the plugin and the info/icon providers. It is registered under Jade's own
+  `jade` entrypoint namespace, so nothing runs when Jade is absent, and it uses Jade's public API.
+- **ModernUI** — `mixin/TooltipRendererMixin` (`@Pseudo`, `remap = false`) tints the tooltip stroke and
+  fill to match the item. It reaches ModernUI's `mWorkStrokeColor` / `mUseSpectrum` / `sFillColor` fields
+  and `Color.HSVToColor` reflectively, so it is version-bound by nature: the config sets
+  `"defaultRequire": 0` and the injection carries `require = 0`, which makes a missed injection mean "no
+  tint" rather than an exception thrown into ModernUI's render loop. The reflected members are resolved
+  once and latched on failure (one log line per session, not per frame), and the **static** `sFillColor`
+  array is snapshotted and restored so its colors cannot leak into later tooltips.
+
+## Conventions and gotchas
+
+Things that are easy to get wrong, collected in one place:
+
+1. **Never strip the alpha byte from a color.** Compare and store `0xFFRRGGBB`. `PaintBucketItem.useOn`
+   and `ShapelessDurabilityAwarePaintBucketRecipe` compare the raw component against the block entity's
+   color, so a `0x00RRGGBB` value compares unequal to the `0xFFRRGGBB` it was painted from and a
+   repainted block silently starts draining durability. `PaintBucketSyncPayload.handle` therefore
+   *normalizes to* `0xFF000000 | (c & 0xFFFFFF)` rather than masking the alpha off.
+2. **Every path that hands out a colored item must write both components.** `applyColor` in
+   `GiveColorCommand` is the shared one; `PaintBucketSyncPayload.handle` and the block entity's implicit
+   components are the other two. A writer that sets only `colorblockmc:color` produces an item that is
+   untinted — and one whose value may not compare equal to a block entity's, depending on alpha.
+3. **Item tint here is data, not code.** A new item that should be tinted needs its tint declared in
+   `assets/colorblockmc/items/<item>.json`, **and** something has to write `minecraft:dyed_color`: the
+   `minecraft:dye` tint source reads that vanilla component, not `colorblockmc:color`.
+4. **The mixin is deliberately soft.** `colorblockmc.mixins.json` sets `"defaultRequire": 0` and the
+   injection carries `require = 0`. Raising either turns "ModernUI renamed a method" into a crash thrown
+   from ModernUI's render loop.
+5. **There is no access widener**, on purpose. `fabric.mod.json` no longer declares `accessWidener` and
+   nothing uses `MapColor.MATERIAL_COLORS`; `validateAccessWidener NO-SOURCE` in the build log is expected.
+6. **Nothing writes `gradle.properties`.** `mod_version` is bumped by hand, in both branches, in the release
+   commit. (It used to auto-increment on every build, at configuration time, so failed and `--dry-run`
+   builds consumed version numbers too.)
+7. **The GameTest classes ship in the jar.** `fabric.mod.json` declares a `fabric-gametest` entrypoint
+   pointing at them, so excluding them from `jar` would ship metadata naming a class that is not there.
+8. **`build/libs` accumulates jars.** Always `./gradlew clean build` before a release: the documented
+   release command uploads by glob, and two main jars matching `-fabric-*.jar` is a silent way to publish
+   the wrong build.
+
+## Tests
+
+`gametest/ColorBlockThrowGameTest` is registered through the `fabric-gametest` entrypoint and runs on a real
+dedicated server with a real level — it asserts on actual block states, block entities and item damage:
+
+```
+./gradlew runGameTest        # writes build/gametest-results.xml
+```
+
+Five tests cover charge→radius, radius painting (9 blocks converted and each one's color checked),
+`useOn` coloring, durability cost/drop resolution, and the item-form components (that a painted block's
+drop data and a `/givec` stack both carry `colorblockmc:color` **and** `minecraft:dyed_color`, and that
+`/givec` parsing yields opaque ARGB). The run also reports a framework-provided `minecraft:always_pass`.
+CI (`.github/workflows/build.yml`) runs `build` and `runGameTest` on every push and fails if the report is
+missing or contains a `<failure>`.
+
+Not covered: the ModernUI mixin, the GUI, client↔server sync, the dispenser, both recipes, `/givec`, Jade
+and the advancement tree.
+
+## Building
+
+```sh
+./gradlew build          # jar + sources jar → build/libs/
+./gradlew runClient      # dev client
+./gradlew runServer      # dev server
+./gradlew runGameTest    # see Tests
+```
+
+Requirements: **JDK 25** somewhere Gradle can find it (the build declares a Java 25 toolchain, so you do
+not need to set `JAVA_HOME` yourself), and Fabric Loom `1.17.21` (pinned in `build.gradle`).
+
+`mod_version` in `gradle.properties` is the single source of the version and **nothing writes it back** —
+bump it by hand in the commit that prepares a release. The jar name is
+`Colorful Blocks-<mc>-<version>-fabric-<epoch seconds>.jar`.
+
+## Repository layout
+
+```
+src/main/java/pageqwq/colorbmc/
+  RGBBlocks.java              mod initializer
+  block/                      RGBBlock, RGBGlowingBlock
+  block/entity/               RGBBlockEntity — the color
+  item/                       PaintBucketItem, RGBBlockItem, CleanAgentItem, crafting/
+  entity/                     ThrownPaintBucket, PaintBucketThrowLogic
+  dispenser/                  DispensePaintBucketBehaviour
+  command/                    GiveColorCommand
+  gametest/                   the GameTest suite
+  mixin/                      ModernUI tooltip mixin
+  util/                       Color, ClientProxy, ClientPlayHelper, network/, registries/, jade/
+src/client/java/pageqwq/colorbmc/
+  RGBBlocksClient.java        color providers + entity renderer
+  client/gui/                 ColorSelectScreen and its widgets
+src/main/resources/
+  assets/colorblockmc/        item models with tints, block models, textures, lang, colornames
+  data/colorblockmc/          recipes, loot tables, advancements
+```
+
+## Credits
+
+The idea comes from [PlatinPython's RGBBlocks](https://github.com/PlatinPython/RGBBlocks). This is an
+independent Fabric implementation. Declared MIT in `fabric.mod.json`.

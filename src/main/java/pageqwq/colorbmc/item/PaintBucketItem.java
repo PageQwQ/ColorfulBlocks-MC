@@ -2,17 +2,22 @@ package pageqwq.colorbmc.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,6 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.entity.ThrownPaintBucket;
 import pageqwq.colorbmc.util.ClientProxy;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
 import pageqwq.colorbmc.util.registries.DataComponentRegistry;
@@ -28,7 +34,13 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class PaintBucketItem extends Item {
-    private static final Set<Block> VANILLA_CONCRETE = Set.of(
+    private static final int THROW_USE_DURATION = 72000;
+    private static final int THROW_CHARGE_TICKS = 20;
+    private static final int MIN_THROW_TICKS = 5;
+    private static final float MIN_THROW_VELOCITY = 0.7F;
+    private static final float MAX_THROW_VELOCITY = 1.6F;
+
+    public static final Set<Block> VANILLA_CONCRETE = Set.of(
         Blocks.WHITE_CONCRETE, Blocks.ORANGE_CONCRETE, Blocks.MAGENTA_CONCRETE,
         Blocks.LIGHT_BLUE_CONCRETE, Blocks.YELLOW_CONCRETE, Blocks.LIME_CONCRETE,
         Blocks.PINK_CONCRETE, Blocks.GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE,
@@ -55,18 +67,100 @@ public class PaintBucketItem extends Item {
     }
 
     @Override
-    public InteractionResult use(Level level, Player playerIn, InteractionHand handIn) {
-        if (handIn == InteractionHand.MAIN_HAND && playerIn.isShiftKeyDown()) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (hand != InteractionHand.MAIN_HAND) return InteractionResult.PASS;
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (player.isShiftKeyDown()) {
             if (level.isClientSide() && ClientProxy.getClientPlayHelper() != null) {
                 ClientProxy.getClientPlayHelper().openColorSelectScreen(
-                    playerIn,
-                    playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.COLOR, -1),
-                    playerIn.getMainHandItem().getOrDefault(DataComponentRegistry.RGB_SELECTED, false)
+                    player,
+                    stack.getOrDefault(DataComponentRegistry.COLOR, -1),
+                    stack.getOrDefault(DataComponentRegistry.RGB_SELECTED, false)
                 );
                 return InteractionResult.SUCCESS;
             }
+            return InteractionResult.CONSUME;
         }
-        return InteractionResult.PASS;
+
+        player.startUsingItem(hand);
+        return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+        return THROW_USE_DURATION;
+    }
+
+    @Override
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.NONE;
+    }
+
+    @Override
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+        if (level.isClientSide() || !(entity instanceof Player player)) return false;
+
+        int heldTicks = THROW_USE_DURATION - timeLeft;
+        if (heldTicks < MIN_THROW_TICKS) return false;
+
+        float charge = Math.min(1.0F, (float) heldTicks / THROW_CHARGE_TICKS);
+        float velocity = MIN_THROW_VELOCITY + (MAX_THROW_VELOCITY - MIN_THROW_VELOCITY) * charge;
+        float radiusCharge = Math.min(1.0F, (float) heldTicks / pageqwq.colorbmc.entity.PaintBucketThrowLogic.MAX_CHARGE_TICKS);
+        float radius = pageqwq.colorbmc.entity.PaintBucketThrowLogic.radiusForCharge(radiusCharge);
+
+        ThrownPaintBucket bucket = new ThrownPaintBucket(level, player, stack);
+        bucket.setRadius(radius);
+        double pitch = Math.toRadians(player.getXRot());
+        double yaw = Math.toRadians(player.getYRot());
+        double dx = -Math.sin(yaw) * Math.cos(pitch);
+        double dy = -Math.sin(pitch);
+        double dz = Math.cos(yaw) * Math.cos(pitch);
+        bucket.shoot(dx, dy, dz, velocity, 1.0F);
+
+        ((ServerLevel) level).addFreshEntity(bucket);
+        playThrowEffects((ServerLevel) level, player, stack);
+        player.getCooldowns().addCooldown(stack, 10);
+        stack.shrink(1);
+        return true;
+    }
+
+    public static void playThrowEffects(ServerLevel level, Player player, ItemStack stack) {
+        int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SNOWBALL_THROW, SoundSource.PLAYERS, 0.5F, 1.0F);
+        level.sendParticles(makeDust(color, 0.8F), player.getX(), player.getEyeY(), player.getZ(), 8, 0.3, 0.2, 0.3, 0.1);
+    }
+
+    public static DustParticleOptions makeDust(int color, float scale) {
+        return new DustParticleOptions(color & 0xFFFFFF, scale);
+    }
+
+    public static void playImpactEffects(ServerLevel level, double x, double y, double z, int color) {
+        level.playSound(null, x, y, z, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 1.0F, 1.2F);
+        level.sendParticles(makeDust(color, 1.0F), x, y, z, 40, 3.0, 3.0, 3.0, 0.6);
+    }
+
+    public static boolean applyColorToBlock(Level level, BlockPos pos, int color) {
+        BlockState state = level.getBlockState(pos);
+        Block block = state.getBlock();
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+
+        if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
+            if (rgbBlockEntity.getColor() == color) return false;
+            rgbBlockEntity.setColor(color);
+            rgbBlockEntity.resetOriginalColor();
+            level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL_IMMEDIATE);
+            return true;
+        } else if (VANILLA_CONCRETE.contains(block)) {
+            level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(),
+                Block.UPDATE_NEIGHBORS | Block.UPDATE_INVISIBLE | Block.UPDATE_IMMEDIATE);
+            if (level.getBlockEntity(pos) instanceof RGBBlockEntity newEntity) {
+                newEntity.setColor(color);
+            }
+            level.sendBlockUpdated(pos, state, level.getBlockState(pos), Block.UPDATE_ALL_IMMEDIATE);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -83,7 +177,6 @@ public class PaintBucketItem extends Item {
         if (blockEntity instanceof RGBBlockEntity rgbBlockEntity) {
             if (player != null && player.isShiftKeyDown()) {
                 stack.set(DataComponentRegistry.COLOR, rgbBlockEntity.getColor());
-                stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgbBlockEntity.getColor()));
             } else {
                 int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
                 if (player != null && !player.isCreative() && color != rgbBlockEntity.getColor()) {
@@ -93,19 +186,20 @@ public class PaintBucketItem extends Item {
                         stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
                     }
                 }
-                rgbBlockEntity.setColor(color);
-                level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL_IMMEDIATE);
+                applyColorToBlock(level, pos, color);
+                if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                    pageqwq.colorbmc.util.registries.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                        pageqwq.colorbmc.util.registries.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
+                }
             }
             return InteractionResult.SUCCESS;
         }
 
         // 2) Vanilla concrete → replace with RGB concrete
         if (VANILLA_CONCRETE.contains(block)) {
-            if (level.isClientSide()) return InteractionResult.SUCCESS;
-
             int color = stack.getOrDefault(DataComponentRegistry.COLOR, -1);
 
-            if (player != null && !player.isCreative()) {
+            if (!level.isClientSide() && player != null && !player.isCreative()) {
                 if (stack.getDamageValue() == stack.getMaxDamage() - 1) {
                     player.setItemInHand(context.getHand(), new ItemStack(Items.BUCKET));
                 } else {
@@ -113,13 +207,11 @@ public class PaintBucketItem extends Item {
                 }
             }
 
-            BlockState oldState = level.getBlockState(pos);
-            level.setBlock(pos, BlockRegistry.RGB_CONCRETE.defaultBlockState(),
-                Block.UPDATE_NEIGHBORS | Block.UPDATE_INVISIBLE | Block.UPDATE_IMMEDIATE);
-            if (level.getBlockEntity(pos) instanceof RGBBlockEntity newEntity) {
-                newEntity.setColor(color);
+            applyColorToBlock(level, pos, color);
+            if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                pageqwq.colorbmc.util.registries.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                    pageqwq.colorbmc.util.registries.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
             }
-            level.sendBlockUpdated(pos, oldState, level.getBlockState(pos), Block.UPDATE_ALL_IMMEDIATE);
             return InteractionResult.SUCCESS;
         }
 

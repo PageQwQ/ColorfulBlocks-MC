@@ -4,16 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
+import pageqwq.colorbmc.util.ColoredItems;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
 
 public class ConcretePreviewWidget extends AbstractWidget {
     private static final int ITEM_SIZE = 16;
-    private int color;
+    private int color = ColoredItems.NO_COLOR;
     private ItemStack stack;
 
     public ConcretePreviewWidget(int x, int y, int width, int height) {
@@ -36,8 +34,9 @@ public class ConcretePreviewWidget extends AbstractWidget {
         if (this.stack == null) {
             this.stack = new ItemStack(BlockRegistry.RGB_CONCRETE);
         }
-        this.stack.set(DataComponentRegistry.COLOR, this.color);
-        this.stack.set(DataComponents.DYED_COLOR, new DyedItemColor(this.color));
+        // Two components, not one: this renders a real item model, so it needs the same
+        // minecraft:dyed_color that the item-model tint samples. ColoredItems owns that rule.
+        ColoredItems.applyColor(this.stack, this.color);
         float scale = (float) this.width / ITEM_SIZE;
         graphics.pose().pushMatrix();
         graphics.pose().translate(this.getX(), this.getY());

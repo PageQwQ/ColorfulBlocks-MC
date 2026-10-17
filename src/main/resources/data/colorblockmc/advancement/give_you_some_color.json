@@ -1,0 +1,35 @@
+{
+  "display": {
+    "announce_to_chat": true,
+    "background": "minecraft:block/white_concrete",
+    "description": {
+      "translate": "advancements.colorblockmc.give_you_some_color.description"
+    },
+    "icon": {
+      "id": "colorblockmc:paint_bucket"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.colorblockmc.give_you_some_color.title"
+    }
+  },
+  "criteria": {
+    "obtain_paint_bucket": {
+      "conditions": {
+        "items": [
+          {
+            "items": "colorblockmc:paint_bucket"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_paint_bucket"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

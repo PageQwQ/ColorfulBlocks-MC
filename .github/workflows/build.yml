@@ -1,0 +1,65 @@
+name: build
+
+# This project had no CI at all, so nothing caught a broken build or a broken GameTest.
+# The GameTest suite in src/main/java/pageqwq/colorbmc/gametest/ runs a real dedicated
+# server against a real level -- it is the only automated check that the mod's behaviour
+# still works, and it must run on every push.
+#
+# Java 25 is required: build.gradle sets `options.release = 25` and the toolchain requests 25.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-gametest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build
+        run: ./gradlew build
+
+      - name: Accept the test server's EULA
+        run: |
+          mkdir -p run
+          echo "eula=true" > run/eula.txt
+
+      - name: Run GameTests
+        run: ./gradlew runGameTest
+
+      - name: Check GameTest results
+        if: always()
+        run: |
+          report=build/gametest-results.xml
+          if [ ! -f "$report" ]; then
+            echo "::error::no GameTest report written to $report"
+            exit 1
+          fi
+          if grep -q "<failure" "$report"; then
+            echo "::error::GameTest failures:"
+            cat "$report"
+            exit 1
+          fi
+          echo "GameTests passed:"
+          cat "$report"
+
+      - name: Upload GameTest report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gametest-results
+          path: build/gametest-results.xml
+          if-no-files-found: ignore

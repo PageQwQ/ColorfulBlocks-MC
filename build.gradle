@@ -13,43 +13,35 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "net.fabricmc:fabric-loom:1.17-SNAPSHOT"
+        // Pinned release, not a SNAPSHOT: a moving buildscript dependency makes the same source
+        // produce different build output on different days.
+        classpath "net.fabricmc:fabric-loom:1.17.21"
     }
 }
 
 apply plugin: 'net.fabricmc.fabric-loom'
 apply plugin: 'java'
 
-// Auto-increment patch version on each build
-def autoIncrementVersion() {
-    def propsFile = file('gradle.properties')
-    def props = new Properties()
-    props.load(propsFile.newReader())
-    def oldVersion = props.getProperty('mod_version')
-    def parts = oldVersion.split('\\.').collect { it.toInteger() }
-    // Increment patch, carry into minor at 10
-    parts[2] = parts[2] + 1
-    if (parts[2] >= 10) {
-        parts[2] = 0
-        parts[1] = parts[1] + 1
-    }
-    def newVersion = parts.join('.')
-    props.setProperty('mod_version', newVersion)
-    props.store(propsFile.newWriter(), null)
-    return newVersion
-}
-
-def isBuild = gradle.startParameter.taskNames.any {
-    it in ['build', 'jar', 'assemble']
-} || gradle.startParameter.taskNames.any { it.startsWith('build') }
-def currentModVersion = isBuild ? autoIncrementVersion() : project.mod_version
-version = "${minecraft_version}-${currentModVersion}-fabric-${(System.currentTimeMillis() / 1000).intValue()}"
+// Version comes from gradle.properties ONLY. It is never written back by a build.
+//
+// This used to auto-increment `mod_version` in gradle.properties on every build, which ran at
+// configuration time and therefore also fired on `--dry-run` and on builds that later FAILED. The
+// version number was consumed by "I thought about building", not by "I shipped", and it drifted out
+// of sync with the released tags (git history shows v2.8.1 -> v2.8.2 -> v2.8.1).
+//
+// Both branches must carry the SAME mod_version; bump it by hand in the same commit that prepares a
+// release. The trailing epoch seconds keep jar filenames unique per build so the release globs in
+// AGENTS.md match exactly one main jar and never the -sources jar.
+version = "${minecraft_version}-${project.mod_version}-fabric-${(System.currentTimeMillis() / 1000).intValue()}"
 group = project.maven_group
 base.archivesName = project.archives_base_name
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_25
-    targetCompatibility = JavaVersion.VERSION_25
+    // Compile with Java 25 whatever JDK launched Gradle. Without this, a JAVA_HOME pointed at JDK 21
+    // fails with "error: release version 25 not supported" on the `options.release = 25` below.
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
     withSourcesJar()
 }
 
@@ -63,7 +55,14 @@ loom {
         }
     }
 
-    accessWidenerPath = file("src/main/resources/colorblockmc.accesswidener")
+    runs {
+        gameTest {
+            server()
+            programArgs "--nogui"
+            property "fabric-api.gametest", "true"
+            property "fabric-api.gametest.report-file", "${project.buildDir}/gametest-results.xml"
+        }
+    }
 }
 
 repositories {
@@ -84,7 +83,24 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-    implementation "maven.modrinth:jade:26.1.8+fabric"
+    // Newer than the 4.0.17 that fabric-api ships, for the GameTest API used by
+    // src/main/java/pageqwq/colorbmc/gametest/. Keep it in step with fabric_api_version: this override
+    // is what drags the newer fabric-resource-loader in, which is why the force below exists.
+    implementation "net.fabricmc.fabric-api:fabric-gametest-api-v1:4.0.21+4a7fa0819e"
+    clientImplementation "maven.modrinth:jade:26.1.8+fabric"
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        // WHY: fabric-api 0.155.2+26.1.2 declares fabric-resource-loader-v1:2.0.10+7c44c7324c, but the
+        // newer fabric-gametest-api-v1 above declares 2.0.13+9edec1269e. Gradle's default "newest wins"
+        // would therefore silently upgrade a fabric-api module past the revision that fabric-api release
+        // was built against. This pins it back to exactly what fabric-api declares.
+        // REMOVE WHEN: fabric_api_version is bumped to a release that itself declares >= 2.0.13 (check
+        //   https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/<ver>/fabric-api-<ver>.pom),
+        //   or when the gametest-api override above is dropped back to fabric-api's own version.
+        force 'net.fabricmc.fabric-api:fabric-resource-loader-v1:2.0.10+7c44c7324c'
+    }
 }
 
 processResources {
@@ -99,3 +115,9 @@ tasks.withType(JavaCompile).configureEach {
     it.options.release = 25
     it.options.encoding = 'UTF-8'
 }
+
+// The GameTest classes stay in the jar on purpose. fabric.mod.json declares the "fabric-gametest"
+// entrypoint pointing at them, so excluding them here would ship a jar whose own metadata names a class
+// that is not in it -- and any instance that does have fabric-gametest-api-v1 would fail to resolve it.
+// (The entrypoint is only resolved when that API is present, so ordinary players are unaffected.)
+// Cost: ~4 KB, in exchange for jar contents and declared entrypoints agreeing.

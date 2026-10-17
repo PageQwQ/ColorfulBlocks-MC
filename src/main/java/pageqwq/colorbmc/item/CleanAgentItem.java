@@ -34,6 +34,12 @@ public class CleanAgentItem extends Item {
             int currentColor = rgbBlockEntity.getColor();
             if (currentColor == -1) return InteractionResult.SUCCESS;
 
+            int originalColor = rgbBlockEntity.getOriginalColor();
+            if (originalColor == -1) {
+                originalColor = currentColor;
+                rgbBlockEntity.setOriginalColor(originalColor);
+            }
+
             int r = (currentColor >> 16) & 0xFF;
             int g = (currentColor >> 8) & 0xFF;
             int b = currentColor & 0xFF;
@@ -42,14 +48,30 @@ public class CleanAgentItem extends Item {
             int newG = Math.min(255, g + Math.round((255 - g) * FADE_RATE));
             int newB = Math.min(255, b + Math.round((255 - b) * FADE_RATE));
 
+            if (newR >= 250 && newG >= 250 && newB >= 250) {
+                newR = 255;
+                newG = 255;
+                newB = 255;
+            }
+
             int newColor = (newR << 16) | (newG << 8) | newB;
             rgbBlockEntity.setColor(newColor);
             level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL_IMMEDIATE);
+
+            boolean becameWhite = (newColor & 0xFFFFFF) == 0xFFFFFF;
+            if (becameWhite) {
+                rgbBlockEntity.resetOriginalColor();
+            }
 
             if (!level.isClientSide()) {
                 Player player = context.getPlayer();
                 if (player != null && !player.isCreative()) {
                     stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                }
+                boolean changed = newColor != currentColor;
+                if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                    pageqwq.colorbmc.util.registries.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                        pageqwq.colorbmc.util.registries.ColorActionTrigger.TYPE_CLEAN, newColor & 0xFFFFFF, originalColor & 0xFFFFFF, 1, false, changed);
                 }
             }
 
