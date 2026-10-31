@@ -1,0 +1,35 @@
+{
+  "parent": "colorblockmc:give_you_some_color",
+  "display": {
+    "description": {
+      "translate": "advancements.colorblockmc.power_of_technology.description"
+    },
+    "icon": {
+      "id": "colorblockmc:concrete_workshop"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.colorblockmc.power_of_technology.title"
+    }
+  },
+  "criteria": {
+    "obtain_concrete_workshop": {
+      "conditions": {
+        "items": [
+          {
+            "items": "colorblockmc:concrete_workshop"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "obtain_concrete_workshop"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

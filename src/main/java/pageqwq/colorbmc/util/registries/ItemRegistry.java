@@ -50,6 +50,17 @@ public class ItemRegistry {
         ALL_ITEMS.add(item);
     }
 
+    static void registerBlockItemPlain(String name, Block block) {
+        Item item = Registry.register(
+            BuiltInRegistries.ITEM,
+            Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, name),
+            new net.minecraft.world.item.BlockItem(block, new Item.Properties()
+                .useBlockDescriptionPrefix()
+                .setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, name))))
+        );
+        ALL_ITEMS.add(item);
+    }
+
     private static Item register(String name, Item item) {
         Item registered = Registry.register(
             BuiltInRegistries.ITEM,
