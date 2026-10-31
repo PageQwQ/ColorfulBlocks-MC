@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "colorblockmc:concrete",
-    "colorblockmc:glowing_concrete"
+    "colorblockmc:glowing_concrete",
+    "colorblockmc:concrete_workshop"
   ]
 }

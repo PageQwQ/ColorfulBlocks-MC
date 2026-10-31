@@ -16,7 +16,7 @@
     "main": ["pageqwq.colorbmc.RGBBlocks"],
     "client": ["pageqwq.colorbmc.RGBBlocksClient"],
     "jade": ["pageqwq.colorbmc.util.jade.ColorBlockJadePlugin"],
-    "fabric-gametest": ["pageqwq.colorbmc.gametest.ColorBlockThrowGameTest"]
+    "fabric-gametest": ["pageqwq.colorbmc.gametest.ColorBlockThrowGameTest", "pageqwq.colorbmc.gametest.ConcreteWorkshopGameTest"]
   },
   "mixins": [
     "colorblockmc.mixins.json"

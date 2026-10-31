@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import pageqwq.colorbmc.RGBBlocks;
+import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
 
 public class BlockEntityRegistry {
@@ -17,6 +18,12 @@ public class BlockEntityRegistry {
             RGBBlockEntity::new,
             BlockRegistry.ALL_BLOCKS.toArray(new Block[0])
         ).build()
+    );
+
+    public static final BlockEntityType<ConcreteWorkshopBlockEntity> WORKSHOP = Registry.register(
+        BuiltInRegistries.BLOCK_ENTITY_TYPE,
+        ResourceLocation.fromNamespaceAndPath(RGBBlocks.MOD_ID, "concrete_workshop"),
+        FabricBlockEntityTypeBuilder.create(ConcreteWorkshopBlockEntity::new, BlockRegistry.CONCRETE_WORKSHOP).build()
     );
 
     public static void register() {}
