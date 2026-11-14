@@ -30,7 +30,8 @@ gametest/                   GameTest
 ```
 RGBBlocksClient.java        客户端入口
 color/                      颜色名、方块/物品着色 provider
-paint/                      取色界面与控件、ClientPlayHelperImpl
+paint/                      取色界面、ScreenUtils、ClientPlayHelperImpl
+paint/widget/               取色控件（滑块、色块、hex 输入等）
 machine/workshop/           Renderer + RenderState
 machine/replicator/         Renderer + RenderState（WIP）
 compat/continuity/          Continuity 适配（仅 1.21.1）
@@ -60,7 +61,9 @@ dev/                        仅开发环境代码（AutoTest）
 
 | 旧路径 | 新路径 | 状态 |
 |---|---|---|
-| `util/registries/*.java` | `registry/*.java` | 已完成 |
+| `util/registries/*.java`（其余 7 个） | `registry/*.java` | 已完成 |
+| `util/registries/CriterionRegistry.java` | `advancement/CriterionRegistry.java` | 已完成 |
+| `util/registries/ColorActionTrigger.java` | `advancement/ColorActionTrigger.java` | 已完成 |
 | `util/Color.java` | `color/Color.java` | 已完成 |
 | `util/ColoredItems.java` | `color/ColoredItems.java` | 已完成（仅 26.1.2） |
 | `util/MapColorResolver.java` | `color/MapColorResolver.java` | 已完成 |
@@ -76,14 +79,14 @@ dev/                        仅开发环境代码（AutoTest）
 | `item/RGBBlockItem.java` | `rgb/` | 已完成 |
 | `block/ConcreteWorkshopBlock.java`、`block/entity/ConcreteWorkshopBlockEntity.java` | `machine/workshop/` | 已完成 |
 | `block/ConcreteReplicatorBlock.java`、`block/entity/ConcreteReplicatorBlockEntity.java` | `machine/replicator/` | 已完成（WIP 类，仅移动） |
-| `util/jade/*.java` | `compat/jade/*.java` | 待办（26.1.2 在 client 源集，1.21.1 在 main 源集） |
-| `client/colorhandlers/*.java` | `client/color/` | 待办 |
-| `client/util/ColorNames.java` | `client/color/ColorNames.java` | 待办 |
-| `client/gui/screen/ColorSelectScreen.java`、`client/gui/widget/*`、`client/gui/ScreenUtils.java` | `client/paint/` | 待办 |
+| `util/jade/*.java` | `compat/jade/*.java` | 已完成（26.1.2 在 client 源集，1.21.1 在 main 源集） |
+| `client/colorhandlers/*.java` | `client/color/` | 已完成 |
+| `client/util/ColorNames.java` | `client/color/ColorNames.java` | 已完成 |
+| `client/gui/screen/ColorSelectScreen.java`、`client/gui/widget/*`、`client/gui/ScreenUtils.java` | `client/paint/`、`client/paint/widget/` | 已完成 |
 | `client/ClientPlayHelperImpl.java` | `client/paint/ClientPlayHelperImpl.java` | 已完成 |
 | `client/render/ConcreteWorkshop*、WorkshopRenderState` | `client/machine/workshop/` | 已完成 |
 | `client/render/ConcreteReplicator*、ReplicatorRenderState` | `client/machine/replicator/` | 已完成（WIP 类，仅移动） |
-| `client/autotest/AutoTest.java` | `client/dev/AutoTest.java` | 待办 |
+| `client/autotest/AutoTest.java` | `client/dev/AutoTest.java` | 已完成 |
 
 移动 `util/jade` 时必须同步改 `fabric.mod.json` 的 `jade` entrypoint。
 移动 `gametest` 包时必须同步改 `fabric-gametest` entrypoint。
