@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util;
+package pageqwq.colorbmc.color;
 
 public class Color {
     private final int value;

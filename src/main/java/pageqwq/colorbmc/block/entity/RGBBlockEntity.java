@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.item.component.DyedItemColor;
-import pageqwq.colorbmc.util.Color;
-import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.color.Color;
+import pageqwq.colorbmc.registry.BlockEntityRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class RGBBlockEntity extends BlockEntity {
     private int color = -1;

@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util.registries;
+package pageqwq.colorbmc.registry;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

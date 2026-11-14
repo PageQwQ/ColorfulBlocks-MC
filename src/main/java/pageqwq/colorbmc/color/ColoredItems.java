@@ -1,9 +1,9 @@
-package pageqwq.colorbmc.util;
+package pageqwq.colorbmc.color;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 /**
  * The one place that knows how a colored item stack is built on this branch.

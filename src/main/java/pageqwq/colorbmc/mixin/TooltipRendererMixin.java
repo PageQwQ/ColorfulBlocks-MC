@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pageqwq.colorbmc.item.PaintBucketItem;
 import pageqwq.colorbmc.item.RGBBlockItem;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -103,7 +103,7 @@ public class TooltipRendererMixin {
             int r = (color >> 16) & 0xFF;
             int g = (color >> 8) & 0xFF;
             int b = color & 0xFF;
-            float[] hsv = pageqwq.colorbmc.util.Color.RGBtoHSB(r, g, b);
+            float[] hsv = pageqwq.colorbmc.color.Color.RGBtoHSB(r, g, b);
             hsv[0] = hsv[0] * 360f; // Convert to degrees
             hsv[1] = Math.min(hsv[1], 0.9f);
             hsv[2] = org.joml.Math.clamp(hsv[2], 0.2f, 0.85f);
@@ -200,7 +200,7 @@ public class TooltipRendererMixin {
             if (rgbblocks$HSVToColor == null) throw new IllegalStateException("not initialized");
             return (int) rgbblocks$HSVToColor.invoke(null, (Object) hsv);
         } catch (Exception | LinkageError e) {
-            return pageqwq.colorbmc.util.Color.HSBtoRGB(hsv[0] / 360f, hsv[1], hsv[2]);
+            return pageqwq.colorbmc.color.Color.HSBtoRGB(hsv[0] / 360f, hsv[1], hsv[2]);
         }
     }
 

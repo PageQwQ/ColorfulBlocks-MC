@@ -10,8 +10,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
-import pageqwq.colorbmc.util.MapColorResolver;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
+import pageqwq.colorbmc.color.MapColorResolver;
+import pageqwq.colorbmc.registry.BlockRegistry;
 
 /** Verifies that the map-color hook sees the block entity's current color. */
 public class RGBMapColorGameTest {

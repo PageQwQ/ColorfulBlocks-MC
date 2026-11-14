@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util.registries;
+package pageqwq.colorbmc.registry;
 
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;

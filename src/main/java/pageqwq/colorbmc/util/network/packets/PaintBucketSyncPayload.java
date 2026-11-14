@@ -8,8 +8,8 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import pageqwq.colorbmc.RGBBlocks;
 import pageqwq.colorbmc.item.PaintBucketItem;
-import pageqwq.colorbmc.util.ColoredItems;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.color.ColoredItems;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 /**
  * Client -> server: "the paint bucket I am holding should now hold this color".

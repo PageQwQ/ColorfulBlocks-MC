@@ -8,7 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
 
 /** Verifies that mod concrete is exposed through the c:concretes convention tags. */
 public class ConcreteTagGameTest {

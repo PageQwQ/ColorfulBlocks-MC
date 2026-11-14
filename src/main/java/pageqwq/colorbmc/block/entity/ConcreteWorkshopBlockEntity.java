@@ -20,8 +20,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import pageqwq.colorbmc.RGBBlocks;
 import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
 import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
-import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
+import pageqwq.colorbmc.registry.BlockEntityRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
 
 /** Concrete workshop: batch production, 2 sand per block into the right-side container. */
 public class ConcreteWorkshopBlockEntity extends BlockEntity {

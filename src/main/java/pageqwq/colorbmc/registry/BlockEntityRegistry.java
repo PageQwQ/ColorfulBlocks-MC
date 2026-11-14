@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util.registries;
+package pageqwq.colorbmc.registry;
 
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;

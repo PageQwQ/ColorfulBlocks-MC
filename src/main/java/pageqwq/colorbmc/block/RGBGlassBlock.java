@@ -5,7 +5,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
+import pageqwq.colorbmc.registry.BlockEntityRegistry;
 
 /** Glass block whose color is stored in its block entity. */
 public class RGBGlassBlock extends TransparentBlock implements EntityBlock {

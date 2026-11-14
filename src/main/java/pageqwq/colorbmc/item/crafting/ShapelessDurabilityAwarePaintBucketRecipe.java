@@ -18,8 +18,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import pageqwq.colorbmc.item.PaintBucketItem;
 import pageqwq.colorbmc.item.RGBBlockItem;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
-import pageqwq.colorbmc.util.registries.RecipeSerializerRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
+import pageqwq.colorbmc.registry.RecipeSerializerRegistry;
 
 import java.util.List;
 

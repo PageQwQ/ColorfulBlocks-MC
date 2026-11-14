@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import pageqwq.colorbmc.client.gui.ScreenUtils;
 import pageqwq.colorbmc.client.gui.screen.ColorSelectScreen;
-import pageqwq.colorbmc.util.Color;
+import pageqwq.colorbmc.color.Color;
 
 import java.util.function.Function;
 

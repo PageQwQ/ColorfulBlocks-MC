@@ -6,7 +6,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import pageqwq.colorbmc.util.Color;
+import pageqwq.colorbmc.color.Color;
 
 public class HueStripWidget extends AbstractWidget {
     public interface Listener {

@@ -16,9 +16,9 @@ import pageqwq.colorbmc.autotest.AutoTest;
 import pageqwq.colorbmc.client.render.ConcreteReplicatorRenderer;
 import pageqwq.colorbmc.client.render.ConcreteWorkshopRenderer;
 import pageqwq.colorbmc.util.ClientProxy;
-import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
-import pageqwq.colorbmc.util.registries.EntityRegistry;
+import pageqwq.colorbmc.registry.BlockEntityRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
+import pageqwq.colorbmc.registry.EntityRegistry;
 
 import java.util.List;
 
