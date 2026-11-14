@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.block;
+package pageqwq.colorbmc.machine.replicator;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import pageqwq.colorbmc.block.entity.ConcreteReplicatorBlockEntity;
 
 /** Item replicator prototype: toggles a 16x16 projected test image. */
 public class ConcreteReplicatorBlock extends Block implements EntityBlock {

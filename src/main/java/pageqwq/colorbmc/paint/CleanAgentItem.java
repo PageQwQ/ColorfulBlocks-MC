@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 
 public class CleanAgentItem extends Item {
     private static final float FADE_RATE = 0.25f;

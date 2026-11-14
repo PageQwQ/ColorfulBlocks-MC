@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
-import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock.Stage;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlockEntity;
 import pageqwq.colorbmc.registry.BlockRegistry;
 
 /** Verifies the workshop output side with real blocks, sand, a container and ticks. */

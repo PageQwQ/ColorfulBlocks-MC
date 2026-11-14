@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.render;
+package pageqwq.colorbmc.machine.workshop;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -15,9 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.math.Axis;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
-import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock.Stage;
 
 import java.util.Map;
 

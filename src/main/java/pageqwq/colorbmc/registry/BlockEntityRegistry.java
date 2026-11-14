@@ -7,9 +7,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.block.entity.ConcreteReplicatorBlockEntity;
-import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.machine.replicator.ConcreteReplicatorBlockEntity;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlockEntity;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 
 public class BlockEntityRegistry {
     public static final BlockEntityType<RGBBlockEntity> RGB = Registry.register(

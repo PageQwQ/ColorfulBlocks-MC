@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.render;
+package pageqwq.colorbmc.machine.replicator;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.BlockPos;

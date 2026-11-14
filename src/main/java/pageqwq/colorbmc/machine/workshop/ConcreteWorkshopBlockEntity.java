@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.block.entity;
+package pageqwq.colorbmc.machine.workshop;
 
 import java.util.UUID;
 
@@ -18,10 +18,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
 import pageqwq.colorbmc.registry.BlockEntityRegistry;
 import pageqwq.colorbmc.registry.BlockRegistry;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock.Stage;
 
 /** Concrete workshop: batch production, 2 sand per block into the right-side container. */
 public class ConcreteWorkshopBlockEntity extends BlockEntity {

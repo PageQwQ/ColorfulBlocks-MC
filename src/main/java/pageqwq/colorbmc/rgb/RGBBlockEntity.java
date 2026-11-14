@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.block.entity;
+package pageqwq.colorbmc.rgb;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

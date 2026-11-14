@@ -1,8 +1,8 @@
 package pageqwq.colorbmc.util.jade;
 
 import net.minecraft.resources.Identifier;
-import pageqwq.colorbmc.block.RGBBlock;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBBlock;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;

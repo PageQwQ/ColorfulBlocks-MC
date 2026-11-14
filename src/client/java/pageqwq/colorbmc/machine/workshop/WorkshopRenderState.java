@@ -1,8 +1,8 @@
-package pageqwq.colorbmc.client.render;
+package pageqwq.colorbmc.machine.workshop;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock.Stage;
 
 /** Per-frame snapshot for the workshop renderer. */
 public class WorkshopRenderState extends BlockEntityRenderState {

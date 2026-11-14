@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.item;
+package pageqwq.colorbmc.rgb;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;

@@ -9,7 +9,7 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 import pageqwq.colorbmc.color.MapColorResolver;
 import pageqwq.colorbmc.registry.BlockRegistry;
 

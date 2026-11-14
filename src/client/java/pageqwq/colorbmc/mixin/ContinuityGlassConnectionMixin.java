@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import pageqwq.colorbmc.block.RGBGlassBlock;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBGlassBlock;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 
 /** Makes Continuity's block connection test compare colors for our glass. */
 @Pseudo

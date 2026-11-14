@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 import pageqwq.colorbmc.command.GiveColorCommand;
 import pageqwq.colorbmc.paint.PaintBucketThrowLogic;
 import pageqwq.colorbmc.paint.PaintBucketItem;

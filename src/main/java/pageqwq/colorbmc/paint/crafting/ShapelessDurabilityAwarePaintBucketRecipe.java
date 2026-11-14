@@ -17,7 +17,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import pageqwq.colorbmc.paint.PaintBucketItem;
-import pageqwq.colorbmc.item.RGBBlockItem;
+import pageqwq.colorbmc.rgb.RGBBlockItem;
 import pageqwq.colorbmc.registry.DataComponentRegistry;
 import pageqwq.colorbmc.registry.RecipeSerializerRegistry;
 
