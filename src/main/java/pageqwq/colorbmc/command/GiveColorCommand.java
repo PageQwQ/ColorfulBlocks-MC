@@ -67,7 +67,7 @@ public class GiveColorCommand {
      *
      * <p>{@code color} must be opaque ARGB. A bare 24-bit value here would compare unequal to the
      * {@code 0xFFRRGGBB} a block entity stores, which is exactly the comparison
-     * {@link pageqwq.colorbmc.item.PaintBucketItem#useOn} and the durability-aware recipe rely on.
+     * {@link pageqwq.colorbmc.paint.PaintBucketItem#useOn} and the durability-aware recipe rely on.
      */
     public static void applyColor(ItemStack stack, int color) {
         ColoredItems.applyColor(stack, color);

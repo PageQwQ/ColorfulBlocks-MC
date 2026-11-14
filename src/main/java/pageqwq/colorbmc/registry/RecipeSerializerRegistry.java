@@ -5,8 +5,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.item.crafting.ShapelessDurabilityAwarePaintBucketRecipe;
-import pageqwq.colorbmc.item.crafting.ShapelessNoReturnRecipe;
+import pageqwq.colorbmc.paint.crafting.ShapelessDurabilityAwarePaintBucketRecipe;
+import pageqwq.colorbmc.paint.crafting.ShapelessNoReturnRecipe;
 
 public class RecipeSerializerRegistry {
     public static final RecipeSerializer<ShapelessDurabilityAwarePaintBucketRecipe> SHAPELESS_DURABILITY_AWARE = Registry.register(

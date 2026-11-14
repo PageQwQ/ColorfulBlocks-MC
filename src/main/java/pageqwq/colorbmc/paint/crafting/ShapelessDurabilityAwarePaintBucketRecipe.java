@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.item.crafting;
+package pageqwq.colorbmc.paint.crafting;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
-import pageqwq.colorbmc.item.PaintBucketItem;
+import pageqwq.colorbmc.paint.PaintBucketItem;
 import pageqwq.colorbmc.item.RGBBlockItem;
 import pageqwq.colorbmc.registry.DataComponentRegistry;
 import pageqwq.colorbmc.registry.RecipeSerializerRegistry;

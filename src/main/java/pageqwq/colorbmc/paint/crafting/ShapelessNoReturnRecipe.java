@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.item.crafting;
+package pageqwq.colorbmc.paint.crafting;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util;
+package pageqwq.colorbmc.paint;
 
 public class ClientProxy {
     public static ClientPlayHelper clientPlayHelper = null;

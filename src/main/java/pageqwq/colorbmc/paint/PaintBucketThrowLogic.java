@@ -1,10 +1,9 @@
-package pageqwq.colorbmc.entity;
+package pageqwq.colorbmc.paint;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import pageqwq.colorbmc.item.PaintBucketItem;
 
 public final class PaintBucketThrowLogic {
     public static final float MIN_RADIUS = 2.0F;

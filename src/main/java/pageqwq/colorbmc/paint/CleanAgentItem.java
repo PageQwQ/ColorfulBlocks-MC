@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.item;
+package pageqwq.colorbmc.paint;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

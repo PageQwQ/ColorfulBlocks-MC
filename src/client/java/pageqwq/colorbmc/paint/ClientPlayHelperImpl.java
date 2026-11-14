@@ -1,9 +1,8 @@
-package pageqwq.colorbmc.client;
+package pageqwq.colorbmc.paint;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import pageqwq.colorbmc.client.gui.screen.ColorSelectScreen;
-import pageqwq.colorbmc.util.ClientPlayHelper;
 
 public class ClientPlayHelperImpl implements ClientPlayHelper {
     @Override
