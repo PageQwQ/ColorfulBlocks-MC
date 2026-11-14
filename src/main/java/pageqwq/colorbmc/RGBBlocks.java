@@ -7,7 +7,7 @@ import pageqwq.colorbmc.paint.DispensePaintBucketBehaviour;
 import pageqwq.colorbmc.registry.BlockEntityRegistry;
 import pageqwq.colorbmc.registry.BlockRegistry;
 import pageqwq.colorbmc.registry.CreativeTabRegistry;
-import pageqwq.colorbmc.registry.CriterionRegistry;
+import pageqwq.colorbmc.advancement.CriterionRegistry;
 import pageqwq.colorbmc.registry.DataComponentRegistry;
 import pageqwq.colorbmc.registry.EntityRegistry;
 import pageqwq.colorbmc.registry.ItemRegistry;

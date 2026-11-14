@@ -186,8 +186,8 @@ public class PaintBucketItem extends Item {
                 }
                 applyColorToBlock(level, pos, color);
                 if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                    pageqwq.colorbmc.registry.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
-                        pageqwq.colorbmc.registry.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
+                    pageqwq.colorbmc.advancement.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                        pageqwq.colorbmc.advancement.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
                 }
             }
             return InteractionResult.SUCCESS;
@@ -207,8 +207,8 @@ public class PaintBucketItem extends Item {
 
             applyColorToBlock(level, pos, color);
             if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                pageqwq.colorbmc.registry.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
-                    pageqwq.colorbmc.registry.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
+                pageqwq.colorbmc.advancement.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                    pageqwq.colorbmc.advancement.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
             }
             return InteractionResult.SUCCESS;
         }

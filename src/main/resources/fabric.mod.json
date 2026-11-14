@@ -22,7 +22,7 @@
       "pageqwq.colorbmc.RGBBlocksClient"
     ],
     "jade": [
-      "pageqwq.colorbmc.util.jade.ColorBlockJadePlugin"
+      "pageqwq.colorbmc.compat.jade.ColorBlockJadePlugin"
     ],
     "fabric-gametest": [
       "pageqwq.colorbmc.gametest.ColorBlockThrowGameTest",

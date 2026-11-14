@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.gui.widget;
+package pageqwq.colorbmc.paint.widget;
 
 public enum SliderType {
     HUE,

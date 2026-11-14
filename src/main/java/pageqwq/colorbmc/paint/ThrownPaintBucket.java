@@ -57,8 +57,8 @@ public class ThrownPaintBucket extends ThrowableItemProjectile {
             this.dropBucket(serverLevel, result.getLocation().x, result.getLocation().y, result.getLocation().z, drop);
             PaintBucketItem.playImpactEffects(serverLevel, result.getLocation().x, result.getLocation().y, result.getLocation().z, color);
             if (this.getOwner() instanceof net.minecraft.server.level.ServerPlayer owner) {
-                pageqwq.colorbmc.registry.CriterionRegistry.COLOR_ACTION.trigger(owner,
-                    pageqwq.colorbmc.registry.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, count, true, false);
+                pageqwq.colorbmc.advancement.CriterionRegistry.COLOR_ACTION.trigger(owner,
+                    pageqwq.colorbmc.advancement.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, count, true, false);
             }
         }
         this.discard();

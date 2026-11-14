@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.gui.widget;
+package pageqwq.colorbmc.paint.widget;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -6,7 +6,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import pageqwq.colorbmc.client.gui.ScreenUtils;
+import pageqwq.colorbmc.paint.ScreenUtils;
 import pageqwq.colorbmc.color.Color;
 
 public class SquareColorPicker extends AbstractWidget {
