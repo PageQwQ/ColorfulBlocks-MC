@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import pageqwq.colorbmc.RGBBlocks;
 import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
 import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
-import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
+import pageqwq.colorbmc.registry.BlockEntityRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
 
 import java.util.UUID;
 

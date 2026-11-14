@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pageqwq.colorbmc.block.RGBBlock;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
-import pageqwq.colorbmc.util.MapColorResolver;
+import pageqwq.colorbmc.color.MapColorResolver;
 
 /** Makes maps use the color stored in an {@link RGBBlockEntity}. */
 @Mixin(BlockBehaviour.BlockStateBase.class)

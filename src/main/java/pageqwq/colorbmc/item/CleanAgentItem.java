@@ -70,8 +70,8 @@ public class CleanAgentItem extends Item {
                 }
                 boolean changed = newColor != currentColor;
                 if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                    pageqwq.colorbmc.util.registries.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
-                        pageqwq.colorbmc.util.registries.ColorActionTrigger.TYPE_CLEAN, newColor & 0xFFFFFF, originalColor & 0xFFFFFF, 1, false, changed);
+                    pageqwq.colorbmc.registry.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                        pageqwq.colorbmc.registry.ColorActionTrigger.TYPE_CLEAN, newColor & 0xFFFFFF, originalColor & 0xFFFFFF, 1, false, changed);
                 }
             }
 

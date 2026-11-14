@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util.registries;
+package pageqwq.colorbmc.registry;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Registry;

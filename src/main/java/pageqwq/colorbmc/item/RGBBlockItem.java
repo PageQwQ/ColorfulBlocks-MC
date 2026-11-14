@@ -5,7 +5,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 import java.util.List;
 

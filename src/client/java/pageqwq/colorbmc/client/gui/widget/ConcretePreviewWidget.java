@@ -6,8 +6,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class ConcretePreviewWidget extends AbstractWidget {
     private static final int ITEM_SIZE = 16;

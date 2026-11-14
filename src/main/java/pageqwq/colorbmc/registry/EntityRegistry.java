@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util.registries;
+package pageqwq.colorbmc.registry;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.Registry;

@@ -3,7 +3,7 @@ package pageqwq.colorbmc.client.colorhandlers;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.ItemStack;
 import pageqwq.colorbmc.item.RGBBlockItem;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class RGBBlockItemColor implements ItemColor {
     @Override

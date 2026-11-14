@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
 import pageqwq.colorbmc.item.PaintBucketItem;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class DispensePaintBucketBehaviour extends DefaultDispenseItemBehavior {
     @Override

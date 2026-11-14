@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
 import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
 import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
 
 /** Verifies the workshop output side with real blocks, sand, a container and ticks. */
 public class ConcreteWorkshopGameTest implements FabricGameTest {

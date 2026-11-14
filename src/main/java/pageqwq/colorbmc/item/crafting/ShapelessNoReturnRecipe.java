@@ -12,7 +12,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
-import pageqwq.colorbmc.util.registries.RecipeSerializerRegistry;
+import pageqwq.colorbmc.registry.RecipeSerializerRegistry;
 
 import java.util.List;
 

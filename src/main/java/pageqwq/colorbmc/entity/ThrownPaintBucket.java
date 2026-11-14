@@ -11,9 +11,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import pageqwq.colorbmc.item.PaintBucketItem;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
-import pageqwq.colorbmc.util.registries.EntityRegistry;
-import pageqwq.colorbmc.util.registries.ItemRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
+import pageqwq.colorbmc.registry.EntityRegistry;
+import pageqwq.colorbmc.registry.ItemRegistry;
 
 public class ThrownPaintBucket extends ThrowableItemProjectile {
     private static final int DROP_DELAY = 10;
@@ -59,8 +59,8 @@ public class ThrownPaintBucket extends ThrowableItemProjectile {
             this.dropBucket(serverLevel, result.getLocation().x, result.getLocation().y, result.getLocation().z, drop);
             PaintBucketItem.playImpactEffects(serverLevel, result.getLocation().x, result.getLocation().y, result.getLocation().z, color);
             if (this.getOwner() instanceof net.minecraft.server.level.ServerPlayer owner) {
-                pageqwq.colorbmc.util.registries.CriterionRegistry.COLOR_ACTION.trigger(owner,
-                    pageqwq.colorbmc.util.registries.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, count, true, false);
+                pageqwq.colorbmc.registry.CriterionRegistry.COLOR_ACTION.trigger(owner,
+                    pageqwq.colorbmc.registry.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, count, true, false);
             }
         }
         this.discard();

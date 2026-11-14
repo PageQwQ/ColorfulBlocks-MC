@@ -12,10 +12,10 @@ import net.minecraft.world.level.block.Blocks;
 import pageqwq.colorbmc.command.GiveColorCommand;
 import pageqwq.colorbmc.entity.PaintBucketThrowLogic;
 import pageqwq.colorbmc.entity.ThrownPaintBucket;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
-import pageqwq.colorbmc.util.registries.EntityRegistry;
-import pageqwq.colorbmc.util.registries.ItemRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
+import pageqwq.colorbmc.registry.EntityRegistry;
+import pageqwq.colorbmc.registry.ItemRegistry;
 
 public class ColorBlockThrowGameTest implements FabricGameTest {
     private static final int COLOR = 0x3366CC;

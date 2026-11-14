@@ -6,7 +6,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import pageqwq.colorbmc.client.gui.ScreenUtils;
-import pageqwq.colorbmc.util.Color;
+import pageqwq.colorbmc.color.Color;
 
 public class SquareColorPicker extends AbstractWidget {
     public interface Listener {

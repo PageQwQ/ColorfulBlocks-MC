@@ -9,9 +9,9 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import pageqwq.colorbmc.util.Color;
-import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.color.Color;
+import pageqwq.colorbmc.registry.BlockEntityRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class RGBBlockEntity extends BlockEntity {
     private int color = -1;

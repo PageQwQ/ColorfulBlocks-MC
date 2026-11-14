@@ -14,8 +14,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class GiveColorCommand {
     private static final DynamicCommandExceptionType INVALID_COLOR =

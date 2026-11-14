@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util;
+package pageqwq.colorbmc.color;
 
 import net.minecraft.world.level.material.MapColor;
 

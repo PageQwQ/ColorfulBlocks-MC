@@ -28,8 +28,8 @@ import org.joml.Vector3f;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
 import pageqwq.colorbmc.entity.ThrownPaintBucket;
 import pageqwq.colorbmc.util.ClientProxy;
-import pageqwq.colorbmc.util.registries.BlockRegistry;
-import pageqwq.colorbmc.util.registries.DataComponentRegistry;
+import pageqwq.colorbmc.registry.BlockRegistry;
+import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 import java.util.List;
 import java.util.Set;
@@ -191,8 +191,8 @@ public class PaintBucketItem extends Item {
                 }
                 applyColorToBlock(level, pos, color);
                 if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                    pageqwq.colorbmc.util.registries.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
-                        pageqwq.colorbmc.util.registries.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
+                    pageqwq.colorbmc.registry.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                        pageqwq.colorbmc.registry.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
                 }
             }
             return InteractionResult.SUCCESS;
@@ -212,8 +212,8 @@ public class PaintBucketItem extends Item {
 
             applyColorToBlock(level, pos, color);
             if (!level.isClientSide() && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-                pageqwq.colorbmc.util.registries.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
-                    pageqwq.colorbmc.util.registries.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
+                pageqwq.colorbmc.registry.CriterionRegistry.COLOR_ACTION.trigger(serverPlayer,
+                    pageqwq.colorbmc.registry.ColorActionTrigger.TYPE_DYE, color & 0xFFFFFF, color & 0xFFFFFF, 1, false, false);
             }
             return InteractionResult.SUCCESS;
         }
