@@ -15,7 +15,7 @@
   "entrypoints": {
     "main": ["pageqwq.colorbmc.RGBBlocks"],
     "client": ["pageqwq.colorbmc.RGBBlocksClient"],
-    "jade": ["pageqwq.colorbmc.util.jade.ColorBlockJadePlugin"],
+    "jade": ["pageqwq.colorbmc.compat.jade.ColorBlockJadePlugin"],
     "fabric-gametest": ["pageqwq.colorbmc.gametest.ColorBlockThrowGameTest", "pageqwq.colorbmc.gametest.ConcreteWorkshopGameTest", "pageqwq.colorbmc.gametest.RGBMapColorGameTest", "pageqwq.colorbmc.gametest.ConcreteTagGameTest"]
   },
   "mixins": [

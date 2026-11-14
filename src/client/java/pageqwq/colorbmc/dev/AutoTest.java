@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.autotest;
+package pageqwq.colorbmc.dev;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Minecraft;

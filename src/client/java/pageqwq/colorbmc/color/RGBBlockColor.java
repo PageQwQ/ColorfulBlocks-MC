@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.colorhandlers;
+package pageqwq.colorbmc.color;
 
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.BlockPos;

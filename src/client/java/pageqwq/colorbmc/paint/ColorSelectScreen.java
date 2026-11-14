@@ -1,17 +1,17 @@
-package pageqwq.colorbmc.client.gui.screen;
+package pageqwq.colorbmc.paint;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import pageqwq.colorbmc.client.gui.widget.ColorSlider;
-import pageqwq.colorbmc.client.gui.widget.ConcretePreviewWidget;
-import pageqwq.colorbmc.client.gui.widget.HexInputWidget;
-import pageqwq.colorbmc.client.gui.widget.HueStripWidget;
-import pageqwq.colorbmc.client.gui.widget.SliderType;
-import pageqwq.colorbmc.client.gui.widget.SquareColorPicker;
-import pageqwq.colorbmc.client.util.ColorNames;
+import pageqwq.colorbmc.paint.widget.ColorSlider;
+import pageqwq.colorbmc.paint.widget.ConcretePreviewWidget;
+import pageqwq.colorbmc.paint.widget.HexInputWidget;
+import pageqwq.colorbmc.paint.widget.HueStripWidget;
+import pageqwq.colorbmc.paint.widget.SliderType;
+import pageqwq.colorbmc.paint.widget.SquareColorPicker;
+import pageqwq.colorbmc.color.ColorNames;
 import pageqwq.colorbmc.color.Color;
 import pageqwq.colorbmc.paint.PaintBucketSyncPayload;
 

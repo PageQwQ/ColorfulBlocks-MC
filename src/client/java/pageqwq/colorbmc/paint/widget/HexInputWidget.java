@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.gui.widget;
+package pageqwq.colorbmc.paint.widget;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

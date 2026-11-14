@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.colorhandlers;
+package pageqwq.colorbmc.color;
 
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.ItemStack;

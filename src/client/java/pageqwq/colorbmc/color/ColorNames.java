@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.util;
+package pageqwq.colorbmc.color;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

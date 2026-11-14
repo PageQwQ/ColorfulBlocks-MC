@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util.jade;
+package pageqwq.colorbmc.compat.jade;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;

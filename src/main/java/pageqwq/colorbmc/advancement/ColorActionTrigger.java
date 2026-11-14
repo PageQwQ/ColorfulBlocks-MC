@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.registry;
+package pageqwq.colorbmc.advancement;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
