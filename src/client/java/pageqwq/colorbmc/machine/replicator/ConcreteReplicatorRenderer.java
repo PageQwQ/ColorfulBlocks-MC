@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.client.render;
+package pageqwq.colorbmc.machine.replicator;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,8 +16,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.block.ConcreteReplicatorBlock;
-import pageqwq.colorbmc.block.entity.ConcreteReplicatorBlockEntity;
+import pageqwq.colorbmc.machine.replicator.ConcreteReplicatorBlock;
+import pageqwq.colorbmc.machine.replicator.ConcreteReplicatorBlockEntity;
 
 /** Renders the replicator's projected ghost blocks from the real concrete model. */
 public class ConcreteReplicatorRenderer implements BlockEntityRenderer<ConcreteReplicatorBlockEntity> {

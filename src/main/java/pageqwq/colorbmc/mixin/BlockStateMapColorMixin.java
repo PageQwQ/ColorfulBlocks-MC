@@ -10,8 +10,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import pageqwq.colorbmc.block.RGBBlock;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBBlock;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 import pageqwq.colorbmc.color.MapColorResolver;
 
 /** Makes maps use the color stored in an {@link RGBBlockEntity}. */

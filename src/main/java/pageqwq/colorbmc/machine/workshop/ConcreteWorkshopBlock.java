@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.block;
+package pageqwq.colorbmc.machine.workshop;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlockEntity;
 
 /** Concrete workshop: {@link #STAGE} drives the screen; output is on the screen's right side. */
 public class ConcreteWorkshopBlock extends Block implements EntityBlock {

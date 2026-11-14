@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.block.entity;
+package pageqwq.colorbmc.machine.workshop;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock.Stage;
 import pageqwq.colorbmc.registry.BlockEntityRegistry;
 import pageqwq.colorbmc.registry.BlockRegistry;
 

@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.block.entity;
+package pageqwq.colorbmc.machine.replicator;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;

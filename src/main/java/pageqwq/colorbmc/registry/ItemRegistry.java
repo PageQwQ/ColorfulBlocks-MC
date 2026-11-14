@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import pageqwq.colorbmc.RGBBlocks;
 import pageqwq.colorbmc.paint.CleanAgentItem;
 import pageqwq.colorbmc.paint.PaintBucketItem;
-import pageqwq.colorbmc.item.RGBBlockItem;
+import pageqwq.colorbmc.rgb.RGBBlockItem;
 
 import java.util.ArrayList;
 import java.util.List;

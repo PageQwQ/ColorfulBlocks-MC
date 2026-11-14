@@ -9,8 +9,8 @@ import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import pageqwq.colorbmc.block.RGBGlassBlock;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBGlassBlock;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 
 import java.util.Properties;
 

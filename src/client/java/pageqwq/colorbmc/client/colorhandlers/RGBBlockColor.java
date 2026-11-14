@@ -5,8 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import pageqwq.colorbmc.block.RGBGlassBlock;
-import pageqwq.colorbmc.block.entity.RGBBlockEntity;
+import pageqwq.colorbmc.rgb.RGBGlassBlock;
+import pageqwq.colorbmc.rgb.RGBBlockEntity;
 
 import org.jetbrains.annotations.Nullable;
 

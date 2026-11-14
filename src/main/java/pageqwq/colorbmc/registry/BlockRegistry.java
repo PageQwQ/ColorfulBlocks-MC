@@ -7,11 +7,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.block.ConcreteReplicatorBlock;
-import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
-import pageqwq.colorbmc.block.RGBBlock;
-import pageqwq.colorbmc.block.RGBGlassBlock;
-import pageqwq.colorbmc.block.RGBGlowingBlock;
+import pageqwq.colorbmc.machine.replicator.ConcreteReplicatorBlock;
+import pageqwq.colorbmc.machine.workshop.ConcreteWorkshopBlock;
+import pageqwq.colorbmc.rgb.RGBBlock;
+import pageqwq.colorbmc.rgb.RGBGlassBlock;
+import pageqwq.colorbmc.rgb.RGBGlowingBlock;
 
 import java.util.ArrayList;
 import java.util.List;

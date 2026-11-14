@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pageqwq.colorbmc.paint.PaintBucketItem;
-import pageqwq.colorbmc.item.RGBBlockItem;
+import pageqwq.colorbmc.rgb.RGBBlockItem;
 import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 import java.lang.reflect.Field;
