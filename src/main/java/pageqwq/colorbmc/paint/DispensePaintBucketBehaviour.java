@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.dispenser;
+package pageqwq.colorbmc.paint;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
-import pageqwq.colorbmc.item.PaintBucketItem;
 import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class DispensePaintBucketBehaviour extends DefaultDispenseItemBehavior {

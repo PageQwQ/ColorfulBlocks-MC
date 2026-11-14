@@ -2,7 +2,7 @@ package pageqwq.colorbmc.client.colorhandlers;
 
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.ItemStack;
-import pageqwq.colorbmc.item.PaintBucketItem;
+import pageqwq.colorbmc.paint.PaintBucketItem;
 import pageqwq.colorbmc.registry.DataComponentRegistry;
 
 public class PaintBucketItemColor implements ItemColor {

@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.item.CleanAgentItem;
-import pageqwq.colorbmc.item.PaintBucketItem;
+import pageqwq.colorbmc.paint.CleanAgentItem;
+import pageqwq.colorbmc.paint.PaintBucketItem;
 import pageqwq.colorbmc.item.RGBBlockItem;
 
 import java.util.ArrayList;

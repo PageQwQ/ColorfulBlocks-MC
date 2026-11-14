@@ -1,8 +1,8 @@
-package pageqwq.colorbmc.util.network;
+package pageqwq.colorbmc.network;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import pageqwq.colorbmc.util.network.packets.PaintBucketSyncPayload;
+import pageqwq.colorbmc.paint.PaintBucketSyncPayload;
 
 public class NetworkHandler {
     public static void register() {

@@ -3,7 +3,7 @@ package pageqwq.colorbmc;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.world.level.block.DispenserBlock;
 import pageqwq.colorbmc.command.GiveColorCommand;
-import pageqwq.colorbmc.dispenser.DispensePaintBucketBehaviour;
+import pageqwq.colorbmc.paint.DispensePaintBucketBehaviour;
 import pageqwq.colorbmc.registry.BlockEntityRegistry;
 import pageqwq.colorbmc.registry.BlockRegistry;
 import pageqwq.colorbmc.registry.CreativeTabRegistry;
@@ -12,7 +12,7 @@ import pageqwq.colorbmc.registry.DataComponentRegistry;
 import pageqwq.colorbmc.registry.EntityRegistry;
 import pageqwq.colorbmc.registry.ItemRegistry;
 import pageqwq.colorbmc.registry.RecipeSerializerRegistry;
-import pageqwq.colorbmc.util.network.NetworkHandler;
+import pageqwq.colorbmc.network.NetworkHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

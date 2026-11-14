@@ -13,7 +13,7 @@ import pageqwq.colorbmc.client.gui.widget.SliderType;
 import pageqwq.colorbmc.client.gui.widget.SquareColorPicker;
 import pageqwq.colorbmc.client.util.ColorNames;
 import pageqwq.colorbmc.color.Color;
-import pageqwq.colorbmc.util.network.packets.PaintBucketSyncPayload;
+import pageqwq.colorbmc.paint.PaintBucketSyncPayload;
 
 import java.util.Locale;
 

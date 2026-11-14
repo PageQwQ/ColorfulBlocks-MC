@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.util;
+package pageqwq.colorbmc.paint;
 
 import net.minecraft.world.entity.player.Player;
 

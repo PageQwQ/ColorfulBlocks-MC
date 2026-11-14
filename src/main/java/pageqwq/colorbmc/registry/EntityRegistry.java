@@ -10,7 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
 import pageqwq.colorbmc.RGBBlocks;
-import pageqwq.colorbmc.entity.ThrownPaintBucket;
+import pageqwq.colorbmc.paint.ThrownPaintBucket;
 
 public class EntityRegistry {
     public static final EntityType<ThrownPaintBucket> THROWN_PAINT_BUCKET = Registry.register(

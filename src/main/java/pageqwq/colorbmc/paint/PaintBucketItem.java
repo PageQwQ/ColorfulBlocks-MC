@@ -1,4 +1,4 @@
-package pageqwq.colorbmc.item;
+package pageqwq.colorbmc.paint;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -26,8 +26,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3f;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
-import pageqwq.colorbmc.entity.ThrownPaintBucket;
-import pageqwq.colorbmc.util.ClientProxy;
 import pageqwq.colorbmc.registry.BlockRegistry;
 import pageqwq.colorbmc.registry.DataComponentRegistry;
 
@@ -107,8 +105,8 @@ public class PaintBucketItem extends Item {
 
         float charge = Math.min(1.0F, (float) heldTicks / THROW_CHARGE_TICKS);
         float velocity = MIN_THROW_VELOCITY + (MAX_THROW_VELOCITY - MIN_THROW_VELOCITY) * charge;
-        float radiusCharge = Math.min(1.0F, (float) heldTicks / pageqwq.colorbmc.entity.PaintBucketThrowLogic.MAX_CHARGE_TICKS);
-        float radius = pageqwq.colorbmc.entity.PaintBucketThrowLogic.radiusForCharge(radiusCharge);
+        float radiusCharge = Math.min(1.0F, (float) heldTicks / pageqwq.colorbmc.paint.PaintBucketThrowLogic.MAX_CHARGE_TICKS);
+        float radius = pageqwq.colorbmc.paint.PaintBucketThrowLogic.radiusForCharge(radiusCharge);
 
         ThrownPaintBucket bucket = new ThrownPaintBucket(level, player, stack);
         bucket.setRadius(radius);
