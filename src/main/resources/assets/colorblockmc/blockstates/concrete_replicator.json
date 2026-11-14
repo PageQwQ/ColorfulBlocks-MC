@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "colorblockmc:block/concrete_replicator",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "colorblockmc:block/concrete_replicator",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "colorblockmc:block/concrete_replicator"
+    },
+    "facing=west": {
+      "model": "colorblockmc:block/concrete_replicator",
+      "y": 90
+    }
+  }
+}

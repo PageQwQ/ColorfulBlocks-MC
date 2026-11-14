@@ -1,7 +1,9 @@
 {
   "block.colorblockmc.concrete": "染色混凝土",
   "block.colorblockmc.glowing_concrete": "发光染色混凝土",
+  "block.colorblockmc.stained_glass": "染色玻璃",
   "block.colorblockmc.concrete_workshop": "混凝土车间",
+  "block.colorblockmc.concrete_replicator": "物品复刻机",
   "message.colorblockmc.concrete_workshop.off": "右键开机",
   "message.colorblockmc.concrete_workshop.full": "输出容器已满",
   "message.colorblockmc.concrete_workshop.confirm_off": "再次操作以关机",
@@ -48,5 +50,6 @@
   "advancements.colorblockmc.purify_activate.title": "净化，开！",
   "advancements.colorblockmc.purify_activate.description": "为什么有人会把黑色混凝土变成白色的？",
   "advancements.colorblockmc.light_it_up.title": "发光发亮吧！",
-  "advancements.colorblockmc.light_it_up.description": "使用发光染色混凝土，点亮黑夜。"
+  "advancements.colorblockmc.light_it_up.description": "使用发光染色混凝土，点亮黑夜。",
+  "resourcepack.colorblockmc.ctm": "染色方块连接纹理"
 }

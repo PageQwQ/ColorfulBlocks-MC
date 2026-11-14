@@ -14,9 +14,7 @@ import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
 import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
 
-/**
- * 混凝土车间的输出侧验证：真的摆方块、塞沙、放容器、跑 tick，再断言容器里的物品数量和状态。
- */
+/** Verifies the workshop output side with real blocks, sand, a container and ticks. */
 public class ConcreteWorkshopGameTest {
     private static final int SAND = 32;
 

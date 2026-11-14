@@ -21,10 +21,7 @@ import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
 
 import java.util.Map;
 
-/**
- * 屏幕图标用「发光」渲染层绘制（{@link RenderTypes#entityTranslucentEmissive}），
- * 不受环境光照影响，所以在黑暗里图标本身是亮的，而机身保持正常受光。
- */
+/** Draws the screen icon with the emissive layer so it stays lit in the dark. */
 public class ConcreteWorkshopRenderer implements BlockEntityRenderer<ConcreteWorkshopBlockEntity, WorkshopRenderState> {
     private record Icon(Identifier texture, int frames, int ticksPerFrame) {
     }
@@ -66,7 +63,7 @@ public class ConcreteWorkshopRenderer implements BlockEntityRenderer<ConcreteWor
         float v1 = (float) (frame + 1) / icon.frames();
 
         poses.pushPose();
-        // 与 blockstate 的 y 旋转一致：模型正面朝南，facing 决定朝向
+        // Match the blockstate y rotation: the model faces south, facing sets the direction.
         poses.translate(0.5F, 0.5F, 0.5F);
         poses.mulPose(Axis.YP.rotationDegrees(-state.facing.toYRot()));
         poses.translate(-0.5F, -0.5F, -0.5F);

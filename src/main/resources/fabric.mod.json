@@ -4,7 +4,9 @@
   "version": "${version}",
   "name": "Colorful Blocks",
   "description": "Make you to use any color of blocks in Minecraft.",
-  "authors": ["PageQwQ"],
+  "authors": [
+    "PageQwQ"
+  ],
   "contact": {
     "homepage": "https://github.com/PageQwQ/ColorfulBlocks-MC",
     "issues": "https://github.com/PageQwQ/ColorfulBlocks-MC/issues"
@@ -13,14 +15,28 @@
   "icon": "logo.png",
   "environment": "*",
   "entrypoints": {
-    "main": ["pageqwq.colorbmc.RGBBlocks"],
-    "client": ["pageqwq.colorbmc.RGBBlocksClient"],
-    "jade": ["pageqwq.colorbmc.util.jade.ColorBlockJadePlugin"],
-    "fabric-gametest": ["pageqwq.colorbmc.gametest.ColorBlockThrowGameTest", "pageqwq.colorbmc.gametest.ConcreteWorkshopGameTest"]
+    "main": [
+      "pageqwq.colorbmc.RGBBlocks"
+    ],
+    "client": [
+      "pageqwq.colorbmc.RGBBlocksClient"
+    ],
+    "jade": [
+      "pageqwq.colorbmc.util.jade.ColorBlockJadePlugin"
+    ],
+    "fabric-gametest": [
+      "pageqwq.colorbmc.gametest.ColorBlockThrowGameTest",
+      "pageqwq.colorbmc.gametest.ConcreteWorkshopGameTest",
+      "pageqwq.colorbmc.gametest.RGBMapColorGameTest",
+      "pageqwq.colorbmc.gametest.ConcreteTagGameTest"
+    ]
   },
   "mixins": [
     "colorblockmc.mixins.json"
   ],
+  "suggests": {
+    "continuity": ">=3.0.1-beta.2"
+  },
   "depends": {
     "fabricloader": ">=0.19.3",
     "minecraft": "~26.1.2",

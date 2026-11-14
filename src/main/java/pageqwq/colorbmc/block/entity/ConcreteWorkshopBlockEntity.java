@@ -23,14 +23,9 @@ import pageqwq.colorbmc.block.ConcreteWorkshopBlock.Stage;
 import pageqwq.colorbmc.util.registries.BlockEntityRegistry;
 import pageqwq.colorbmc.util.registries.BlockRegistry;
 
-/**
- * 混凝土车间：批次生产。
- *
- * 投沙 → 每 2 沙产 1 块混凝土推入右侧容器 → 沙仓耗尽时提示「生产完成」并自动关机。
- * 无容器 / 容器满时暂停，且不累积产出预算。
- */
+/** Concrete workshop: batch production, 2 sand per block into the right-side container. */
 public class ConcreteWorkshopBlockEntity extends BlockEntity {
-    /** 沙仓上限。 */
+    /** Sand capacity. */
     public static final int SAND_CAPACITY = 2048;
     private static final int SAND_PER_CONCRETE = 2;
     private static final int CONCRETE_PER_MINUTE = 1024;
@@ -64,7 +59,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
     private UUID shutdownPlayer;
     private long shutdownDeadline;
 
-    /** 潜行右键需要连续两次才关机。第一次返回 false 并记下状态。 */
+    /** Sneak-use twice to shut down; the first call returns false and records the player. */
     public boolean confirmShutdown(Player player, long now) {
         if (this.shutdownPlayer != null && this.shutdownPlayer.equals(player.getUUID()) && now <= this.shutdownDeadline) {
             this.shutdownPlayer = null;
@@ -75,7 +70,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
         return false;
     }
 
-    /** 开机时开始新的一批。 */
+    /** Starts a new batch. */
     public void startBatch() {
         this.produced = 0;
         this.budget = 0.0D;
@@ -102,7 +97,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
             return;
         }
 
-        // 沙不够就从上方容器补
+        // Pull sand from the container above.
         if (entity.sand < SAND_PER_CONCRETE) {
             int pulled = pullSand(level, pos, SAND_PER_CONCRETE - entity.sand);
             if (pulled > 0) {
@@ -111,7 +106,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
             }
         }
 
-        // 没沙可产：本批有产出就算完成，否则回到等待
+        // No sand: finish the batch if anything was produced, otherwise wait.
         if (entity.sand < SAND_PER_CONCRETE) {
             if (entity.produced > 0) {
                 complete(level, pos, state, entity);
@@ -121,7 +116,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
             return;
         }
 
-        // 右侧容器
+        // Container on the right.
         Direction outDir = state.getValue(ConcreteWorkshopBlock.FACING).getCounterClockWise();
         Container out = HopperBlockEntity.getContainerAt(level, pos.relative(outDir));
         if (out == null) {
@@ -130,7 +125,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
         }
 
         ItemStack product = new ItemStack(BlockRegistry.RGB_CONCRETE);
-        // 先看容器有没有位置：没有就停在「容器满」，不累积预算，避免和「运行中」来回跳
+        // Check room first: if full, stay in FULL and do not accumulate budget.
         if (!canInsert(out, product)) {
             if (state.getValue(ConcreteWorkshopBlock.STAGE) != Stage.FULL) {
                 setStage(level, pos, state, Stage.FULL);
@@ -139,7 +134,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
             return;
         }
 
-        // 限速：1024 块/分钟
+        // Rate limit: 1024 blocks per minute.
         entity.budget += (double) CONCRETE_PER_MINUTE / TICKS_PER_MINUTE;
         if (entity.budget < 1.0D) {
             setStage(level, pos, state, Stage.WORKING);
@@ -217,7 +212,7 @@ public class ConcreteWorkshopBlockEntity extends BlockEntity {
         notifyNearby(level, pos, "done");
     }
 
-    /** 给 32 格内的玩家发动作栏提示。 */
+    /** Sends an action-bar hint to players within 32 blocks. */
     public static void notifyNearby(Level level, BlockPos pos, String key) {
         if (!(level instanceof ServerLevel serverLevel)) {
             return;

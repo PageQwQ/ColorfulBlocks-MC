@@ -1,0 +1,9 @@
+{
+  "parent": "colorblockmc:block/block",
+  "textures": {
+    "all": {
+      "force_translucent": true,
+      "sprite": "colorblockmc:block/stained_glass"
+    }
+  }
+}

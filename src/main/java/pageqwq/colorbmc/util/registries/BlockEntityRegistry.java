@@ -7,6 +7,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import pageqwq.colorbmc.RGBBlocks;
+import pageqwq.colorbmc.block.entity.ConcreteReplicatorBlockEntity;
 import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
 
@@ -24,6 +25,12 @@ public class BlockEntityRegistry {
         BuiltInRegistries.BLOCK_ENTITY_TYPE,
         Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "concrete_workshop"),
         FabricBlockEntityTypeBuilder.create(ConcreteWorkshopBlockEntity::new, BlockRegistry.CONCRETE_WORKSHOP).build()
+    );
+
+    public static final BlockEntityType<ConcreteReplicatorBlockEntity> REPLICATOR = Registry.register(
+        BuiltInRegistries.BLOCK_ENTITY_TYPE,
+        Identifier.fromNamespaceAndPath(RGBBlocks.MOD_ID, "concrete_replicator"),
+        FabricBlockEntityTypeBuilder.create(ConcreteReplicatorBlockEntity::new, BlockRegistry.CONCRETE_REPLICATOR).build()
     );
 
     public static void register() {}

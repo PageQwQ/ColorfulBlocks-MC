@@ -62,6 +62,11 @@ loom {
             property "fabric-api.gametest", "true"
             property "fabric-api.gametest.report-file", "${project.buildDir}/gametest-results.xml"
         }
+        autotest {
+            client()
+            programArgs "--quickPlaySingleplayer", "CTM Test"
+            property "colorblockmc.autotest", "true"
+        }
     }
 }
 

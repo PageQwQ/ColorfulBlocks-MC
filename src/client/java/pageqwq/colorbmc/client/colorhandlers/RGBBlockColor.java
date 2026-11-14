@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import pageqwq.colorbmc.block.RGBGlassBlock;
 import pageqwq.colorbmc.block.entity.RGBBlockEntity;
 import net.minecraft.client.color.block.BlockTintSource;
 
@@ -16,7 +17,7 @@ public class RGBBlockColor implements BlockTintSource {
             return -1;
         }
         BlockEntity blockEntity = blockDisplayReader.getBlockEntity(blockPos);
-        if (blockEntity == null) {
+        if (blockEntity == null && !(blockState.getBlock() instanceof RGBGlassBlock)) {
             blockEntity = blockDisplayReader.getBlockEntity(blockPos.below());
             if (blockEntity == null) {
                 return -1;
