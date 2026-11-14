@@ -1,7 +1,9 @@
 {
   "block.colorblockmc.concrete": "Stained Concrete",
   "block.colorblockmc.glowing_concrete": "Glowing Stained Concrete",
+  "block.colorblockmc.stained_glass": "Stained Glass",
   "block.colorblockmc.concrete_workshop": "Concrete Workshop",
+  "block.colorblockmc.concrete_replicator": "Item Replicator",
   "message.colorblockmc.concrete_workshop.off": "Right-click to power on",
   "message.colorblockmc.concrete_workshop.waiting": "Insert sand from the top",
   "message.colorblockmc.concrete_workshop.working": "Producing",
@@ -48,5 +50,6 @@
   "advancements.colorblockmc.purify_activate.title": "Purify, Activate!",
   "advancements.colorblockmc.purify_activate.description": "Why would anyone turn black concrete into white?",
   "advancements.colorblockmc.light_it_up.title": "Light It Up!",
-  "advancements.colorblockmc.light_it_up.description": "Using glowing stained concrete, light up the night."
+  "advancements.colorblockmc.light_it_up.description": "Using glowing stained concrete, light up the night.",
+  "resourcepack.colorblockmc.ctm": "Colorful Blocks CTM"
 }

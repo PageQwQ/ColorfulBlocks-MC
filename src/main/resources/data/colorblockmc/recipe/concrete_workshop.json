@@ -2,15 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "OPN",
-    "PWD"
+    "ON ",
+    "PCP",
+    " W "
   ],
   "key": {
     "O": {"item": "minecraft:observer"},
-    "P": {"item": "minecraft:sticky_piston"},
     "N": {"item": "minecraft:netherite_ingot"},
-    "W": {"item": "minecraft:water_bucket"},
-    "D": {"item": "minecraft:white_concrete_powder"}
+    "P": {"item": "minecraft:sticky_piston"},
+    "C": {"item": "minecraft:white_concrete_powder"},
+    "W": {"item": "minecraft:water_bucket"}
   },
   "result": {
     "id": "colorblockmc:concrete_workshop"

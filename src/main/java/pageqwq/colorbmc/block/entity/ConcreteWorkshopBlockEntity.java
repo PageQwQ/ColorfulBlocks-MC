@@ -23,9 +23,7 @@ import pageqwq.colorbmc.util.registries.BlockRegistry;
 
 import java.util.UUID;
 
-/**
- * 混凝土车间：批次生产（1.21.1）。
- */
+/** Concrete workshop: batch production, 2 sand per block into the right-side container. */
 public class ConcreteWorkshopBlockEntity extends BlockEntity {
     public static final int SAND_CAPACITY = 2048;
     private static final int SAND_PER_CONCRETE = 2;

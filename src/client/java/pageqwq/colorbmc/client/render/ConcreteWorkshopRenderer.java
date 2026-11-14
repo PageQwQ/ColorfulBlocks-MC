@@ -17,9 +17,7 @@ import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
 
 import java.util.Map;
 
-/**
- * 屏幕图标用发光渲染层（{@link RenderType#eyes}）绘制，不受环境光影响。
- */
+/** Draws the screen icon with the emissive layer so it stays lit in the dark. */
 public class ConcreteWorkshopRenderer implements BlockEntityRenderer<ConcreteWorkshopBlockEntity> {
     private record Icon(ResourceLocation texture, int frames, int ticksPerFrame) {
     }

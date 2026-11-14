@@ -28,11 +28,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import pageqwq.colorbmc.block.entity.ConcreteWorkshopBlockEntity;
 
-/**
- * 混凝土车间（1.21.1）。
- *
- * 屏幕朝向 {@link #FACING}，产出侧为屏幕右手边；{@link #STAGE} 决定屏幕图标。
- */
+/** Concrete workshop: {@link #STAGE} drives the screen; output is on the screen's right side. */
 public class ConcreteWorkshopBlock extends Block implements EntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<Stage> STAGE = EnumProperty.create("stage", Stage.class);
@@ -112,7 +108,7 @@ public class ConcreteWorkshopBlock extends Block implements EntityBlock {
         Stage stage = state.getValue(STAGE);
         boolean hasEntity = level.getBlockEntity(pos) instanceof ConcreteWorkshopBlockEntity;
 
-        // 潜行右键：连续两次关机
+        // Sneak-use twice to shut down.
         if (player.isShiftKeyDown()) {
             if (stage == Stage.OFF) {
                 showHint(player, Stage.OFF);

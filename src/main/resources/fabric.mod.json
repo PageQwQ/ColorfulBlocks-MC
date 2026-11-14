@@ -16,11 +16,14 @@
     "main": ["pageqwq.colorbmc.RGBBlocks"],
     "client": ["pageqwq.colorbmc.RGBBlocksClient"],
     "jade": ["pageqwq.colorbmc.util.jade.ColorBlockJadePlugin"],
-    "fabric-gametest": ["pageqwq.colorbmc.gametest.ColorBlockThrowGameTest", "pageqwq.colorbmc.gametest.ConcreteWorkshopGameTest"]
+    "fabric-gametest": ["pageqwq.colorbmc.gametest.ColorBlockThrowGameTest", "pageqwq.colorbmc.gametest.ConcreteWorkshopGameTest", "pageqwq.colorbmc.gametest.RGBMapColorGameTest", "pageqwq.colorbmc.gametest.ConcreteTagGameTest"]
   },
   "mixins": [
     "colorblockmc.mixins.json"
   ],
+  "suggests": {
+    "continuity": ">=3.0.0"
+  },
   "depends": {
     "fabricloader": ">=0.16.9",
     "minecraft": "~1.21.1",

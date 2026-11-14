@@ -7,8 +7,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import pageqwq.colorbmc.RGBBlocks;
+import pageqwq.colorbmc.block.ConcreteReplicatorBlock;
 import pageqwq.colorbmc.block.ConcreteWorkshopBlock;
 import pageqwq.colorbmc.block.RGBBlock;
+import pageqwq.colorbmc.block.RGBGlassBlock;
 import pageqwq.colorbmc.block.RGBGlowingBlock;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
 
 public class BlockRegistry {
     public static final List<Block> ALL_BLOCKS = new ArrayList<>();
-    /** 机器类方块：不参与 RGB 染色。 */
+    /** Machine blocks: no RGB tinting. */
     public static final List<Block> ALL_MACHINES = new ArrayList<>();
 
     public static final Block RGB_CONCRETE = register(
@@ -28,9 +30,19 @@ public class BlockRegistry {
             .lightLevel($ -> 15))
     );
 
-    /** 混凝土车间：普通方块，没有 RGB 染色组件。 */
+    public static final Block RGB_GLASS = register(
+        "stained_glass", new RGBGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS))
+    );
+
+
+    /** Concrete workshop: plain block without an RGB component. */
     public static final Block CONCRETE_WORKSHOP = registerPlain(
         "concrete_workshop", new ConcreteWorkshopBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))
+    );
+
+    /** Item replicator (prototype). */
+    public static final Block CONCRETE_REPLICATOR = registerPlain(
+        "concrete_replicator", new ConcreteReplicatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK))
     );
 
     private static Block registerPlain(String name, Block block) {

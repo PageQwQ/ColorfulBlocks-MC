@@ -57,6 +57,11 @@ loom {
             property "fabric-api.gametest", "true"
             property "fabric-api.gametest.report-file", "${project.buildDir}/gametest-results.xml"
         }
+        autotest {
+            client()
+            programArgs "--quickPlaySingleplayer", "CTM Test"
+            property "colorblockmc.autotest", "true"
+        }
     }
 }
 
@@ -82,6 +87,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-gametest-api-v1:2.0.5+6fc22b9919"
     modCompileOnly "maven.modrinth:jade:15.10.6+fabric"
     modRuntimeOnly "maven.modrinth:jade:15.10.6+fabric"
+    modCompileOnly "maven.modrinth:continuity:3.0.0+1.21"
 }
 
 processResources {

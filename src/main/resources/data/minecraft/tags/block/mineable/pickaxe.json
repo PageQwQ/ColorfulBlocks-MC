@@ -3,6 +3,7 @@
   "values": [
     "colorblockmc:concrete",
     "colorblockmc:glowing_concrete",
-    "colorblockmc:concrete_workshop"
+    "colorblockmc:concrete_workshop",
+    "colorblockmc:concrete_replicator"
   ]
 }

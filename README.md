@@ -102,6 +102,14 @@ initializers do the work. Two consequences worth knowing:
 | Re-render on arrival | `applyImplicitComponents` and `loadAdditional` call `level.sendBlockUpdated(...)` when `isClientSide()` |
 | Implicit component | `collectImplicitComponents` exposes `colorblockmc:color`; `applyImplicitComponents(BlockEntity.DataComponentInput)` reads it back |
 | Survives mining | `data/colorblockmc/loot_table/blocks/*.json` uses `minecraft:copy_components` with `source: block_entity` and `include: ["colorblockmc:color"]` |
+| Map color | `mixin/BlockStateMapColorMixin` intercepts `BlockStateBase.getMapColor(level, pos)`; `util/MapColorResolver` picks the closest vanilla palette entry from the block entity color |
+
+Maps cannot store arbitrary RGB. A map pixel is one byte: a 6-bit vanilla `MapColor` id plus 2 bits of
+brightness, and the palette is fixed at 64 entries. A painted block therefore appears as the closest
+palette color, not an exact match, and land pixels are further darkened by `Brightness.LOWEST`. Blocks
+that were never painted keep the map color copied from white concrete. The mixin is needed because the
+state's map color is baked into the `BlockState` at construction, so `getMapColor(level, pos)` otherwise
+ignores its arguments.
 
 `originalColor` is scratch state for the clean agent: it remembers the color a block had before washing
 started, so the advancement can report `was_color`.
@@ -135,7 +143,6 @@ keeps its color as an item however it was obtained — a mined drop, `/givec`, o
 | Item tint | the Java `ItemColor` providers above |
 | Texture | one static texture, `textures/block/concrete.png`, tinted per block |
 | Thrown bucket entity renderer | `EntityRendererRegistry.register(EntityRegistry.THROWN_PAINT_BUCKET, ThrownItemRenderer::new)` |
-
 ## Interaction paths
 
 ### Paint bucket — `PaintBucketItem.useOn`
@@ -285,8 +292,10 @@ dedicated server with a real level — it asserts on actual block states, block 
 
 Four tests cover charge→radius, radius painting (9 blocks converted and each one's color checked),
 durability cost/drop resolution, and that `/givec` hands out opaque ARGB (parsing and the stack it
-produces). CI (`.github/workflows/build.yml`) runs `build` and `runGameTest` on every push and fails if the
-report is missing or contains a `<failure>`.
+produces). `RGBMapColorGameTest` additionally checks the map hook directly, then builds a 16×16 painted
+platform, runs the real `MapItem.update` against a fresh `MapItemSavedData`, and asserts the stored pixel
+uses the resolved palette id. CI (`.github/workflows/build.yml`) runs `build` and `runGameTest` on every
+push and fails if the report is missing or contains a `<failure>`.
 
 Not covered: the ModernUI mixin, the GUI, client↔server sync, the dispenser, both recipes, `/givec`, Jade
 and the advancement tree.
@@ -319,8 +328,8 @@ src/main/java/pageqwq/colorbmc/
   dispenser/                  DispensePaintBucketBehaviour
   command/                    GiveColorCommand
   gametest/                   the GameTest suite
-  mixin/                      ModernUI tooltip mixin
-  util/                       Color, ClientProxy, ClientPlayHelper, network/, registries/, jade/
+  mixin/                      ModernUI tooltip + BlockState map-color mixins
+  util/                       Color, MapColorResolver, ClientProxy, ClientPlayHelper, network/, registries/, jade/
 src/client/java/pageqwq/colorbmc/
   RGBBlocksClient.java        block/item color providers + entity renderer
   client/colorhandlers/       RGBBlockColor, RGBBlockItemColor, PaintBucketItemColor
