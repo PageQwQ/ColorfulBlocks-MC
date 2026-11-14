@@ -1,6 +1,6 @@
 # 包结构与重构映射
 
-本文件是包名/目录调整的唯一依据。两个版本分支都必须按同一张表迁移；表中标 `冻结` 的条目要等对应功能开发完成后再动。
+本文件是包名/目录调整的唯一依据。两个版本分支都必须按同一张表迁移。未提交的 WIP 不迁移：先提交，再搬目录。
 
 ## 目标结构
 
@@ -44,25 +44,17 @@ dev/                        仅开发环境代码（AutoTest）
 2. **删除测试。** 删掉 `compat/continuity/` 或 `machine/replicator/` 时，编译器只应报同一个目录里的错。删一个功能要改五个地方，说明聚合没做到。
 3. **第三方模组适配只允许出现在 `compat/<modid>/`。** 不再区分 integration / compat；Jade 和 Continuity 都是第三方模组。
 4. **mixin 类不换包。** 这样 `colorblockmc.mixins.json` 不需要改；如果要改，必须同时改配置里的 `package` / 类名。
-5. **WIP 冻结区最后迁移。** 见下节。
+5. **未提交的 WIP 不迁移。** 先让功能落在 commit 里，再改目录；已经提交的 WIP 代码可以搬，但只搬位置、不改逻辑。
 
-## WIP 冻结区（本轮重构不碰）
+## WIP 说明
 
-以下文件对应的功能仍在开发、接口可能变，**不参与前几轮搬迁**，等功能稳定后单独提交：
+复制器、玻璃 CTM 这两个功能仍在开发，但相关 Java 类已经随第 4 步迁到目标包：
 
-- 26.1.2 分支
-  - `block/ConcreteReplicatorBlock.java`
-  - `block/entity/ConcreteReplicatorBlockEntity.java`
-  - `client/render/ConcreteReplicatorRenderer.java`
-  - `client/render/ReplicatorRenderState.java`
-  - `block/RGBGlassBlock.java`、`client/mixin/ContinuityGlassConnectionMixin.java`、`resourcepacks/ctm/**`
-- 1.21.1 分支
-  - `block/ConcreteReplicatorBlock.java`
-  - `block/entity/ConcreteReplicatorBlockEntity.java`
-  - `client/render/ConcreteReplicatorRenderer.java`
-  - `block/RGBGlassBlock.java`、`client/compat/continuity/**`、`resourcepacks/ctm/**`
+- 复制器：`machine/replicator/`、client `machine/replicator/`
+- 玻璃：`rgb/RGBGlassBlock.java`
+- Continuity 适配仍留在原地（26.1.2 的 client mixin / 1.21.1 的 `client/compat/continuity/`），因为它不是在搬包范围内
 
-移动这些文件时，同时检查 `colorblockmc.mixins.json` 与 `fabric.mod.json`。
+迁移只改包名和 import，没有改任何逻辑。**后续开发直接在新路径上改**；再新增 WIP 类时，先提交再决定放哪个功能包，不要先搬未提交的文件。
 
 ## 路径映射表
 
@@ -79,18 +71,18 @@ dev/                        仅开发环境代码（AutoTest）
 | `entity/ThrownPaintBucket.java`、`entity/PaintBucketThrowLogic.java` | `paint/` | 已完成 |
 | `dispenser/DispensePaintBucketBehaviour.java` | `paint/` | 已完成 |
 | `item/crafting/*.java` | `paint/crafting/` | 已完成 |
-| `block/RGBBlock.java`、`RGBGlowingBlock.java`、`RGBGlassBlock.java` | `rgb/` | 待办（玻璃冻结） |
-| `block/entity/RGBBlockEntity.java` | `rgb/` | 待办 |
-| `item/RGBBlockItem.java` | `rgb/` | 待办 |
-| `block/ConcreteWorkshopBlock.java`、`block/entity/ConcreteWorkshopBlockEntity.java` | `machine/workshop/` | 待办 |
-| `block/ConcreteReplicatorBlock.java`、`block/entity/ConcreteReplicatorBlockEntity.java` | `machine/replicator/` | 冻结 |
+| `block/RGBBlock.java`、`RGBGlowingBlock.java`、`RGBGlassBlock.java` | `rgb/` | 已完成 |
+| `block/entity/RGBBlockEntity.java` | `rgb/` | 已完成 |
+| `item/RGBBlockItem.java` | `rgb/` | 已完成 |
+| `block/ConcreteWorkshopBlock.java`、`block/entity/ConcreteWorkshopBlockEntity.java` | `machine/workshop/` | 已完成 |
+| `block/ConcreteReplicatorBlock.java`、`block/entity/ConcreteReplicatorBlockEntity.java` | `machine/replicator/` | 已完成（WIP 类，仅移动） |
 | `util/jade/*.java` | `compat/jade/*.java` | 待办（26.1.2 在 client 源集，1.21.1 在 main 源集） |
 | `client/colorhandlers/*.java` | `client/color/` | 待办 |
 | `client/util/ColorNames.java` | `client/color/ColorNames.java` | 待办 |
 | `client/gui/screen/ColorSelectScreen.java`、`client/gui/widget/*`、`client/gui/ScreenUtils.java` | `client/paint/` | 待办 |
 | `client/ClientPlayHelperImpl.java` | `client/paint/ClientPlayHelperImpl.java` | 已完成 |
-| `client/render/ConcreteWorkshop*、WorkshopRenderState` | `client/machine/workshop/` | 待办 |
-| `client/render/ConcreteReplicator*、ReplicatorRenderState` | `client/machine/replicator/` | 冻结 |
+| `client/render/ConcreteWorkshop*、WorkshopRenderState` | `client/machine/workshop/` | 已完成 |
+| `client/render/ConcreteReplicator*、ReplicatorRenderState` | `client/machine/replicator/` | 已完成（WIP 类，仅移动） |
 | `client/autotest/AutoTest.java` | `client/dev/AutoTest.java` | 待办 |
 
 移动 `util/jade` 时必须同步改 `fabric.mod.json` 的 `jade` entrypoint。
